@@ -5,6 +5,7 @@ import Topbar from "./scenes/globel/Topbar";
 import Sidebar from "./scenes/globel/sidebar";
 import Dasshboard from "./scenes/dashboard";
 import Team from "./scenes/team/index";
+import Products from "./scenes/products/index";
 // import Invoices from "./scenes/invoices";
 // import Contacts from "./scenes/contacts";
 
@@ -24,6 +25,7 @@ function App() {
         <Routes>
             <Route path="/" element={<  Dasshboard />} />
             <Route path="/team" element={<Team />} />
+            <Route path="/products" element={<Products />} />
             {/* <Route path="/contacts" element={<Contacts />} /> */}
             {/* <Route path="/invoices" element={<Invoices />} /> */}
         </Routes>
