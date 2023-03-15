@@ -6,8 +6,10 @@ import Sidebar from "./scenes/globel/sidebar";
 import Dasshboard from "./scenes/dashboard";
 import Team from "./scenes/team/index";
 import Products from "./scenes/products/index";
-// import Invoices from "./scenes/invoices";
-// import Contacts from "./scenes/contacts";
+import Form from "./scenes/form/index";
+import User from "./scenes/user/index";
+import LoginPage from './scenes/LoginPage';
+import Register from './scenes/Register';
 
 
 function App() {
@@ -23,11 +25,13 @@ function App() {
       <main className="content">
         <Topbar />
         <Routes>
-            <Route path="/" element={<  Dasshboard />} />
+            <Route path="/login" element={<  LoginPage />} />
+            <Route path="/register" element={< Register />} />
+            <Route path="/dashboard" element={<  Dasshboard />} />
             <Route path="/team" element={<Team />} />
             <Route path="/products" element={<Products />} />
-            {/* <Route path="/contacts" element={<Contacts />} /> */}
-            {/* <Route path="/invoices" element={<Invoices />} /> */}
+            <Route path="/form" element={<Form />} />
+            <Route path="/user" element={<User />} />
         </Routes>
       </main>
    </div>
