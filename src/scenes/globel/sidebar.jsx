@@ -176,7 +176,7 @@ const Sidebar = () => {
             ></Item>
               <Item
               tittle="Account"
-              to="/"
+              to="/account"
               icon={<PercentOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -184,7 +184,7 @@ const Sidebar = () => {
             ></Item>
             <Item
               tittle="Employee"
-              to="/"
+              to="/employee"
               icon={<ContactPageOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -202,7 +202,7 @@ const Sidebar = () => {
 
             <Item
               tittle="User"
-              to="/team"
+              to="/user"
               icon={<PermIdentityOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -210,7 +210,7 @@ const Sidebar = () => {
             ></Item>
             <Item
               tittle="Role"
-              to="/team"
+              to="/role"
               icon={<AssignmentIndOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}

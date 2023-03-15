@@ -4,7 +4,7 @@ import { Routes, Route } from "react-router-dom";
 import Topbar from "./scenes/globel/Topbar";
 import Sidebar from "./scenes/globel/sidebar";
 import Dasshboard from "./scenes/dashboard";
-import Role from "./scenes/role/index";
+import User from "./scenes/user/index";
 import Products from "./scenes/products/index";
 import Form from "./scenes/form/index";
 import Customer from "./scenes/customer/index";
@@ -13,6 +13,9 @@ import Register from './scenes/Register';
 import Order from './scenes/order';
 import Project from './scenes/project';
 import Material from './scenes/material';
+import Account from './scenes/account';
+import Employee from './scenes/employee';
+import Role from './scenes/role';
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -35,8 +38,10 @@ function App() {
             <Route path="/order" element={<Order />} />
             <Route path="/project" element={<Project />} />
             <Route path="/material" element={<Material />} />
-
-            <Route path="/team" element={<Role />} />
+            <Route path="/account" element={<Account />} />
+            <Route path="/employee" element={<Employee />} />
+            <Route path="/user" element={<User />} />
+            <Route path="/role" element={<Role />} />
         
             <Route path="/form" element={<Form />} />
            
