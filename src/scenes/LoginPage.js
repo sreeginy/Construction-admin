@@ -46,7 +46,8 @@ const ContentStyle = styled('div')(({ theme }) => ({
   minHeight: '70vh',
   flexDirection: 'column',
   justifyContent: 'center',
-  padding: theme.spacing(10, 0)
+  padding: theme.spacing(10, 0),
+
 }));
 // ----------------------------------------------------------------------
 
@@ -55,12 +56,17 @@ export default function LoginPage() {
 
   return (
     <>
+      {/* <Helmet>
+        <title> Login | Minimal UI </title>
+      </Helmet> */}
+
+      
 
         <Container maxWidth="sm">
         
           <Card >
           <ContentStyle>
-            <Typography variant="h3" justifyContent="center" gutterBottom>
+            <Typography variant="h3" justifyContent="center" gutterBottom color="#00008B" p={2}>
               RK Architecture Designers And Engineers
             </Typography>
             <Typography variant='h4'>

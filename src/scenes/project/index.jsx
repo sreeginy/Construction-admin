@@ -159,11 +159,11 @@ export default function UserPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom >
-           CEMENT &nbsp; PRODUCT
+            CONSTRUCTION &nbsp; PROJECTS
           </Typography>
           {/* <Typography  alignItems="center">Create a New User Profile</Typography> */}
           <Button color="info" variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New Product
+            New Project
           </Button>
         </Stack>
 

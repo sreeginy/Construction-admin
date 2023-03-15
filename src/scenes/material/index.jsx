@@ -158,11 +158,12 @@ export default function UserPage() {
 
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom>
-            User
+          <Typography variant="h4" gutterBottom >
+            MATERIALS &nbsp; ITEMS
           </Typography>
-          <Button variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New User
+          {/* <Typography  alignItems="center">Create a New User Profile</Typography> */}
+          <Button color="info" variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+            New Item
           </Button>
         </Stack>
 

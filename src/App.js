@@ -4,13 +4,15 @@ import { Routes, Route } from "react-router-dom";
 import Topbar from "./scenes/globel/Topbar";
 import Sidebar from "./scenes/globel/sidebar";
 import Dasshboard from "./scenes/dashboard";
-import Team from "./scenes/team/index";
+import Role from "./scenes/role/index";
 import Products from "./scenes/products/index";
 import Form from "./scenes/form/index";
-import User from "./scenes/user/index";
+import Customer from "./scenes/customer/index";
 import LoginPage from './scenes/LoginPage';
 import Register from './scenes/Register';
-
+import Order from './scenes/order';
+import Project from './scenes/project';
+import Material from './scenes/material';
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -28,10 +30,16 @@ function App() {
             <Route path="/login" element={<  LoginPage />} />
             <Route path="/register" element={< Register />} />
             <Route path="/dashboard" element={<  Dasshboard />} />
-            <Route path="/team" element={<Team />} />
             <Route path="/products" element={<Products />} />
+            <Route path="/customer" element={<Customer />} />
+            <Route path="/order" element={<Order />} />
+            <Route path="/project" element={<Project />} />
+            <Route path="/material" element={<Material />} />
+
+            <Route path="/team" element={<Role />} />
+        
             <Route path="/form" element={<Form />} />
-            <Route path="/user" element={<User />} />
+           
         </Routes>
       </main>
    </div>
