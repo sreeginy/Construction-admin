@@ -40,11 +40,12 @@ import USERLIST from '../../_mock/user';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
-  { id: 'status', label: 'Status', alignRight: false },
+  { id: 'id', label: 'ID', alignRight: false },
+  { id: 'name', label: 'Full Name', alignRight: false },
+  { id: 'address', label: 'Address', alignRight: false },
+  { id: 'mail', label: 'E-mail', alignRight: false },
+  { id: 'contact', label: 'Contact Number', alignRight: false },
+  { id: 'pro_name', label: 'Product Name', alignRight: false },
   { id: '' },
 ];
 
