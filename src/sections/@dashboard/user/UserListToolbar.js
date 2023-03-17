@@ -31,10 +31,6 @@ const StyledSearch = styled(OutlinedInput)(({ theme }) => ({
     borderColor: `${alpha(theme.palette.grey[200], 0.32)} !important`,
   },
 }));
-
-
-
-
 // ----------------------------------------------------------------------
 
 UserListToolbar.propTypes = {
