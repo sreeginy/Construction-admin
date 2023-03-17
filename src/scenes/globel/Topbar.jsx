@@ -1,13 +1,11 @@
 import { Box, IconButton, useTheme } from "@mui/material";
 import { useContext } from "react";
 import { ColorModeContext, tokens } from "../../theme";
-import InputBase from "@mui/material/InputBase";
 import LightModeIcon from '@mui/icons-material/LightMode';
 import NightlightOutlinedIcon from '@mui/icons-material/NightlightOutlined';
 import NotificationsNoneOutlinedIcon from '@mui/icons-material/NotificationsNoneOutlined';
 import SettingsOutlinedIcon from '@mui/icons-material/SettingsOutlined';
 import AccountCircleOutlinedIcon from '@mui/icons-material/AccountCircleOutlined';
-import SearchIcon from "@mui/icons-material/Search";
 import Header from "../../components/Header";
 // const styledBox = styled(Box)``;
 
@@ -50,7 +48,5 @@ import Header from "../../components/Header";
     </Box>
   );
 };
-
-
 
 export default Topbar;
