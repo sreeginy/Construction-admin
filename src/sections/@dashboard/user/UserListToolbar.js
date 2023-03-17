@@ -9,7 +9,7 @@ import { Box, Button } from '@mui/material';
 // ----------------------------------------------------------------------
 
 const StyledRoot = styled(Toolbar)(({ theme }) => ({
-  height: 80,
+  height: 0,
   display: 'flex',
   justifyContent: 'space-between',
   padding: theme.spacing(0, 1, 0, 3),

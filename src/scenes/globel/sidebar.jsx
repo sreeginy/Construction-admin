@@ -74,7 +74,7 @@ const Sidebar = () => {
                 alignItems="center"
                 ml="15px"
               >
-                <Typography variant="h3" color={colors.grey[100]} >
+                <Typography variant="h4" color={colors.grey[100]} >
                   RK ADMINISTRATOR
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
