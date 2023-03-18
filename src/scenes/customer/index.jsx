@@ -35,7 +35,7 @@ import Iconify from '../../components/iconify';
 // sections
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 // mock
-import USERLIST from '../../_mock/user';
+import USERLIST from '../../_mock/customer';
 
 // ----------------------------------------------------------------------
 
@@ -43,9 +43,8 @@ const TABLE_HEAD = [
   { id: 'id', label: 'ID', alignRight: false },
   { id: 'name', label: 'Full Name', alignRight: false },
   { id: 'address', label: 'Address', alignRight: false },
-  { id: 'mail', label: 'E-mail', alignRight: false },
+  { id: 'userEmail', label: 'E-mail', alignRight: false },
   { id: 'contact', label: 'Contact Number', alignRight: false },
-  { id: 'pro_name', label: 'Product Name', alignRight: false },
   { id: '' },
 ];
 
@@ -185,7 +184,7 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
+                    const { id, name, address, userEmail, contact, avatarUrl, isVerified } = row;
                     const selectedUser = selected.indexOf(name) !== -1;
 
                     return (
@@ -193,6 +192,8 @@ export default function UserPage() {
                         <TableCell padding="checkbox">
                           <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
                         </TableCell>
+
+                        <TableCell align="left">{id}</TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
@@ -203,15 +204,15 @@ export default function UserPage() {
                           </Stack>
                         </TableCell>
 
-                        <TableCell align="left">{company}</TableCell>
+                        <TableCell align="left">{address}</TableCell>
 
-                        <TableCell align="left">{role}</TableCell>
+                        <TableCell align="left">{userEmail}</TableCell>
 
-                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+                        <TableCell align="left">{contact}</TableCell>
 
-                        <TableCell align="left">
+                        {/* <TableCell align="left">
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell>
+                        </TableCell> */}
 
                         <TableCell align="right">
                           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>

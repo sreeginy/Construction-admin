@@ -40,9 +40,9 @@ import USERLIST from '../../_mock/user';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Name', alignRight: false },
-  { id: 'company', label: 'Company', alignRight: false },
-  { id: 'role', label: 'Role', alignRight: false },
+  { id: 'name', label: 'Material Name', alignRight: false },
+  { id: 'company', label: 'Description', alignRight: false },
+  { id: 'role', label: 'Material Type', alignRight: false },
   { id: 'isVerified', label: 'Verified', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
