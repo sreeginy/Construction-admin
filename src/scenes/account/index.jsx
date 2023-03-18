@@ -8,7 +8,6 @@ import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
 import { useState } from 'react';
-// @mui
 import {
   Card,
   Table,
@@ -28,7 +27,6 @@ import {
   TableContainer,
   TablePagination,
 } from '@mui/material';
-// components
 import Label from '../../components/label';
 import Iconify from '../../components/iconify';
 

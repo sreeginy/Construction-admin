@@ -90,7 +90,7 @@ const Team = () => {
                 borderBottom: "none",
               },
         }}
-      >
+      > 
         <DataGrid checkboxSelection rows={mockDataTeam} columns={columns} />
       </Box>
     </Box>

@@ -1,5 +1,4 @@
 import PropTypes from 'prop-types';
-// @mui
 import { styled, alpha } from '@mui/material/styles';
 import { Toolbar, Tooltip, IconButton, Typography, OutlinedInput, InputAdornment } from '@mui/material';
 import Iconify from '../../../components/iconify';
