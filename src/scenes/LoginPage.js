@@ -3,10 +3,7 @@ import { styled } from '@mui/material/styles';
 import { Link, Container, Typography, Divider, Stack, Button, Card, Box} from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
-// components
-
 import Iconify from '../components/iconify';
-// sections
 import { LoginForm } from '../sections/auth/login';
 
 // ----------------------------------------------------------------------
@@ -104,8 +101,6 @@ export default function LoginPage() {
           
         </Container>
 
-       
-  
     </>
   );
 }

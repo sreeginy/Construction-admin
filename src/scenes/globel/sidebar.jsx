@@ -106,7 +106,7 @@ const Sidebar = () => {
                   Sreeginy K
                 </Typography>
                 <Typography variant="h6" color={colors.greenAccent[500]}>
-                  web Admin
+                 Super Admin
                 </Typography>
               </Box>
             </Box>

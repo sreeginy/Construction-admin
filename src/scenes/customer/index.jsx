@@ -8,7 +8,6 @@ import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
 import { useState } from 'react';
-// @mui
 import {
   Card,
   Table,
@@ -28,13 +27,11 @@ import {
   TableContainer,
   TablePagination,
 } from '@mui/material';
-// components
 import Label from '../../components/label';
 import Iconify from '../../components/iconify';
 
 // sections
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
-// mock
 import USERLIST from '../../_mock/customer';
 
 // ----------------------------------------------------------------------
@@ -48,7 +45,6 @@ const TABLE_HEAD = [
   { id: '' },
 ];
 
-// ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
