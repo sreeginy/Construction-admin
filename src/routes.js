@@ -2,6 +2,7 @@ import { Navigate, useRoutes } from 'react-router-dom';
 
 
 import Dashboard from "./scenes/dashboard";
+import DashboardLayout from './layouts/dashboard';
 import User from "./scenes/user/index";
 import Products from "./scenes/products/index";
 import Form from "./scenes/form/index";
@@ -14,6 +15,7 @@ import Material from './scenes/material';
 import Account from './scenes/account';
 import Employee from './scenes/employee';
 import Role from './scenes/role';
+import { Routes, Route } from "react-router-dom";
 
 
 // ----------------------------------------------------------------------
@@ -36,16 +38,17 @@ function PrivateRoute({ auth: { isAuthenticated }, children }) {
         path: '/dashboard',
         element: (
           <PrivateRoute auth={{ isAuthenticated: getUser() }}>
-            {/* <DashboardLayout /> */}
+            <DashboardLayout/>
+            <Route path="/products" element={<Products />} />
           </PrivateRoute>
         ),
         children: [
 
-            { path: 'app', element: <Dashboard /> },
+            { path: 'app', element: <Dashboard/> },
             { path: 'login', element: <Login /> },
             { path: 'register', element: <Register /> },
-            { path: 'dashboard', element: <Dashboard /> },
-            { path: 'products', element: <Products /> },
+            // { path: 'dashboard', element: <DashboardLayout /> },
+            { path: '/dashboard/app/products', element: <Products /> },
             { path: 'customer', element: <Customer /> },
             { path: 'order', element: <Order /> },
             { path: 'project', element: <Project /> },

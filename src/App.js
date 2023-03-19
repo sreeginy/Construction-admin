@@ -1,8 +1,8 @@
 import { ColorModeContext, useMode } from './theme';
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import { Routes, Route } from "react-router-dom";
-import Topbar from "./scenes/globel/Topbar";
-import Sidebar from "./scenes/globel/sidebar";
+// import Topbar from "./scenes/globel/Topbar";
+// import Sidebar from "./scenes/globel/sidebar";
 import Router from './routes';
 
 function App() {
@@ -14,9 +14,9 @@ function App() {
   <ThemeProvider theme={theme}>
     <CssBaseline/>
    <div className="app">
-        <Sidebar />
+        {/* <Sidebar />
       <main className="content">
-        <Topbar />
+        <Topbar /> */}
         <Router />
         {/* <Routes>
             <Route path="/login" element={<  LoginPage />} />
@@ -35,7 +35,7 @@ function App() {
             <Route path="/form" element={<Form />} />
            
         </Routes> */}
-      </main>
+      {/* </main> */}
    </div>
    </ThemeProvider>
    </ColorModeContext.Provider>

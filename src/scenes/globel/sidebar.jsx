@@ -16,6 +16,7 @@ import ContactPageOutlinedIcon from '@mui/icons-material/ContactPageOutlined';
 import PercentOutlinedIcon from '@mui/icons-material/PercentOutlined';
 import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
 
+import sidebarConfig from '../../layouts/dashboard/SidebarConfig';
 
 const Item = ({ tittle, to, icon, selected, setSelected }) => {
   const theme = useTheme();
@@ -110,7 +111,11 @@ const Sidebar = () => {
                 </Typography>
               </Box>
             </Box>
+
+            
           )}
+
+{/* <NavSection navConfig={sidebarConfig} /> */}
 
           <Box paddingLeft={isCollapsed ? undefined : "10%"}>
             <Item

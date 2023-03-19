@@ -3,10 +3,18 @@ import { Outlet, useNavigate } from 'react-router-dom';
 // material
 import { styled } from '@mui/material/styles';
 //
-import DashboardNavbar from './DashboardNavbar';
-import DashboardSidebar from './DashboardSidebar';
+// import DashboardNavbar from './DashboardNavbar';
+// import DashboardSidebar from './DashboardSidebar';
 
+import Topbar from "../../scenes/globel/Topbar";
+import Sidebar from "../../scenes/globel/sidebar";
+import { ColorModeContext, useMode } from '../../theme';
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import { Routes, Route } from "react-router-dom";
 // ----------------------------------------------------------------------
+
+
+
 
 const APP_BAR_MOBILE = 64;
 const APP_BAR_DESKTOP = 92;
@@ -35,12 +43,27 @@ const MainStyle = styled('div')(({ theme }) => ({
 export default function DashboardLayout() {
   const [open, setOpen] = useState(false);
   return (
+    <>
+
+      <CssBaseline/>
+     <div className="app">
+          <Sidebar />
+        <main className="content">
+          <Topbar />
+
+
     <RootStyle>
-      <DashboardNavbar onOpenSidebar={() => setOpen(true)} />
-      <DashboardSidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
+      <Topbar onOpenSidebar={() => setOpen(true)} />
+      <Sidebar isOpenSidebar={open} onCloseSidebar={() => setOpen(false)} />
       <MainStyle>
         <Outlet />
       </MainStyle>
     </RootStyle>
+
+    </main>
+   </div>
+</>
+   
   );
 }
+

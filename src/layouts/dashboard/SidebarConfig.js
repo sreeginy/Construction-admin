@@ -1,5 +1,5 @@
 // component
-import Iconify from '../../components/Iconify';
+import Iconify from '../../components/iconify';
 
 // ----------------------------------------------------------------------
 
@@ -20,18 +20,7 @@ const sidebarConfig = [
     title: 'Outbounds',
     path: '/dashboard/Outbounds/',
     icon: getIcon('eva:shopping-bag-fill')
-    // children: [
-    //   {
-    //     title: 'Movies',
-    //     path: '/dashboard/productsss/',
-    //     icon: getIcon('fluent:library-28-filled')
-    //   },
-    //   {
-    //     title: 'Seasons',
-    //     path: '/dashboard/productsss/',
-    //     icon: getIcon('fluent:library-28-filled')
-    //   }
-    // ]
+
   },
   {
     title: 'Settings',
@@ -102,21 +91,7 @@ const sidebarConfig = [
       }
     ]
   }
-  // {
-  //   title: 'login',
-  //   path: '/login',
-  //   icon: getIcon('eva:lock-fill')
-  // }
-  // {
-  //   title: 'register',
-  //   path: '/register',
-  //   icon: getIcon('eva:person-add-fill')
-  // },
-  // {
-  //   title: 'Not found',
-  //   path: '/404',
-  //   icon: getIcon('eva:alert-triangle-fill')
-  // }
+
 ];
 
 export default sidebarConfig;
