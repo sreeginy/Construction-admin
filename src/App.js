@@ -3,19 +3,7 @@ import { CssBaseline, ThemeProvider } from '@mui/material';
 import { Routes, Route } from "react-router-dom";
 import Topbar from "./scenes/globel/Topbar";
 import Sidebar from "./scenes/globel/sidebar";
-import Dasshboard from "./scenes/dashboard";
-import User from "./scenes/user/index";
-import Products from "./scenes/products/index";
-import Form from "./scenes/form/index";
-import Customer from "./scenes/customer/index";
-import LoginPage from './scenes/LoginPage';
-import Register from './scenes/Register';
-import Order from './scenes/order';
-import Project from './scenes/project';
-import Material from './scenes/material';
-import Account from './scenes/account';
-import Employee from './scenes/employee';
-import Role from './scenes/role';
+import Router from './routes';
 
 function App() {
   const [theme, colorMode] = useMode();
@@ -29,7 +17,8 @@ function App() {
         <Sidebar />
       <main className="content">
         <Topbar />
-        <Routes>
+        <Router />
+        {/* <Routes>
             <Route path="/login" element={<  LoginPage />} />
             <Route path="/register" element={< Register />} />
             <Route path="/dashboard" element={<  Dasshboard />} />
@@ -45,7 +34,7 @@ function App() {
         
             <Route path="/form" element={<Form />} />
            
-        </Routes>
+        </Routes> */}
       </main>
    </div>
    </ThemeProvider>
