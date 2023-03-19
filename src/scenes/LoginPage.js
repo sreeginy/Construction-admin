@@ -66,7 +66,7 @@ export default function LoginPage() {
         
           <Card >
           <ContentStyle>
-            <Typography variant="h3" justifyContent="center" gutterBottom color="#00008B" p={2}>
+            <Typography variant="h3" justifyContent="center" gutterBottom color="#ffffff" p={2}>
               RK Architecture Designers And Engineers
             </Typography>
             <Typography variant='h4'>

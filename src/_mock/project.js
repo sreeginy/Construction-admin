@@ -5,7 +5,7 @@ import { sample } from 'lodash';
 
 const project = [...Array(24)].map((_, index) => ({
   id: faker.datatype.number(),
-  avatarUrl: `/assets/user${index + 1}.png`,
+  avatarUrl: `../../assets/user${index + 1}.png`,
   name: faker.name.fullName(),
   type: sample(['house', 'office', 'school', 'shop']),
   description: faker.name.findName(),

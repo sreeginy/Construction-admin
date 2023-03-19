@@ -5,7 +5,7 @@ import { sample } from 'lodash';
 
 const users = [...Array(24)].map((_, index) => ({
   pro_id: faker.datatype.number(),
-  avatarUrl: `/assets/user${index + 1}.png`,
+  avatarUrl: `../../assets/user${index + 1}.png`,
   pro_name: faker.name.fullName(),
   pro_type: sample(['stone', 'soil']),
   pro_description: faker.commerce.product(),

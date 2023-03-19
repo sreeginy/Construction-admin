@@ -74,8 +74,8 @@ const Sidebar = () => {
                 alignItems="center"
                 ml="15px"
               >
-                <Typography variant="h4" color={colors.grey[100]} >
-                  RK ADMINISTRATOR
+                <Typography variant="h7" color={colors.grey[100]} >
+                  RK ADMINISTRATOR &nbsp;
                 </Typography>
                 <IconButton onClick={() => setIsCollapsed(!isCollapsed)}>
                   <MenuOutlinedIcon />
