@@ -16,11 +16,7 @@ import Account from './scenes/account';
 import Employee from './scenes/employee';
 import Role from './scenes/role';
 
-
-
 export default function Router() {
-
- 
    
 
     const routes = useRoutes([
