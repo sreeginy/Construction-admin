@@ -6,7 +6,7 @@ import { useNavigate } from 'react-router-dom';
 import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // component
-import Iconify from '../../../components/Iconify';
+import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
 

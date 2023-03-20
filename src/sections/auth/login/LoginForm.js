@@ -20,8 +20,9 @@ import messageStyle from '../../../components/toast/toastStyle';
 // Api Call
 import apiClient from '../../../api/apiClient';
 // component
-import Iconify from '../../../components/Iconify';
+import Iconify from '../../../components/iconify';
 import LoginPassswordChange from './LoginPasswordChange';
+
 
 // ----------------------------------------------------------------------
 

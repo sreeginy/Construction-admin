@@ -29,10 +29,17 @@ export default function Router() {
           { path: 'user', element: <User /> },
           { path: 'products', element: <Products /> },
           { path: 'customer', element: <Customer /> },
+          { path: 'order', element: <Order /> },
+          { path: 'project', element: <Project /> },
+          { path: 'material', element: <Material /> },
+          { path: 'account', element: <Account /> },
+          { path: 'employee', element: <Employee /> },
+          { path: 'user', element: <User /> },
+          { path: 'role', element: <Role /> },
         ],
       },
       {
-        path: 'login',
+        path: '/',
         element: <Login />,
       },
       {

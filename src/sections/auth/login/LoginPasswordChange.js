@@ -20,7 +20,7 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { toast } from 'react-toastify';
 // component
-import Iconify from '../../../components/Iconify';
+import Iconify from '../../../components/iconify';
 // Api Call
 import apiClient from '../../../api/apiClient';
 import headers from '../../../api/apiHeader';
