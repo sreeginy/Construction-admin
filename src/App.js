@@ -30,6 +30,7 @@ function App() {
     <CssBaseline/>
     <Router />
     <>
+
    {/* <div className="app">
         <Sidebar />
       <main className="content">
@@ -40,7 +41,7 @@ function App() {
             <Route path="/register" element={< Register />} />
             <Route path="/dashboard" element={<  Dashboard />} />
             <Route path="/products" element={<Products />} />
-            <Route path="/customer" element={<Customer />} />
+             <Route path="/customer" element={<Customer />} />
             <Route path="/order" element={<Order />} />
             <Route path="/project" element={<Project />} />
             <Route path="/material" element={<Material />} />

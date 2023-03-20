@@ -149,7 +149,8 @@ export default function UserPage() {
 
 
       <Container  >
-        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5} height={0}>
+
+      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom >
            CEMENT &nbsp; PRODUCT
           </Typography>
@@ -158,7 +159,6 @@ export default function UserPage() {
             New Product
           </Button>
         </Stack>
-
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
