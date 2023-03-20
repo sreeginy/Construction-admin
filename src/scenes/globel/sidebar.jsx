@@ -16,12 +16,17 @@ import ContactPageOutlinedIcon from '@mui/icons-material/ContactPageOutlined';
 import PercentOutlinedIcon from '@mui/icons-material/PercentOutlined';
 import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
 
-import sidebarConfig from '../../layouts/dashboard/SidebarConfig';
+
+import { CssBaseline, ThemeProvider } from '@mui/material';
+import Topbar from "../../scenes/globel/Topbar";
 
 const Item = ({ tittle, to, icon, selected, setSelected }) => {
   const theme = useTheme();
   const colors = tokens(theme.palette.mode);
   return (
+
+
+
     <MenuItem active={selected === tittle} style={{ color: colors.grey[100] }} onClick={() => setSelected(tittle)} icon={icon} >
       <Typography variant="h5" >{tittle}</Typography>
       <Link to={to} />
@@ -36,7 +41,9 @@ const Sidebar = () => {
   const [selected, setSelected] = useState("Dashboard");
 
   return (
+    <>
 
+   
     <Box
       sx={{
         "& .pro-sidebar-inner": {
@@ -134,7 +141,7 @@ const Sidebar = () => {
               RK Yard </Typography>
             <Item
               tittle="Product"
-              to="/products"
+              to="/dashboard/products"
               icon={<ProductionQuantityLimitsOutlinedIcon />}
               selected={selected}
               setSelected={setSelected}
@@ -241,7 +248,10 @@ const Sidebar = () => {
           </Box>
         </Menu>
       </ProSidebar>
-    </Box>
+      </Box>
+     
+      
+</>
 
   );
 };
