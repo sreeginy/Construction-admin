@@ -16,15 +16,21 @@ import Header from "../../components/Header";
         const colorMode = useContext(ColorModeContext);
 
     return (
-        <Box display="flex" justifyContent="space-between" p={2}>
-        {/* SEARCH BAR */}
-        <Box
-          display="flex"
-          borderRadius="3px"
-        >
-           <Header title="" Color={colors.primary[400]}/> 
+    <Box display="flex" justifyContent="space-between" p={2}>
+    {/* SEARCH BAR */}
+         <Box
+  //         display="flex"
+  //         borderRadius="3px"
+  //       >
+  //         <input
+  //  type="text"
+  //  placeholder="Search here"
+  // //  onChange={handleChange}
+  // //  value={searchInput} 
+   />
+          <Header title="" Color={colors.primary[400]}/> 
           
-        </Box>
+ 
 
    {/* ICONS */}
    <Box display="flex">
