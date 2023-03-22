@@ -56,8 +56,8 @@ const TABLE_HEAD = [
   { id: 'email', label: 'E-Mail', alignRight: false },
   { id: 'role', label: 'Role Assigned', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
+  { id: '', label: 'Action', alignRight: false },
   { id: 'createdAt', label: 'CreatedAt', alignRight: false },
-  { id: '' },
 ];
 
 // ----------------------------------------------------------------------
@@ -223,13 +223,15 @@ export default function UserPage() {
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
                         </TableCell>
 
-                        <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
 
                         <TableCell align="right">
                           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
+
+                        <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
+
                       </TableRow>
                     );
                   })}

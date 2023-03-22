@@ -11,7 +11,7 @@ const project = [...Array(24)].map((_, index) => ({
   description: faker.name.findName(),
   isVerified: faker.datatype.boolean(),
   status: sample(['active', 'banned']),
- 
+  createdAt: faker.date.recent().getTime(),
 }));
 
 export default project;

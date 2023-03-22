@@ -4,10 +4,14 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 
+import { Constant } from '../../utils/Constant';
+import { getPermission } from '../../utils/PermissionUtil';
+import moment from 'moment';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
+import { useState, useEffect } from 'react';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+
 // @mui
 import {
   Card,
@@ -31,6 +35,10 @@ import {
 import Label from '../../components/label';
 import Iconify from '../../components/iconify';
 
+import {
+  AddEditProjectPopUp,
+} from '../../sections/@dashboard/project';
+
 // sections
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 // mock
@@ -39,11 +47,13 @@ import USERLIST from '../../_mock/project';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+  { id: 'id', label: 'Project ID', alignRight: false },
   { id: 'name', label: 'Project Name', alignRight: false },
   { id: 'type', label: 'Type', alignRight: false },
   { id: 'description', label: 'Description', alignRight: false },
   { id: 'isVerified', label: 'Verified', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
+  { id: 'createdAt', label: 'Status', alignRight: false  },
   { id: '' },
 ];
 
@@ -78,6 +88,9 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
+// export default function Project() {
+
+
 export default function UserPage() {
   const [open, setOpen] = useState(null);
 
@@ -92,6 +105,18 @@ export default function UserPage() {
   const [filterName, setFilterName] = useState('');
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const [isLoading, setIsLoading] = useState(false);
+
+  const [ProjectData, setSelectedProjectData] = useState();
+
+  const [Permission, setPermission] = useState({});
+
+  const openAddEditPopUp = (data) => {
+  setOpen((open) => (open = !open));
+  setSelectedProjectData(data);
+  };
+
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -145,6 +170,12 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
+  useEffect(() => {
+    // setPermission(getPermission(Constant.USERPAGE));
+    setIsLoading(true);
+    // getProjectList();
+  }, []);
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
@@ -161,9 +192,25 @@ export default function UserPage() {
             CONSTRUCTION &nbsp; PROJECTS
           </Typography>
           {/* <Typography  alignItems="center">Create a New User Profile</Typography> */}
-          <Button color="info" variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
+          {/* {Permission?.red && (  */}
+          <Button 
+          color="info" 
+          variant="contained" 
+          startIcon={<Iconify icon="eva:plus-fill" />}
+          onclick={() => 
+          openAddEditPopUp ({
+              id: '',
+              name: '',
+              type: '',
+              description: '',
+              isVerified: '',
+              status: '',
+          })
+          }
+          >
             New Project
           </Button>
+  {/* )} */}
         </Stack>
 
         <Card>
@@ -183,7 +230,7 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, type, status, description, avatarUrl, isVerified } = row;
+                    const { id, name, type, status, description, avatarUrl, isVerified, createdAt} = row;
                     const selectedUser = selected.indexOf(name) !== -1;
 
                     return (
@@ -191,6 +238,8 @@ export default function UserPage() {
                         <TableCell padding="checkbox">
                           <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
                         </TableCell>
+
+                        <TableCell align="left">{id}</TableCell>
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
@@ -216,6 +265,9 @@ export default function UserPage() {
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
+
+                        <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
+
                       </TableRow>
                     );
                   })}
