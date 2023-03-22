@@ -93,6 +93,10 @@ function applySortFilter(array, comparator, query) {
 
 export default function UserPage() {
   const [open, setOpen] = useState(null);
+  
+  const [selectedProjectData, setSelectedProjectData] = useState();
+  
+  const [SelectedProjectId, setSelectedProjectId] = useState('');
 
   const [page, setPage] = useState(0);
 
@@ -108,7 +112,6 @@ export default function UserPage() {
 
   const [isLoading, setIsLoading] = useState(false);
 
-  const [ProjectData, setSelectedProjectData] = useState();
 
   const [Permission, setPermission] = useState({});
 
@@ -176,6 +179,12 @@ export default function UserPage() {
     // getProjectList();
   }, []);
 
+  const handleClose = () => {
+    setOpen(false);
+
+  };
+
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
@@ -212,6 +221,12 @@ export default function UserPage() {
           </Button>
   {/* )} */}
         </Stack>
+
+        {open ? (
+          <AddEditProjectPopUp onClose={handleClose} data={selectedProjectData} />
+        ) : (
+          ''
+        )}
 
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
