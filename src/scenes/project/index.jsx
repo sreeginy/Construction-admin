@@ -28,7 +28,6 @@ import {
   TableContainer,
   TablePagination,
 } from '@mui/material';
-// components
 import Label from '../../components/label';
 import Iconify from '../../components/iconify';
 
