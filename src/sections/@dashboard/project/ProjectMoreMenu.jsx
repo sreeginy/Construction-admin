@@ -1,26 +1,25 @@
+// material
+import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
+import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-import PropTypes from 'prop-types';
-// material
-import { Menu, MenuItem, IconButton, ListItemIcon, ListItemText } from '@mui/material';
 // component
-import Iconify from '../../../components/Iconify';
+import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
-MoreMenu.prototypes = {
+ProjectMoreMenu.prototypes = {
   onEditClick: PropTypes.func,
-  onDelete: PropTypes.func,
-  onPassword: PropTypes.func
+  onDelete: PropTypes.func
 };
 
-export default function MoreMenu(props) {
-  const { onEditClick, onDelete, isRight, onPassword, permission } = props;
+export default function ProjectMoreMenu(props) {
+  const { onEditClick, onDelete, isRight, onRight, permission } = props;
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-      <IconButton ref={ref} onClick={() => setIsOpen(true)}>
+    <IconButton ref={ref} onClick={() => setIsOpen(true)}>
         <Iconify icon="eva:more-vertical-fill" width={20} height={20} />
       </IconButton>
 
@@ -46,7 +45,7 @@ export default function MoreMenu(props) {
               <ListItemIcon>
                 <Iconify icon="eva:trash-2-outline" width={24} height={24} />
               </ListItemIcon>
-              <ListItemText primary="Deleteeeee" primaryTypographyProps={{ variant: 'body2' }} />
+              <ListItemText primary="Delete" primaryTypographyProps={{ variant: 'body2' }} />
             </MenuItem>
           )}
           {permission?.update && (
@@ -65,22 +64,22 @@ export default function MoreMenu(props) {
               <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} />
             </MenuItem>
           )}
-          {permission?.update && (
+
+          {isRight ? (
             <MenuItem
               sx={{ color: 'text.secondary' }}
               onClick={() => {
-                onPassword();
+                onRight();
                 setIsOpen(false);
               }}
             >
               <ListItemIcon>
-                <Iconify icon="eva:eye-fill" width={24} height={24} />
+                <Iconify icon="bx:copyright" width={24} height={24} />
               </ListItemIcon>
-              <ListItemText
-                primary="Change Password"
-                primaryTypographyProps={{ variant: 'body2' }}
-              />
+              <ListItemText primary="Rights" primaryTypographyProps={{ variant: 'body2' }} />
             </MenuItem>
+          ) : (
+            ''
           )}
         </Menu>
       )}

@@ -3,6 +3,7 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
+import DeleteDialogPopUp from '../../components/DialogPopUp';
 
 import { Constant } from '../../utils/Constant';
 import { getPermission } from '../../utils/PermissionUtil';
@@ -37,10 +38,13 @@ import Iconify from '../../components/iconify';
 
 import {
   AddEditProjectPopUp,
+  ProjectListHead,
+  ProjectMoreMenu,
+  ProjectListToolbar
 } from '../../sections/@dashboard/project';
 
 // sections
-import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
+// import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 // mock
 import USERLIST from '../../_mock/project';
 
@@ -91,35 +95,39 @@ function applySortFilter(array, comparator, query) {
 // export default function Project() {
 
 
-export default function UserPage() {
-  const [open, setOpen] = useState(null);
-  
-  const [selectedProjectData, setSelectedProjectData] = useState();
-  
-  const [SelectedProjectId, setSelectedProjectId] = useState('');
-
+export default function Project() {
+ 
   const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
-
   const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState('name');
-
   const [filterName, setFilterName] = useState('');
-
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [open, setOpen] = useState(null);
+  const [editOpen, setEditOpen] = useState(false);
+  const [selectedProjectData, setSelectedProjectData] = useState();
+  const [SelectedProjectId, setSelectedProjectId] = useState('');
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
+  const [projectList, setProjectList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-
-
-  const [Permission, setPermission] = useState({});
+  const [permission, setPermission] = useState({});
 
   const openAddEditPopUp = (data) => {
   setOpen((open) => (open = !open));
   setSelectedProjectData(data);
+  
   };
 
+  const openEditPopUp = (data) => {
+    setEditOpen((editOpen) => (editOpen = !editOpen));
+    setSelectedProjectData(data);
+  };
+
+  const handleDeleteClose = () => {
+    setDeleteOpen(false);
+  };
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -173,16 +181,37 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
+  const handleClose = () => {
+    setOpen(false);
+   // getProjectList();
+
+  };
+
   useEffect(() => {
-    // setPermission(getPermission(Constant.USERPAGE));
+    setPermission(getPermission(Constant.PROJECTPAGE));
     setIsLoading(true);
     // getProjectList();
   }, []);
 
-  const handleClose = () => {
-    setOpen(false);
-
+  const handleDelete = async () => {
+    try {
+      // const response = await apiClient.delete(`pitchtracker/${selectedPitchTrackerId}`, {
+      //   headers: headers()
+      // });
+      // if (response.status === 200) {
+      //   notifySuccess(response.statusText);
+      //   setDeleteOpen(false);
+      //   getPitchList();
+      // } else {
+      //   apiHandleError(response);
+      // }
+      // console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
+
+
 
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
@@ -195,18 +224,18 @@ export default function UserPage() {
     <>
 
 
-      <Container>
+      <Container  maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom >
             CONSTRUCTION &nbsp; PROJECTS
           </Typography>
-          {/* <Typography  alignItems="center">Create a New User Profile</Typography> */}
-          {/* {Permission?.red && (  */}
+          {/* <Typography  alignItems="center">Create a New User Profile</Typography>  */}
+           {/* {permission?.read && ( */}
           <Button 
-          color="info" 
+          // color="info" 
           variant="contained" 
           startIcon={<Iconify icon="eva:plus-fill" />}
-          onclick={() => 
+          onClick={() => 
           openAddEditPopUp ({
               id: '',
               name: '',
@@ -214,12 +243,14 @@ export default function UserPage() {
               description: '',
               isVerified: '',
               status: '',
-          })
-          }
+              createdAt: new Date()
+             })
+           }
           >
             New Project
           </Button>
-  {/* )} */}
+
+        {/* )}    */}
         </Stack>
 
         {open ? (
@@ -227,14 +258,18 @@ export default function UserPage() {
         ) : (
           ''
         )}
-
+          {deleteOpen ? (
+          <DeleteDialogPopUp onDelete={handleDelete} onClose={handleDeleteClose} />
+        ) : (
+          ''
+        )}
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <ProjectListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
 
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
+                <ProjectListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
@@ -245,7 +280,7 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, type, status, description, avatarUrl, isVerified, createdAt} = row;
+                    const { id, _id, name, type, status, description, avatarUrl, isVerified, createdAt} = row;
                     const selectedUser = selected.indexOf(name) !== -1;
 
                     return (
@@ -275,11 +310,55 @@ export default function UserPage() {
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
                         </TableCell>
 
-                        <TableCell align="right">
+                        
+                        {/* <TableCell align="right">
                           <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
-                        </TableCell>
+                        </TableCell> */}
+
+                        {/* <TableCell align="left">
+                            <ProjectMoreMenu
+                              onEditClick={() => openAddEditPopUp()}
+                              // onDelete={() => openDeletePopUp(row)}
+                            />
+                          </TableCell> */}
+
+                          <TableCell align="left">
+                                <ProjectMoreMenu
+                                  onEditClick={() =>
+                                    openAddEditPopUp({
+                                      id,
+                                      name,
+                                      type,
+                                      description,
+                                      isVerified,
+                                      status,
+                                      createdAt: new Date()
+                                    })
+                                  }
+                                  // onDelete={() => openDeletePopUp(row)}
+                                />
+                              </TableCell>
+
+                        {/* <TableCell align="left">
+                                <ProjectMoreMenu
+                                    permission={permission}
+                                    onClick={handleOpenMenu}
+                                    onEditClick={() =>
+                                      openAddEditPopUp({
+                                      id,
+                                      name,
+                                      type,
+                                      description,
+                                      isVerified,
+                                      status,
+                                  })
+                                  }
+                                  //  onDelete={() => openDeletePopUp(_id)}
+                                />     
+                            </TableCell>
+                              */}
 
                         <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
 
@@ -331,8 +410,9 @@ export default function UserPage() {
           />
         </Card>
       </Container>
+        
 
-      <Popover
+      {/* <Popover
         open={Boolean(open)}
         anchorEl={open}
         onClose={handleCloseMenu}
@@ -350,16 +430,18 @@ export default function UserPage() {
           },
         }}
       >
-        <MenuItem>
+        <MenuItem
+        >
           <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
           Edit
         </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }}>
+  
+        <MenuItem sx={{ color: 'error.main' }}
+       >
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
           Delete
         </MenuItem>
-      </Popover>
+      </Popover> */}
     </>
   );
 }

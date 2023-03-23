@@ -8,7 +8,7 @@ const project = [...Array(24)].map((_, index) => ({
   avatarUrl: `../../assets/user${index + 1}.png`,
   name: faker.name.fullName(),
   type: sample(['house', 'office', 'school', 'shop']),
-  description: faker.name.findName(),
+  description: faker.name.fullName(),
   isVerified: faker.datatype.boolean(),
   status: sample(['active', 'banned']),
   createdAt: faker.date.recent().getTime(),
