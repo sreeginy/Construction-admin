@@ -1,4 +1,3 @@
-
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
 
@@ -205,7 +204,6 @@ export default function UserPage() {
   return (
     <>
 
-
       <Container maxWidth="xl" >
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
@@ -231,8 +229,6 @@ export default function UserPage() {
           >
             New Project
           </Button>
-
-    
         </Stack>
 
         {open ? (
@@ -389,8 +385,6 @@ export default function UserPage() {
           Delete
         </MenuItem>
       </Popover>
-  
-
       </>
   );
 }
