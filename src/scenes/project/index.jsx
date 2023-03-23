@@ -4,6 +4,8 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import DeleteDialogPopUp from '../../components/DialogPopUp';
+import messageStyle from '../../components/toast/toastStyle';
+
 
 import { Constant } from '../../utils/Constant';
 import { getPermission } from '../../utils/PermissionUtil';
@@ -12,6 +14,7 @@ import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { useState, useEffect } from 'react';
 import { sentenceCase } from 'change-case';
+import { toast } from 'react-toastify';
 
 // @mui
 import {
@@ -219,6 +222,9 @@ export default function Project() {
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
+  const notifySuccess = (msg) => toast.success(msg, messageStyle);
+  const notifyFail = (msg) => toast.error(msg, messageStyle);
+
 
   return (
     <>
@@ -334,31 +340,12 @@ export default function Project() {
                                       description,
                                       isVerified,
                                       status,
-                                      createdAt: new Date()
+                                     
                                     })
                                   }
                                   // onDelete={() => openDeletePopUp(row)}
                                 />
                               </TableCell>
-
-                        {/* <TableCell align="left">
-                                <ProjectMoreMenu
-                                    permission={permission}
-                                    onClick={handleOpenMenu}
-                                    onEditClick={() =>
-                                      openAddEditPopUp({
-                                      id,
-                                      name,
-                                      type,
-                                      description,
-                                      isVerified,
-                                      status,
-                                  })
-                                  }
-                                  //  onDelete={() => openDeletePopUp(_id)}
-                                />     
-                            </TableCell>
-                              */}
 
                         <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
 

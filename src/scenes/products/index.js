@@ -1,7 +1,7 @@
 
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+
 import {
   Card,
   Table,
@@ -23,11 +23,21 @@ import {
 } from '@mui/material';
 import Label from '../../components/label';
 import Iconify from '../../components/iconify';
+import { Constant } from '../../utils/Constant';
+import { getPermission } from '../../utils/PermissionUtil';
 
 // sections
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 import USERLIST from '../../_mock/product';
+import { useState, UseEffect } from 'react';
 
+
+import {
+  AddEditProjectPopUp,
+  ProjectListHead,
+  ProjectMoreMenu,
+  ProjectListToolbar
+} from '../../sections/@dashboard/project';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -72,7 +82,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 export default function UserPage() {
-  const [open, setOpen] = useState(null);
+  
 
   const [page, setPage] = useState(0);
 
@@ -86,6 +96,20 @@ export default function UserPage() {
 
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
+  const [open, setOpen] = useState(null);
+  const [editOpen, setEditOpen] = useState(false);
+  const [selectedProjectData, setSelectedProjectData] = useState();
+  const [SelectedProjectId, setSelectedProjectId] = useState('');
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
+  const [projectList, setProjectList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [permission, setPermission] = useState({});
+
+  const openAddEditPopUp = (data) => {
+  setOpen((open) => (open = !open));
+  setSelectedProjectData(data);
+  };
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -93,6 +117,12 @@ export default function UserPage() {
   const handleCloseMenu = () => {
     setOpen(null);
   };
+
+  
+  const handleClose = () => {
+    setOpen(false);
+   // getProjectList();
+
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -138,6 +168,34 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
+
+  UseEffect(() => {
+    setPermission(getPermission(Constant.PROJECTPAGE));
+    setIsLoading(true);
+    // getProjectList();
+  }, []);
+
+
+  const handleDelete = async () => {
+    try {
+      // const response = await apiClient.delete(`pitchtracker/${selectedPitchTrackerId}`, {
+      //   headers: headers()
+      // });
+      // if (response.status === 200) {
+      //   notifySuccess(response.statusText);
+      //   setDeleteOpen(false);
+      //   getPitchList();
+      // } else {
+      //   apiHandleError(response);
+      // }
+      // console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
@@ -148,17 +206,46 @@ export default function UserPage() {
     <>
 
 
-      <Container  >
+      <Container maxWidth="xl" >
 
       <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom >
            CEMENT &nbsp; PRODUCT
           </Typography>
           {/* <Typography  alignItems="center">Create a New User Profile</Typography> */}
-          <Button color="info" variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New Product
+          <Button 
+          // color="info" 
+          variant="contained" 
+          startIcon={<Iconify icon="eva:plus-fill" />}
+          onClick={() => 
+          openAddEditPopUp ({
+              id: '',
+              name: '',
+              type: '',
+              description: '',
+              isVerified: '',
+              status: '',
+              createdAt: new Date()
+             })
+           }
+          >
+            New Project
           </Button>
+
+    
         </Stack>
+
+        {open ? (
+          <AddEditProjectPopUp onClose={handleClose} data={selectedProjectData} />
+        ) : (
+          ''
+        )}
+          {/* {deleteOpen ? (
+          <DeleteDialogPopUp onDelete={handleDelete} onClose={handleDeleteClose} />
+        ) : (
+          ''
+        )} */}
+      
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
@@ -280,7 +367,20 @@ export default function UserPage() {
         }}
       >
         <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} 
+           variant="contained" 
+           startIcon={<Iconify icon="eva:plus-fill" />}
+           onClick={() => 
+           openAddEditPopUp ({
+               id: '',
+               name: '',
+               type: '',
+               description: '',
+               isVerified: '',
+               status: '',
+               createdAt: new Date()
+              })
+            }/>
           Edit
         </MenuItem>
 
@@ -289,8 +389,10 @@ export default function UserPage() {
           Delete
         </MenuItem>
       </Popover>
-    </>
+  
+
+      </>
   );
 }
 
-
+}
