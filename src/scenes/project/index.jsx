@@ -54,11 +54,13 @@ import USERLIST from '../../_mock/project';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'id', label: 'Project ID', alignRight: false },
+  { id: 'id', label: 'Project_ID', alignRight: false },
   { id: 'name', label: 'Project Name', alignRight: false },
   { id: 'type', label: 'Type', alignRight: false },
   { id: 'description', label: 'Description', alignRight: false },
-  { id: 'isVerified', label: 'Verified', alignRight: false },
+  { id: 'duration', label: 'Duration', alignRight: false },
+  { id: 'location', label: 'Location ', alignRight: false },
+  { id: 'client', label: 'client Name', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
   { id: 'createdAt', label: 'Created At', alignRight: false  },
@@ -243,7 +245,9 @@ export default function Project() {
               name: '',
               type: '',
               description: '',
-              isVerified: '',
+              duration: '',
+              location: '',
+              client: '',
               status: '',
              })
            }
@@ -281,7 +285,7 @@ export default function Project() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, _id, name, type, status, description, avatarUrl, isVerified, createdAt} = row;
+                    const { id, _id, name, type, status, description, avatarUrl, duration,location,client, createdAt} = row;
                     const selectedUser = selected.indexOf(name) !== -1;
 
                     return (
@@ -307,10 +311,12 @@ export default function Project() {
 
                         <TableCell align="left">{description}</TableCell>
 
-                        <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+                        <TableCell align="left">{duration}</TableCell>
+                        <TableCell align="left">{location}</TableCell>
+                        <TableCell align="left">{client}</TableCell>
 
                         <TableCell align="left">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
+                          <Label color={(status === 'process' && 'info') || 'success'}>{sentenceCase(status)}</Label>
                         </TableCell>
 
                         
@@ -335,7 +341,9 @@ export default function Project() {
                                       name,
                                       type,
                                       description,
-                                      isVerified,
+                                      duration,
+                                      location,
+                                      client,
                                       status,
                                      
                                     })
