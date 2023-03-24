@@ -1,16 +1,22 @@
+
 import { Box, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
+import DeleteDialogPopUp from '../../components/DialogPopUp';
+import messageStyle from '../../components/toast/toastStyle';
+
 
 import { Constant } from '../../utils/Constant';
 import { getPermission } from '../../utils/PermissionUtil';
 import moment from 'moment';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
+import { useState, useEffect } from 'react';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { toast } from 'react-toastify';
+
 // @mui
 import {
   Card,
@@ -31,7 +37,6 @@ import {
   TableContainer,
   TablePagination,
 } from '@mui/material';
-// components
 import Label from '../../components/label';
 import Iconify from '../../components/iconify';
 
@@ -39,6 +44,13 @@ import Iconify from '../../components/iconify';
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 // mock
 import USERLIST from '../../_mock/material';
+
+import {
+  AddEditMaterialPopUp,
+  MaterialListHead,
+  MaterialListToolbar,
+  MaterialMoreMenu
+} from '../../sections/@dashboard/material';
 
 // ----------------------------------------------------------------------
 
@@ -85,20 +97,40 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserPage() {
-  const [open, setOpen] = useState(null);
+// export default function Project() {
 
+export default function Material() {
+ 
   const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
-
   const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState('name');
-
   const [filterName, setFilterName] = useState('');
-
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const [open, setOpen] = useState(null);
+  const [editOpen, setEditOpen] = useState(false);
+  const [selectedMaterialData, setSelectedMaterialData] = useState();
+  const [SelectedMaterialId, setSelectedMaterialId] = useState('');
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
+  const [materialList, setMaterialList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [permission, setPermission] = useState({});
+
+  const openAddEditPopUp = (data) => {
+  setOpen((open) => (open = !open));
+  setSelectedMaterialData(data);
+  };
+
+  const openEditPopUp = (data) => {
+    setEditOpen((editOpen) => (editOpen = !editOpen));
+    setSelectedMaterialData(data);
+  };
+
+  const handleDeleteClose = () => {
+    setDeleteOpen(false);
+  };
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -152,34 +184,96 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
+  const handleClose = () => {
+    setOpen(false);
+   // getProjectList();
+
+  };
+
+  useEffect(() => {
+    setPermission(getPermission(Constant.MATERIALPAGE));
+    setIsLoading(true);
+    // getProjectList();
+  }, []);
+
+  const handleDelete = async () => {
+    try {
+      // const response = await apiClient.delete(`pitchtracker/${selectedPitchTrackerId}`, {
+      //   headers: headers()
+      // });
+      // if (response.status === 200) {
+      //   notifySuccess(response.statusText);
+      //   setDeleteOpen(false);
+      //   getPitchList();
+      // } else {
+      //   apiHandleError(response);
+      // }
+      // console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
+  const notifySuccess = (msg) => toast.success(msg, messageStyle);
+  const notifyFail = (msg) => toast.error(msg, messageStyle);
+
 
   return (
     <>
 
 
-      <Container>
+      <Container  maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom >
-            MATERIALS &nbsp; ITEMS
+            MATERIAL &nbsp; ITEMS
           </Typography>
-          {/* <Typography  alignItems="center">Create a New User Profile</Typography> */}
-          <Button color="info" variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New Item
+          {/* <Typography  alignItems="center">Create a New User Profile</Typography>  */}
+           {/* {permission?.read && ( */}
+          <Button 
+          color="info" 
+          variant="contained" 
+          startIcon={<Iconify icon="eva:plus-fill" />}
+          onClick={() => 
+          openAddEditPopUp ({
+              id: '',
+              name: '',
+              projectName: '',
+              category: '',
+              description: '',
+              isVerified: '',
+              status: '',
+             })
+           }
+          >
+            New Material
           </Button>
+
+        {/* )}    */}
         </Stack>
 
+        {open ? (
+          <AddEditMaterialPopUp onClose={handleClose} data={selectedMaterialData} />
+        ) : (
+          ''
+        )}
+          {deleteOpen ? (
+          <DeleteDialogPopUp onDelete={handleDelete} onClose={handleDeleteClose} />
+        ) : (
+          ''
+        )}
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-
+          <MaterialListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          
 
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
+                <MaterialListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
@@ -278,8 +372,9 @@ export default function UserPage() {
           />
         </Card>
       </Container>
+        
 
-      <Popover
+      {/* <Popover
         open={Boolean(open)}
         anchorEl={open}
         onClose={handleCloseMenu}
@@ -297,16 +392,18 @@ export default function UserPage() {
           },
         }}
       >
-        <MenuItem>
+        <MenuItem
+        >
           <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
           Edit
         </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }}>
+  
+        <MenuItem sx={{ color: 'error.main' }}
+       >
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
           Delete
         </MenuItem>
-      </Popover>
+      </Popover> */}
     </>
   );
 }
