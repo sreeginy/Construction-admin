@@ -42,8 +42,8 @@ import Iconify from '../../components/iconify';
 import {
   AddEditProjectPopUp,
   ProjectListHead,
-  ProjectMoreMenu,
-  ProjectListToolbar
+  ProjectListToolbar,
+  ProjectMoreMenu
 } from '../../sections/@dashboard/project';
 
 // sections
@@ -60,8 +60,8 @@ const TABLE_HEAD = [
   { id: 'description', label: 'Description', alignRight: false },
   { id: 'isVerified', label: 'Verified', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
-  { id: 'createdAt', label: 'Status', alignRight: false  },
   { id: '' },
+  { id: 'createdAt', label: 'Created At', alignRight: false  },
 ];
 
 // ----------------------------------------------------------------------
@@ -97,7 +97,6 @@ function applySortFilter(array, comparator, query) {
 
 // export default function Project() {
 
-
 export default function Project() {
  
   const [page, setPage] = useState(0);
@@ -120,7 +119,6 @@ export default function Project() {
   const openAddEditPopUp = (data) => {
   setOpen((open) => (open = !open));
   setSelectedProjectData(data);
-  
   };
 
   const openEditPopUp = (data) => {
@@ -247,7 +245,6 @@ export default function Project() {
               description: '',
               isVerified: '',
               status: '',
-              createdAt: new Date()
              })
            }
           >
@@ -269,7 +266,7 @@ export default function Project() {
         )}
         <Card>
           <ProjectListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-
+          
 
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
@@ -294,6 +291,8 @@ export default function Project() {
                         </TableCell>
 
                         <TableCell align="left">{id}</TableCell>
+
+                      
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>

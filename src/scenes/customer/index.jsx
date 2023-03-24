@@ -3,11 +3,20 @@ import { Formik } from "formik";
 import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
+import DeleteDialogPopUp from '../../components/DialogPopUp';
+import messageStyle from '../../components/toast/toastStyle';
 
+
+import { Constant } from '../../utils/Constant';
+import { getPermission } from '../../utils/PermissionUtil';
+import moment from 'moment';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
+import { useState, useEffect } from 'react';
 import { sentenceCase } from 'change-case';
-import { useState } from 'react';
+import { toast } from 'react-toastify';
+
+// @mui
 import {
   Card,
   Table,
@@ -34,6 +43,14 @@ import Iconify from '../../components/iconify';
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 import USERLIST from '../../_mock/customer';
 
+
+import {
+  AddEditCustomerPopUp,
+  CustomerListHead,
+  CustomerListToolbar,
+  CustomerMoreMenu
+} from '../../sections/@dashboard/customer';
+
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -43,6 +60,7 @@ const TABLE_HEAD = [
   { id: 'userEmail', label: 'E-mail', alignRight: false },
   { id: 'contact', label: 'Contact Number', alignRight: false },
   { id: '' },
+  { id: 'createdAt', label: 'Created At', alignRight: false  },
 ];
 
 
@@ -75,20 +93,40 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserPage() {
-  const [open, setOpen] = useState(null);
+// export default function Project() {
 
+export default function Customer() {
+ 
   const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
-
   const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState('name');
-
   const [filterName, setFilterName] = useState('');
-
   const [rowsPerPage, setRowsPerPage] = useState(5);
+
+  const [open, setOpen] = useState(null);
+  const [editOpen, setEditOpen] = useState(false);
+  const [selectedCustomerData, setSelectedCustomerData] = useState();
+  const [SelectedCustomerId, setSelectedCustomerId] = useState('');
+  const [deleteOpen, setDeleteOpen] = useState(false);
+
+  const [customerList, setCustomerList] = useState([]);
+  const [isLoading, setIsLoading] = useState(false);
+  const [permission, setPermission] = useState({});
+
+  const openAddEditPopUp = (data) => {
+  setOpen((open) => (open = !open));
+  setSelectedCustomerData(data);
+  };
+
+  const openEditPopUp = (data) => {
+    setEditOpen((editOpen) => (editOpen = !editOpen));
+    setSelectedCustomerData(data);
+  };
+
+  const handleDeleteClose = () => {
+    setDeleteOpen(false);
+  };
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -142,34 +180,94 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
+  const handleClose = () => {
+    setOpen(false);
+   // getProjectList();
+
+  };
+
+  useEffect(() => {
+    setPermission(getPermission(Constant.CUSTOMERPAGE));
+    setIsLoading(true);
+    // getProjectList();
+  }, []);
+
+  const handleDelete = async () => {
+    try {
+      // const response = await apiClient.delete(`pitchtracker/${selectedPitchTrackerId}`, {
+      //   headers: headers()
+      // });
+      // if (response.status === 200) {
+      //   notifySuccess(response.statusText);
+      //   setDeleteOpen(false);
+      //   getPitchList();
+      // } else {
+      //   apiHandleError(response);
+      // }
+      // console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
+  const notifySuccess = (msg) => toast.success(msg, messageStyle);
+  const notifyFail = (msg) => toast.error(msg, messageStyle);
+
 
   return (
     <>
 
 
-      <Container>
+      <Container  maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom >
-            CUSTOMER &nbsp; LIST 
+            CUSTOMER &nbsp; LIST
           </Typography>
-          {/* <Typography  alignItems="center">Create a New User Profile</Typography> */}
-          <Button color="info" variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
-            New Customer
+          {/* <Typography  alignItems="center">Create a New User Profile</Typography>  */}
+           {/* {permission?.read && ( */}
+          <Button 
+          // color="info" 
+          variant="contained" 
+          startIcon={<Iconify icon="eva:plus-fill" />}
+          onClick={() => 
+          openAddEditPopUp ({
+              id: '',
+              name: '',
+              address: '',
+              userEmail: '',
+              contact: '',
+             })
+           }
+          >
+            Add New Customer
           </Button>
+
+        {/* )}    */}
         </Stack>
 
+        {open ? (
+          <AddEditCustomerPopUp onClose={handleClose} data={selectedCustomerData} />
+        ) : (
+          ''
+        )}
+          {/* {deleteOpen ? (
+          <DeleteDialogPopUp onDelete={handleDelete} onClose={handleDeleteClose} />
+        ) : (
+          ''
+        )} */}
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-
+          <CustomerListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          
 
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
+                <CustomerListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
@@ -180,7 +278,7 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, address, userEmail, contact, avatarUrl, isVerified } = row;
+                    const { id, name, address, userEmail, contact, avatarUrl, isVerified, createdAt } = row;
                     const selectedUser = selected.indexOf(name) !== -1;
 
                     return (
@@ -215,6 +313,9 @@ export default function UserPage() {
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
+
+                        <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
+
                       </TableRow>
                     );
                   })}
@@ -263,8 +364,9 @@ export default function UserPage() {
           />
         </Card>
       </Container>
+        
 
-      <Popover
+      {/* <Popover
         open={Boolean(open)}
         anchorEl={open}
         onClose={handleCloseMenu}
@@ -282,18 +384,19 @@ export default function UserPage() {
           },
         }}
       >
-        <MenuItem>
+        <MenuItem
+        >
           <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
           Edit
         </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }}>
+  
+        <MenuItem sx={{ color: 'error.main' }}
+       >
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
           Delete
         </MenuItem>
-      </Popover>
+      </Popover> */}
     </>
   );
 }
-
 

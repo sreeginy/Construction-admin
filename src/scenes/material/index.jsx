@@ -4,6 +4,9 @@ import * as yup from "yup";
 import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 
+import { Constant } from '../../utils/Constant';
+import { getPermission } from '../../utils/PermissionUtil';
+import moment from 'moment';
 import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
@@ -35,17 +38,20 @@ import Iconify from '../../components/iconify';
 // sections
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 // mock
-import USERLIST from '../../_mock/user';
+import USERLIST from '../../_mock/material';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
+  { id: 'id', label: 'Material ID', alignRight: false },
   { id: 'name', label: 'Material Name', alignRight: false },
-  { id: 'company', label: 'Description', alignRight: false },
-  { id: 'role', label: 'Material Type', alignRight: false },
+  { id: 'category', label: 'Material Type', alignRight: false },
+  { id: 'description', label: 'Description', alignRight: false },
   { id: 'isVerified', label: 'Verified', alignRight: false },
+  { id: 'projectName', label: 'Project Name', alignRight: false },
   { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
+  { id: 'createdAt', label: 'Created At', alignRight: false  },
 ];
 
 // ----------------------------------------------------------------------
@@ -184,7 +190,7 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, role, status, company, avatarUrl, isVerified } = row;
+                    const { id, name, projectName, description, category, avatarUrl, isVerified , status, createdAt} = row;
                     const selectedUser = selected.indexOf(name) !== -1;
 
                     return (
@@ -193,20 +199,25 @@ export default function UserPage() {
                           <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
                         </TableCell>
 
-                        <TableCell component="th" scope="row" padding="none">
+                        <TableCell align="left">{id}</TableCell>
+                        {/* <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
                             <Avatar alt={name} src={avatarUrl} />
                             <Typography variant="subtitle2" noWrap>
                               {name}
                             </Typography>
                           </Stack>
-                        </TableCell>
+                        </TableCell> */}
 
-                        <TableCell align="left">{company}</TableCell>
+                        <TableCell align="left">{name}</TableCell>
 
-                        <TableCell align="left">{role}</TableCell>
+                        <TableCell align="left">{category}</TableCell>
+
+                        <TableCell align="left">{description}</TableCell>
 
                         <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell>
+
+                        <TableCell align="left">{projectName}</TableCell>
 
                         <TableCell align="left">
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
@@ -217,6 +228,8 @@ export default function UserPage() {
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
+
+                        <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
                       </TableRow>
                     );
                   })}

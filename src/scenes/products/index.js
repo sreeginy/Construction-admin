@@ -1,5 +1,7 @@
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
+import { toast } from 'react-toastify';
+import moment from 'moment';
 
 import {
   Card,
@@ -24,29 +26,34 @@ import Label from '../../components/label';
 import Iconify from '../../components/iconify';
 import { Constant } from '../../utils/Constant';
 import { getPermission } from '../../utils/PermissionUtil';
+import messageStyle from '../../components/toast/toastStyle';
 
 // sections
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 import USERLIST from '../../_mock/product';
-import { useState, UseEffect } from 'react';
+import { useState, useEffect } from 'react';
 
 
 import {
-  AddEditProjectPopUp,
-  ProjectListHead,
-  ProjectMoreMenu,
-  ProjectListToolbar
-} from '../../sections/@dashboard/project';
+  AddEditProductPopUp,
+  ProductListHead,
+  ProductMoreMenu,
+  ProductListToolbar
+} from '../../sections/@dashboard/product';
+
+const placeholder = '/static/placeholder.jpg';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'pro_id', label: 'Product ID', alignRight: false },
-  { id: 'pro_name', label: 'Product Name', alignRight: false },
-  { id: 'pro_type', label: 'Product Type', alignRight: false },
-  { id: 'pro_description', label: 'Product Description', alignRight: false },
-  { id: 'pro_item', label: 'Product Item', alignRight: false },
-  { id: 'pro_status', label: 'Product Status', alignRight: false },
+  { id: 'id', label: 'Product No', alignRight: false },
+  { id: 'avatarUrl', label: 'Product ', alignRight: false },
+  { id: 'pro_name', label: ' Name', alignRight: false },
+  { id: 'pro_type', label: 'Type', alignRight: false },
+  { id: 'price', label: 'Price', alignRight: false },
+  { id: 'pro_item', label: ' Quantity', alignRight: false },
+  { id: 'pro_status', label: ' Status', alignRight: false },
   { id: '' },
+  { id: 'createdAt', label: 'Create At', alignRight: false },
 ];
 
 // ----------------------------------------------------------------------
@@ -75,40 +82,49 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.pro_name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+
+     return filter(array, (_user) => _user.pro_name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
-export default function UserPage() {
-  
+// export default function Project() {
 
+
+export default function Product() {
+ 
   const [page, setPage] = useState(0);
-
   const [order, setOrder] = useState('asc');
-
   const [selected, setSelected] = useState([]);
-
   const [orderBy, setOrderBy] = useState('pro_name');
-
   const [filterName, setFilterName] = useState('');
-
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
   const [open, setOpen] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
-  const [selectedProjectData, setSelectedProjectData] = useState();
-  const [SelectedProjectId, setSelectedProjectId] = useState('');
+  const [selectedProductData, setSelectedProductData] = useState();
+  const [SelectedProductId, setSelectedProductId] = useState('');
   const [deleteOpen, setDeleteOpen] = useState(false);
 
-  const [projectList, setProjectList] = useState([]);
+  const [productList, setProductList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [permission, setPermission] = useState({});
 
   const openAddEditPopUp = (data) => {
   setOpen((open) => (open = !open));
-  setSelectedProjectData(data);
+  setSelectedProductData(data);
+  
   };
+
+  const openEditPopUp = (data) => {
+    setEditOpen((editOpen) => (editOpen = !editOpen));
+    setSelectedProductData(data);
+  };
+
+  const handleDeleteClose = () => {
+    setDeleteOpen(false);
+  };
+
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
@@ -116,12 +132,6 @@ export default function UserPage() {
   const handleCloseMenu = () => {
     setOpen(null);
   };
-
-  
-  const handleClose = () => {
-    setOpen(false);
-   // getProjectList();
-
 
   const handleRequestSort = (event, property) => {
     const isAsc = orderBy === property && order === 'asc';
@@ -167,13 +177,17 @@ export default function UserPage() {
     setFilterName(event.target.value);
   };
 
+  const handleClose = () => {
+    setOpen(false);
+   // getProjectList();
 
-  UseEffect(() => {
-    setPermission(getPermission(Constant.PROJECTPAGE));
+  };
+
+  useEffect(() => {
+    setPermission(getPermission(Constant.PRODUCTPAGE));
     setIsLoading(true);
     // getProjectList();
   }, []);
-
 
   const handleDelete = async () => {
     try {
@@ -194,23 +208,26 @@ export default function UserPage() {
   };
 
 
-
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
+  const notifySuccess = (msg) => toast.success(msg, messageStyle);
+  const notifyFail = (msg) => toast.error(msg, messageStyle);
+
 
   return (
     <>
 
-      <Container maxWidth="xl" >
 
-      <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
+      <Container  maxWidth="xl">
+        <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom >
-           CEMENT &nbsp; PRODUCT
+            CONSTRUCTION &nbsp; YARD &nbsp; PRODUCTS
           </Typography>
-          {/* <Typography  alignItems="center">Create a New User Profile</Typography> */}
+          {/* <Typography  alignItems="center">Create a New User Profile</Typography>  */}
+           {/* {permission?.read && ( */}
           <Button 
           // color="info" 
           variant="contained" 
@@ -218,21 +235,23 @@ export default function UserPage() {
           onClick={() => 
           openAddEditPopUp ({
               id: '',
-              name: '',
-              type: '',
-              description: '',
-              isVerified: '',
-              status: '',
-              createdAt: new Date()
+              avatarUrl: '',
+              pro_name: '',
+              pro_type: '',
+              price: '',
+              pro_item: '',
+              pro_status: '',
              })
            }
           >
-            New Project
+            Add Product
           </Button>
+
+        {/* )}    */}
         </Stack>
 
         {open ? (
-          <AddEditProjectPopUp onClose={handleClose} data={selectedProjectData} />
+          <AddEditProductPopUp onClose={handleClose} data={selectedProductData} />
         ) : (
           ''
         )}
@@ -241,14 +260,13 @@ export default function UserPage() {
         ) : (
           ''
         )} */}
-      
         <Card>
-          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <ProductListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
 
             <TableContainer sx={{ minWidth: 800 }}>
               <Table>
-                <UserListHead
+                <ProductListHead
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
@@ -259,29 +277,50 @@ export default function UserPage() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { pro_id, pro_name, pro_type, pro_description, pro_item,pro_status, avatarUrl, isVerified } = row;
+                    const { id, pro_name, pro_type,price, pro_item,pro_status, avatarUrl, isVerified,createdAt } = row;
                     const selectedUser = selected.indexOf(pro_name) !== -1;
 
                     return (
-                      <TableRow hover key={pro_id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
                           <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, pro_name)} />
                         </TableCell>
 
-                        <TableCell align="left">{pro_id}</TableCell>
+                        <TableCell align="left">{id}</TableCell>
 
-                        <TableCell component="th" scope="row" padding="none">
+                        <TableCell align="left">
+                              <img
+                                width="80"
+                                height="55"
+                                srcSet={avatarUrl}
+                                src={placeholder}
+                                alt={avatarUrl}
+                                loading="lazy"
+                              />
+                              {/* <Avatar
+                                style={{ aspectRatio: 16 / 9 }}
+                                alt="image"
+                                variant="square"
+                                src="/static/placeholder.jpg"
+                              /> */}
+                            </TableCell>
+                       
+                   
+                            <TableCell align="left">{pro_name}</TableCell>
+
+                        {/* <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
                             <Avatar alt={pro_name} src={avatarUrl} />
                             <Typography variant="subtitle2" noWrap>
                               {pro_name}
                             </Typography>
                           </Stack>
-                        </TableCell>
+                        </TableCell> */}
 
                         <TableCell align="left">{pro_type}</TableCell>
+                        <TableCell align="left">{price}</TableCell>
 
-                        <TableCell align="left">{pro_description}</TableCell>
+                    
                         <TableCell align="left">{pro_item}</TableCell>
 
                         {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
@@ -295,6 +334,8 @@ export default function UserPage() {
                             <Iconify icon={'eva:more-vertical-fill'} />
                           </IconButton>
                         </TableCell>
+
+                        <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
                       </TableRow>
                     );
                   })}
@@ -344,7 +385,7 @@ export default function UserPage() {
         </Card>
       </Container>
 
-      <Popover
+      {/* <Popover
         open={Boolean(open)}
         anchorEl={open}
         onClose={handleCloseMenu}
@@ -384,9 +425,9 @@ export default function UserPage() {
           <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
           Delete
         </MenuItem>
-      </Popover>
+      </Popover> */}
       </>
   );
 }
 
-}
+

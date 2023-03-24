@@ -11,6 +11,7 @@ const customer = [...Array(10)].map((_, index) => ({
   address: faker.address.secondaryAddress(),
   userEmail: faker.internet.email(),
   contact: faker.phone.number('+48 91 ### ## ##'), 
+  createdAt: faker.date.recent().getTime(),
  
 }));
 
