@@ -1,6 +1,23 @@
-import { Box, Button, TextField,  Dialog,
-    FormControl,
-    Autocomplete } from "@mui/material";
+
+
+    import {
+      Button,
+      TextField,
+      Grid,
+      Box,
+      Stack,
+      FormControl,
+      InputLabel,
+      Select,
+      MenuItem,
+      FormHelperText,
+      OutlinedInput,
+      Chip,
+      useTheme,
+      Autocomplete,
+      Dialog
+    } from '@mui/material';
+    import DialogActions from '@mui/material/DialogActions';
 // import { Formik } from "formik";
 import { Form, FormikProvider, useFormik } from 'formik';
 import * as yup from "yup";
@@ -19,7 +36,6 @@ AddEditProductPopUp.propTypes = {
 
 const initialValues = {
     id: "",
-    avatarUrl: "",
     pro_name: "",
     pro_type: "",
     price: "",
@@ -30,27 +46,31 @@ const initialValues = {
 export default function AddEditProductPopUp(props) {
     const { data, onClose } = props;
     const [roleData, setRoleData] = React.useState(data);
-    const { id, avatarUrl, pro_name, pro_type, price, pro_item, pro_status } = roleData;
+    const { id, pro_name, pro_type, price, pro_item, pro_status } = roleData;
    
     const [ProductNameList, setProductStatusList] = React.useState([]);
+    const [statusId, setStatusId] = React.useState();
 
+    const setDropDownValue = (value) => {
+      setStatusId(value);
+    };
 
 
    
 
 const AddSchema = yup.object().shape({
-    id: yup.string().required("required"),
-    name: yup.string().required("required"),
-    type: yup.string().email("invalid email").required("required"),
-    description: yup.string().required("required"),
-    isVerified: yup.string().required("required"),
-    status: yup.string().required("required"),
+    id: yup.string().required("Product id is required"),
+    pro_name: yup.string().required("Product name is required"),
+    pro_type: yup.string().required("Product type is required"),
+    price: yup.string().required("Product price is required"),
+    pro_item: yup.string().required("Product item is required"),
+    pro_status: yup.string().required("Product status is required"),
+    
 });
 
 const formik = useFormik({
     initialValues: {
       id,  
-      avatarUrl,
       pro_name,
       pro_type,
       price,
@@ -82,113 +102,119 @@ const formik = useFormik({
         open
         onClose={onClose}
         aria-labelledby="responsive-dialog-title"
+        
       >
+        <Grid marginLeft={5} marginRight={5} marginTop={3} marginBottom={2}>
 
         <Header
-            title="CREATE USER"
-            subtitle="Create a New User Profile" />
+            title="CREATE PRODUCT"
+            subtitle="Create a New Cement Product"
+       />
 
-      <FormikProvider value={formik}>
-          <Form autoComplete="off" noValidate >
-            <DialogContent>
-              <div>
+<div>
+      <FormikProvider value={formik} >
+        <Form autoComplete="off" noValidate onSubmit={handleSubmit} >
+        <Grid container rowSpacing={3} columnSpacing={{ xs: 1, sm: 2, md: 3 }}>
+        
+            <Grid item xs={12} >
+              <TextField
+                fullWidth
+                id="outlined-basic"
+                label="Product ID"
+                {...getFieldProps('id')}
+                error={Boolean(touched.id && errors.id)}
+                helperText={touched.id && errors.id}
+              />
+            </Grid>
+            <Grid item xs={12} >
+              <TextField
+                fullWidth
+                id="outlined-basic"
+                label="Name"
+                {...getFieldProps('pro_name')}
+                error={Boolean(touched.pro_name && errors.pro_name)}
+                helperText={touched.pro_name && errors.pro_name}
+              />
+            </Grid>
+            <Grid item xs={12} >
+              <TextField
+                fullWidth
+                id="outlined-basic"
+                label="Type"
+                {...getFieldProps('pro_type')}
+                error={Boolean(touched.pro_type && errors.pro_type)}
+                helperText={touched.pro_type && errors.pro_type}
+              />
+            </Grid>
+            <Grid item xs={12} >
+              <TextField
+                fullWidth
+                id="outlined-basic"
+                label="Price"
+                {...getFieldProps('price')}
+                error={Boolean(touched.price && errors.price)}
+                helperText={touched.price && errors.price}
+              />
+            </Grid>
+            <Grid item xs={12} >
+              <TextField
+                fullWidth
+                id="outlined-basic"
+                label="Item"
+                {...getFieldProps('pro_item')}
+                error={Boolean(touched.pro_item && errors.pro_item)}
+                helperText={touched.pro_item && errors.pro_item}
+              />
+            </Grid>
 
-            <Box sx={({ pb: 3 }, { pt: 3 })}>
-                  <FormControl fullWidth>
-                    <Autocomplete
-                      id="combo-box-demo"
-                      disableClearable
-                    //   options={libraryList}
-                    //  {...getFieldProps('_id')}
-                    //   onChange={(event, newValue) => setFieldValue('id', newValue)}
-                      getOptionLabel={(option) => option.title}
-                      renderInput={(params) => <TextField {...params} label="Project ID" />}
-                    />
-         
-                  </FormControl>
-                </Box>
-                <Box sx={({ pb: 3 }, { pt: 3 })}>
-                  <FormControl fullWidth>
-                    <Autocomplete
-                      id="combo-box-demo"
-                      disableClearable
-                      options={ProductNameList}
-                       {...getFieldProps('name')}
-                       onChange={(event, newValue) => setFieldValue('name', newValue)}
-                      getOptionLabel={(option) => option.platDisplayName}
-                      renderInput={(params) => <TextField {...params} label="Name" />}
-                    />
+            <Grid item xs={12}>
+              <FormControl fullWidth>
+                <InputLabel
+                  id="demo-simple-select-label"
+                  error={Boolean(touched.pro_status && errors.pro_status)}
+                >
+                  Product status
+                </InputLabel>
+                <Select
+                  labelId="demo-simple-select-label"
+                  id="demo-simple-select"
+                  label="Product Status"
+                  defaultValue=""
+                  {...getFieldProps('pro_status')}
+                  error={Boolean(touched.pro_status && errors.pro_status)}
+                >
+                  <MenuItem key={0} value="Active" onClick={() => setDropDownValue('Active')}>
+                    Active
+                  </MenuItem>
+                  <MenuItem key={1} value="Banned" onClick={() => setDropDownValue('Banned')}>
+                    Banned
+                  </MenuItem>
+                </Select>
+                <FormHelperText error={Boolean(touched.pro_status && errors.pro_status)}>
+                  {touched.pro_status && errors.pro_status}
+                </FormHelperText>
+              </FormControl>
+            </Grid>
+
+
+            <DialogActions sx={{ mt: 3,  marginLeft: 39}}>
+              <Button variant="outlined" autoFocus onClick={onClose} color={"info"}>
+                Close
+              </Button>
+              <Button type="submit" variant="contained" autoFocus color={"info"}>
+                {id !== '' ? 'Edit' : 'Add Product'}
+              </Button>
+            </DialogActions>
+       
+           
+              </Grid>
+
             
-                  </FormControl>
-                </Box>
-                <Box sx={({ pb: 3 }, { pt: 3 })}>
-                  <FormControl fullWidth>
-                    <Autocomplete
-                      id="combo-box-demo"
-                      disableClearable
-                    //   options={platfromList}
-                    //   {...getFieldProps('type')}
-                    //   onChange={(event, newValue) => setFieldValue('type', newValue)}
-                      getOptionLabel={(option) => option.platDisplayName}
-                      renderInput={(params) => <TextField {...params} label="type" />}
-                    />
-            
-                  </FormControl>
-                </Box>
-                <Box sx={({ pb: 3 }, { pt: 3 })}>
-                  <FormControl fullWidth>
-                    <Autocomplete
-                      id="combo-box-demo"
-                      disableClearable
-                    //   options={pitchStatusList}
-                    //   {...getFieldProps('description')}
-                    //   onChange={(event, newValue) => setFieldValue('description', newValue)}
-                      getOptionLabel={(option) => option.status}
-                      renderInput={(params) => <TextField {...params} label="description" />}
-                    />
-                
-                  </FormControl>
-                </Box>
-                <Box sx={({ pb: 3 }, { pt: 3 })}>
-                  <FormControl fullWidth>
-                    <Autocomplete
-                      id="combo-box-demo"
-                      disableClearable
-                    //   options={platfromList}
-                    //   {...getFieldProps('isVerified')}
-                    //   onChange={(event, newValue) => setFieldValue('isVerified', newValue)}
-                      getOptionLabel={(option) => option.platDisplayName}
-                      renderInput={(params) => <TextField {...params} label="isVerified" />}
-                    />
-            
-                  </FormControl>
-                </Box>
-                <Box sx={({ pb: 3 }, { pt: 3 })}>
-                  <FormControl fullWidth>
-                    <Autocomplete
-                      id="combo-box-demo"
-                      disableClearable
-                    //   options={platfromList}
-                    //   {...getFieldProps('status')}
-                    //   onChange={(event, newValue) => setFieldValue('status', newValue)}
-                      getOptionLabel={(option) => option.platDisplayName}
-                      renderInput={(params) => <TextField {...params} label="status" />}
-                    />
-            
-                  </FormControl>
-                </Box>
-                    <Box display="flex" justifyContent="end" mt="50px">
-
-                        <Button type="submit" color="secondary" variant="contained">
-                            Create New User
-                        </Button>
-
-                    </Box>
-                    </div>
-            </DialogContent>
-
-            </Form>
-        </FormikProvider>
+                   
+                    </Form>
+      </FormikProvider>
+    </div>
+    </Grid>
         </Dialog>
         </div>
   );
