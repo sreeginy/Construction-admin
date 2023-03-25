@@ -54,10 +54,6 @@ export default function AddEditProductPopUp(props) {
     const setDropDownValue = (value) => {
       setStatusId(value);
     };
-
-
-   
-
 const AddSchema = yup.object().shape({
     id: yup.string().required("Product id is required"),
     pro_name: yup.string().required("Product name is required"),
@@ -94,7 +90,7 @@ const formik = useFormik({
     formik;
 
     return (
-    
+  
       <div>
       <Dialog
         fullWidth

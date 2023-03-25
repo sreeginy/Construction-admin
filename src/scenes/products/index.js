@@ -33,7 +33,6 @@ import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 import USERLIST from '../../_mock/product';
 import { useState, useEffect } from 'react';
 
-
 import {
   AddEditProductPopUp,
   ProductListHead,
@@ -67,7 +66,6 @@ function descendingComparator(a, b, orderBy) {
   }
   return 0;
 }
-
 function getComparator(order, orderBy) {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
@@ -87,8 +85,6 @@ function applySortFilter(array, comparator, query) {
   }
   return stabilizedThis.map((el) => el[0]);
 }
-
-// export default function Project() {
 
 
 export default function Product() {
