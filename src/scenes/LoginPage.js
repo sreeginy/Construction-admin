@@ -1,6 +1,6 @@
 
 import { styled } from '@mui/material/styles';
-import { Link, Container, Typography, Divider, Stack, Button, Card, Box} from '@mui/material';
+import { Link, Container, Typography, Divider, Stack, Button, Card, Box } from '@mui/material';
 // hooks
 import useResponsive from '../hooks/useResponsive';
 import Iconify from '../components/iconify';
@@ -57,11 +57,11 @@ export default function LoginPage() {
         <title> Login | Minimal UI </title>
       </Helmet> */}
 
-      
 
-        <Container maxWidth="sm">
-        
-          <Card >
+
+      <Container maxWidth="sm">
+
+        <Card >
           <ContentStyle>
             <Typography variant="h3" justifyContent="center" gutterBottom color="#ffffff" p={2}>
               RK Architecture Designers And Engineers
@@ -96,10 +96,10 @@ export default function LoginPage() {
             </Divider>
 
             <LoginForm />
-            </ContentStyle>
-          </Card>
-          
-        </Container>
+          </ContentStyle>
+        </Card>
+
+      </Container>
 
     </>
   );

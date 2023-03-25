@@ -10,30 +10,30 @@ import Header from "../../components/Header";
 // const styledBox = styled(Box)``;
 
 
-    const Topbar = () => {
-        const theme = useTheme();
-        const colors = tokens(theme.palette.mode);
-        const colorMode = useContext(ColorModeContext);
+const Topbar = () => {
+  const theme = useTheme();
+  const colors = tokens(theme.palette.mode);
+  const colorMode = useContext(ColorModeContext);
 
-    return (
+  return (
     <Box display="flex" justifyContent="space-between" p={2}>
-    {/* SEARCH BAR */}
-         <Box
-  //         display="flex"
-  //         borderRadius="3px"
-  //       >
-  //         <input
-  //  type="text"
-  //  placeholder="Search here"
-  // //  onChange={handleChange}
-  // //  value={searchInput} 
-   />
-          <Header title="" Color={colors.primary[400]}/> 
-          
- 
+      {/* SEARCH BAR */}
+      <Box
+      //         display="flex"
+      //         borderRadius="3px"
+      //       >
+      //         <input
+      //  type="text"
+      //  placeholder="Search here"
+      // //  onChange={handleChange}
+      // //  value={searchInput} 
+      />
+      <Header title="" Color={colors.primary[400]} />
 
-   {/* ICONS */}
-   <Box display="flex">
+
+
+      {/* ICONS */}
+      <Box display="flex">
         <IconButton onClick={colorMode.toggleColorMode}>
           {theme.palette.mode === "dark" ? (
             <NightlightOutlinedIcon />
