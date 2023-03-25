@@ -6,7 +6,6 @@ import Header from "../../components/Header";
 import DeleteDialogPopUp from '../../components/DialogPopUp';
 import messageStyle from '../../components/toast/toastStyle';
 
-
 import { Constant } from '../../utils/Constant';
 import { getPermission } from '../../utils/PermissionUtil';
 import moment from 'moment';
@@ -16,7 +15,6 @@ import { useState, useEffect } from 'react';
 import { sentenceCase } from 'change-case';
 import { toast } from 'react-toastify';
 
-// @mui
 import {
   Card,
   Table,
@@ -215,9 +213,7 @@ export default function Order() {
     }
   };
 
-
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
-
   const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;

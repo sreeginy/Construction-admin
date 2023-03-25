@@ -81,14 +81,14 @@ function applySortFilter(array, comparator, query) {
   });
   if (query) {
 
-     return filter(array, (_user) => _user.pro_name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.pro_name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
 
 export default function Product() {
- 
+
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
@@ -107,9 +107,9 @@ export default function Product() {
   const [permission, setPermission] = useState({});
 
   const openAddEditPopUp = (data) => {
-  setOpen((open) => (open = !open));
-  setSelectedProductData(data);
-  
+    setOpen((open) => (open = !open));
+    setSelectedProductData(data);
+
   };
 
   const openEditPopUp = (data) => {
@@ -175,7 +175,7 @@ export default function Product() {
 
   const handleClose = () => {
     setOpen(false);
-   // getProjectList();
+    // getProjectList();
 
   };
 
@@ -217,33 +217,33 @@ export default function Product() {
     <>
 
 
-      <Container  maxWidth="xl">
+      <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom >
             CONSTRUCTION &nbsp; YARD &nbsp; PRODUCTS
           </Typography>
           {/* <Typography  alignItems="center">Create a New User Profile</Typography>  */}
-           {/* {permission?.read && ( */}
-          <Button 
-          // color="info" 
-          variant="contained" 
-          startIcon={<Iconify icon="eva:plus-fill" />}
-          onClick={() => 
-          openAddEditPopUp ({
-              id: '',
-              avatarUrl: '',
-              pro_name: '',
-              pro_type: '',
-              price: '',
-              pro_item: '',
-              pro_status: '',
-             })
-           }
+          {/* {permission?.read && ( */}
+          <Button
+            // color="info" 
+            variant="contained"
+            startIcon={<Iconify icon="eva:plus-fill" />}
+            onClick={() =>
+              openAddEditPopUp({
+                id: '',
+                avatarUrl: '',
+                pro_name: '',
+                pro_type: '',
+                price: '',
+                pro_item: '',
+                pro_status: '',
+              })
+            }
           >
             Add Product
           </Button>
 
-        {/* )}    */}
+          {/* )}    */}
         </Stack>
 
         {open ? (
@@ -251,7 +251,7 @@ export default function Product() {
         ) : (
           ''
         )}
-          {/* {deleteOpen ? (
+        {/* {deleteOpen ? (
           <DeleteDialogPopUp onDelete={handleDelete} onClose={handleDeleteClose} />
         ) : (
           ''
@@ -260,51 +260,51 @@ export default function Product() {
           <ProductListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
 
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <ProductListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
-                <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, pro_name, pro_type,price, pro_item,pro_status, avatarUrl, isVerified,createdAt } = row;
-                    const selectedUser = selected.indexOf(pro_name) !== -1;
+          <TableContainer sx={{ minWidth: 800 }}>
+            <Table>
+              <ProductListHead
+                order={order}
+                orderBy={orderBy}
+                headLabel={TABLE_HEAD}
+                rowCount={USERLIST.length}
+                numSelected={selected.length}
+                onRequestSort={handleRequestSort}
+                onSelectAllClick={handleSelectAllClick}
+              />
+              <TableBody>
+                {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                  const { id, pro_name, pro_type, price, pro_item, pro_status, avatarUrl, isVerified, createdAt } = row;
+                  const selectedUser = selected.indexOf(pro_name) !== -1;
 
-                    return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, pro_name)} />
-                        </TableCell>
+                  return (
+                    <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableCell padding="checkbox">
+                        <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, pro_name)} />
+                      </TableCell>
 
-                        <TableCell align="left">{id}</TableCell>
+                      <TableCell align="left">{id}</TableCell>
 
-                        <TableCell align="left">
-                              <img
-                                width="80"
-                                height="55"
-                                srcSet={avatarUrl}
-                                src={placeholder}
-                                alt={avatarUrl}
-                                loading="lazy"
-                              />
-                              {/* <Avatar
+                      <TableCell align="left">
+                        <img
+                          width="80"
+                          height="55"
+                          srcSet={avatarUrl}
+                          src={placeholder}
+                          alt={avatarUrl}
+                          loading="lazy"
+                        />
+                        {/* <Avatar
                                 style={{ aspectRatio: 16 / 9 }}
                                 alt="image"
                                 variant="square"
                                 src="/static/placeholder.jpg"
                               /> */}
-                            </TableCell>
-                       
-                   
-                            <TableCell align="left">{pro_name}</TableCell>
+                      </TableCell>
 
-                        {/* <TableCell component="th" scope="row" padding="none">
+
+                      <TableCell align="left">{pro_name}</TableCell>
+
+                      {/* <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
                             <Avatar alt={pro_name} src={avatarUrl} />
                             <Typography variant="subtitle2" noWrap>
@@ -313,61 +313,61 @@ export default function Product() {
                           </Stack>
                         </TableCell> */}
 
-                        <TableCell align="left">{pro_type}</TableCell>
-                        <TableCell align="left">{price}</TableCell>
+                      <TableCell align="left">{pro_type}</TableCell>
+                      <TableCell align="left">{price}</TableCell>
 
-                    
-                        <TableCell align="left">{pro_item}</TableCell>
 
-                        {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
+                      <TableCell align="left">{pro_item}</TableCell>
 
-                        <TableCell align="left">
-                          <Label color={(pro_status === 'banned' && 'error') || 'success'}>{sentenceCase(pro_status)}</Label>
-                        </TableCell>
+                      {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
 
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
-                        </TableCell>
-
-                        <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
-                      </TableRow>
-                    );
-                  })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
-                    </TableRow>
-                  )}
-                </TableBody>
-
-                {isNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <Paper
-                          sx={{
-                            textAlign: 'center',
-                          }}
-                        >
-                          <Typography variant="h6" paragraph>
-                            Not found
-                          </Typography>
-
-                          <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete words.
-                          </Typography>
-                        </Paper>
+                      <TableCell align="left">
+                        <Label color={(pro_status === 'banned' && 'error') || 'success'}>{sentenceCase(pro_status)}</Label>
                       </TableCell>
+
+                      <TableCell align="right">
+                        <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
+                          <Iconify icon={'eva:more-vertical-fill'} />
+                        </IconButton>
+                      </TableCell>
+
+                      <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
                     </TableRow>
-                  </TableBody>
+                  );
+                })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 53 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
                 )}
-              </Table>
-            </TableContainer>
-  
+              </TableBody>
+
+              {isNotFound && (
+                <TableBody>
+                  <TableRow>
+                    <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <Paper
+                        sx={{
+                          textAlign: 'center',
+                        }}
+                      >
+                        <Typography variant="h6" paragraph>
+                          Not found
+                        </Typography>
+
+                        <Typography variant="body2">
+                          No results found for &nbsp;
+                          <strong>&quot;{filterName}&quot;</strong>.
+                          <br /> Try checking for typos or using complete words.
+                        </Typography>
+                      </Paper>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              )}
+            </Table>
+          </TableContainer>
+
 
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
@@ -422,7 +422,7 @@ export default function Product() {
           Delete
         </MenuItem>
       </Popover> */}
-      </>
+    </>
   );
 }
 
