@@ -28,7 +28,6 @@ import { Constant } from '../../utils/Constant';
 import { getPermission } from '../../utils/PermissionUtil';
 import messageStyle from '../../components/toast/toastStyle';
 
-// sections
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 import USERLIST from '../../_mock/product';
 import { useState, useEffect } from 'react';

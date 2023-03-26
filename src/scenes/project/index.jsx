@@ -97,7 +97,6 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-// export default function Project() {
 
 export default function Project() {
  

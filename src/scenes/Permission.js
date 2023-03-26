@@ -1,7 +1,5 @@
-import { filter } from 'lodash';
 import { useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-// material
 import {
   Card,
   Table,
@@ -16,7 +14,6 @@ import {
   TablePagination,
   Checkbox
 } from '@mui/material';
-// components
 import { AddEditCountryPopUp, CountryListHead } from '../sections/@dashboard/others/country';
 import DeleteDialogPopUp from '../components/DialogPopUp';
 import Page from '../components/Page';
