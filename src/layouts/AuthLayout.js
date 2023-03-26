@@ -1,8 +1,6 @@
 import PropTypes from 'prop-types';
-// material
 import { styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
-// components
 import Logo from '../components/Logo';
 
 // ----------------------------------------------------------------------

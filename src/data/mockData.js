@@ -17,13 +17,6 @@ export const mockDataTeam = [
     phone: "+94 775 892462",
     access: "manager",
   },
-  {
-    id: 3,
-    name: "Thalapthy Vijay",
-    email: "joshep@gmail.com",
-    age: 48,
-    phone: "+94 774 756 782",
-    access: "user",
-  },
+  
 
 ];
