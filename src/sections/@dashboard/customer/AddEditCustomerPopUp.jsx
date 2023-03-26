@@ -29,12 +29,8 @@ export default function AddEditCustomerPopUp(props) {
     const { data, onClose } = props;
     const [roleData, setRoleData] = React.useState(data);
     const { id, name, address, userEmail, contact } = roleData;
-   
     const [projectNameList, setProjectStatusList] = React.useState([]);
 
-
-
-   
 
 const AddSchema = yup.object().shape({
     id: yup.string().required("required"),

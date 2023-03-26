@@ -1,4 +1,3 @@
-// material
 import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
