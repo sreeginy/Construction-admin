@@ -2,7 +2,6 @@ import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/mat
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
 import { Link as RouterLink } from 'react-router-dom';
-// component
 import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------

@@ -34,8 +34,6 @@ export default function AddEditEmployeePopUp(props) {
    
     const [projectNameList, setProjectStatusList] = React.useState([]);
 
-
-
    
 
 const AddSchema = yup.object().shape({
@@ -103,7 +101,6 @@ const formik = useFormik({
                       getOptionLabel={(option) => option.title}
                       renderInput={(params) => <TextField {...params} label="Project ID" />}
                     />
-         
                   </FormControl>
                 </Box>
                 <Box sx={({ pb: 3 }, { pt: 3 })}>
