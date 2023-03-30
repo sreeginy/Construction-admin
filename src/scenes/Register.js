@@ -13,7 +13,6 @@ import  AuthSocial from '../sections/auth/AuthSocial';
 
 // ----------------------------------------------------------------------
 
-
 const ContentStyle = styled('div')(({ theme }) => ({
 
   maxWidth: 480,
@@ -24,7 +23,6 @@ const ContentStyle = styled('div')(({ theme }) => ({
   justifyContent: 'center',
   padding: theme.spacing(12, 0)
 }));
-
 
 
 
@@ -72,7 +70,6 @@ export default function Register() {
               display: { sm: 'none' }
             }}
           >
-
             Already have an account?&nbsp;
            <NavLink to="/login">Login</NavLink>
 

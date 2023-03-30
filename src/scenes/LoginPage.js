@@ -35,7 +35,6 @@ const StyledSection = styled('div')(({ theme }) => ({
 // }));
 
 
-
 const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 480,
   margin: 'auto',
