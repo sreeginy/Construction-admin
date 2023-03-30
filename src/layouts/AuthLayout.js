@@ -3,8 +3,6 @@ import { styled } from '@mui/material/styles';
 import { Typography } from '@mui/material';
 import Logo from '../components/Logo';
 
-
-
 // ----------------------------------------------------------------------
 
 const HeaderStyle = styled('header')(({ theme }) => ({
