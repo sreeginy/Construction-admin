@@ -63,8 +63,6 @@ export default function OrderListToolbar({ numSelected, filterName, onFilterName
         />
       )}
 
-
-
 {numSelected > 0 ? (
         <Tooltip title="Delete">
           <IconButton>
@@ -83,7 +81,6 @@ export default function OrderListToolbar({ numSelected, filterName, onFilterName
     </StyledRoot>
   );
 }
-
 
 {/* <Box display="flex" justifyContent="end" mt="0px">
 <Button type="submit" color="secondary" variant="contained">

@@ -30,7 +30,6 @@ export default function AddEditCustomerPopUp(props) {
     const { id, name, address, userEmail, contact } = roleData;
     const [projectNameList, setProjectStatusList] = React.useState([]);
 
-
 const AddSchema = yup.object().shape({
     id: yup.string().required("required"),
     name: yup.string().required("required"),
@@ -73,7 +72,6 @@ const formik = useFormik({
         onClose={onClose}
         aria-labelledby="responsive-dialog-title"
       >
-
         <Header
             title="CREATE USER"
             subtitle="Create a New User Profile" />

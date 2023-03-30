@@ -36,9 +36,6 @@ export default function AddEditOrderPopUp(props) {
     const [projectNameList, setProjectStatusList] = React.useState([]);
 
 
-
-   
-
 const AddSchema = yup.object().shape({
     id: yup.string().required("required"),
     name: yup.string().required("required"),
