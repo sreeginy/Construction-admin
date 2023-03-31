@@ -119,11 +119,18 @@ export default function Product() {
     setEditOpen((editOpen) => (editOpen = !editOpen));
     setSelectedProductData(data);
   };
+  const handleOpenAdd = () => {
+    setOpenAdd(true);
+  };
 
-  
   const handleOpenEdit = (data) => {
     setProduct(data);
     setOpenAdd(true);
+  };
+
+  const handleAddClose = () => {
+    setOpenAdd(false);
+    setProduct();
   };
 
   const handleDeleteClose = () => {
