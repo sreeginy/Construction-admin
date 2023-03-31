@@ -100,10 +100,14 @@ export default function Product() {
   const [selectedProductData, setSelectedProductData] = useState();
   const [SelectedProductId, setSelectedProductId] = useState('');
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [openAdd, setOpenAdd] = useState(false);
+  const [openImage, setOpenImage] = useState(false);
+  const [viewOpen, setViewOpen] = useState(false);
 
   const [productList, setProductList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [permission, setPermission] = useState({});
+  const [product, setProduct] = useState();
 
   const openAddEditPopUp = (data) => {
     setOpen((open) => (open = !open));
@@ -116,8 +120,24 @@ export default function Product() {
     setSelectedProductData(data);
   };
 
+  
+  const handleOpenEdit = (data) => {
+    setProduct(data);
+    setOpenAdd(true);
+  };
+
   const handleDeleteClose = () => {
     setDeleteOpen(false);
+  };
+
+  const openDeletePopUp = (data) => {
+    setProduct(data);
+    setDeleteOpen((deleteOpen) => (deleteOpen = !deleteOpen));
+  };
+  
+  const openViewPopUp = (data) => {
+    setViewOpen((viewOpen) => (viewOpen = !viewOpen));
+    setProduct(data);
   };
 
   const handleOpenMenu = (event) => {
@@ -126,6 +146,11 @@ export default function Product() {
 
   const handleCloseMenu = () => {
     setOpen(null);
+  };
+
+  const handleOpenImage = (data) => {
+    setProduct(data);
+    setOpenImage(true);
   };
 
   const handleRequestSort = (event, property) => {
@@ -325,9 +350,13 @@ export default function Product() {
                       </TableCell>
 
                       <TableCell align="right">
-                        <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
-                          <Iconify icon={'eva:more-vertical-fill'} />
-                        </IconButton>
+                      <ProductMoreMenu
+                                permission={permission}
+                                onEditClick={() => handleOpenEdit(row)}
+                                onDelete={() => openDeletePopUp(row)}
+                                onViewClick={() => openViewPopUp(row)}
+                                onImageClick={() => handleOpenImage(row)}
+                              />
                       </TableCell>
 
                       <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
