@@ -36,7 +36,7 @@ export default function ProductMoreMenu(props) {
         anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
       >
-        {permission?.delete && (
+        {/* {permission?.delete && ( */}
           <MenuItem
             sx={{ color: 'text.secondary' }}
             onClick={() => {
@@ -49,8 +49,8 @@ export default function ProductMoreMenu(props) {
             </ListItemIcon>
             <ListItemText primary="Delete" primaryTypographyProps={{ variant: 'body2' }} />
           </MenuItem>
-        )}
-        {permission?.update && (
+        {/* )} */}
+        {/* {permission?.update && ( */}
           <MenuItem
             component={RouterLink}
             to="#"
@@ -65,7 +65,7 @@ export default function ProductMoreMenu(props) {
             </ListItemIcon>
             <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} />
           </MenuItem>
-        )}
+        {/* )} */}
         <MenuItem
           component={RouterLink}
           to="#"

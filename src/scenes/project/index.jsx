@@ -190,10 +190,11 @@ export default function Project() {
   };
 
   useEffect(() => {
-    setPermission(getPermission(Constant.PROJECTPAGE));
+    setPermission(getPermission(Constant.PROJECT));
     setIsLoading(true);
     // getProjectList();
   }, []);
+
 
   const handleDelete = async () => {
     try {

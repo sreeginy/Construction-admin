@@ -25,19 +25,27 @@ import {
 import Label from '../../components/label';
 import Iconify from '../../components/iconify';
 import { Constant } from '../../utils/Constant';
-import { getPermission } from '../../utils/PermissionUtil';
 import messageStyle from '../../components/toast/toastStyle';
+import DeleteDialogPopUp from '../../components/DialogPopUp';
 
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 import USERLIST from '../../_mock/product';
 import { useState, useEffect } from 'react';
+import { getPermission } from '../../utils/PermissionUtil';
 
 import {
   AddEditProductPopUp,
   ProductListHead,
   ProductMoreMenu,
-  ProductListToolbar
+  ProductListToolbar,
+  FullViewProducts,
+  ImageUpload,
 } from '../../sections/@dashboard/product';
+
+// Api Call
+import apiClient from '../../api/apiClient';
+import headers from '../../api/apiHeader';
+import apiHandleError from '../../api/apiHandleError';
 
 const placeholder = '/static/placeholder.jpg';
 // ----------------------------------------------------------------------
@@ -104,10 +112,17 @@ export default function Product() {
   const [openImage, setOpenImage] = useState(false);
   const [viewOpen, setViewOpen] = useState(false);
 
+
   const [productList, setProductList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [permission, setPermission] = useState({});
   const [product, setProduct] = useState();
+
+
+  
+  const handleImageClose = () => {
+    setOpenImage(false);
+  };
 
   const openAddEditPopUp = (data) => {
     setOpen((open) => (open = !open));
@@ -145,6 +160,9 @@ export default function Product() {
   const openViewPopUp = (data) => {
     setViewOpen((viewOpen) => (viewOpen = !viewOpen));
     setProduct(data);
+  };
+  const handleViewClose = () => {
+    setViewOpen(false);
   };
 
   const handleOpenMenu = (event) => {
@@ -211,29 +229,47 @@ export default function Product() {
   };
 
   useEffect(() => {
-    setPermission(getPermission(Constant.PRODUCTPAGE));
+    setPermission(getPermission(Constant.PRODUCT));
     setIsLoading(true);
-    // getProjectList();
+    getProductList();
   }, []);
 
-  const handleDelete = async () => {
+  const getProductList = async () => {
     try {
-      // const response = await apiClient.delete(`pitchtracker/${selectedPitchTrackerId}`, {
-      //   headers: headers()
-      // });
-      // if (response.status === 200) {
-      //   notifySuccess(response.statusText);
-      //   setDeleteOpen(false);
-      //   getPitchList();
-      // } else {
-      //   apiHandleError(response);
-      // }
-      // console.log(response);
+      const response = await apiClient.get('products', {
+        headers: headers()
+      });
+      if (response.status === 200) {
+        setProductList(response.data.products);
+        setIsLoading(false);
+      } else {
+        apiHandleError(response);
+      }
+      console.log(response);
     } catch (error) {
       console.log(error);
     }
   };
 
+
+    /* API Delete Products */
+    const deleteProduct = async (id) => {
+      try {
+        const response = await apiClient.delete(`product/${id}`, {
+          headers: headers()
+        });
+        if (response.status === 200) {
+          notifySuccess(response.statusText);
+          handleDeleteClose();
+          getProductList();
+        } else {
+          apiHandleError(response);
+        }
+        console.log('delete', response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
@@ -247,8 +283,22 @@ export default function Product() {
   return (
     <>
 
-
       <Container maxWidth="xl">
+      {deleteOpen ? (
+          <DeleteDialogPopUp
+            onClose={handleDeleteClose}
+            onDelete={() => deleteProduct(product._id)}
+          />
+        ) : (
+          ''
+        )}
+        {openImage ? (
+          <ImageUpload onClose={handleImageClose} data={product} onSuccess={getProductList} />
+        ) : (
+          ''
+        )}
+        {viewOpen ? <FullViewProducts onClose={handleViewClose} data={product} /> : ''}
+    
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom >
             CONSTRUCTION &nbsp; YARD &nbsp; PRODUCTS
@@ -274,7 +324,7 @@ export default function Product() {
             Add Product
           </Button>
 
-          {/* )}    */}
+            {/*  )}    */}
         </Stack>
 
         {open ? (
