@@ -115,7 +115,7 @@ export default function DeleteDialogPopUp(props) {
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
             <DialogContent>
               <div>
-                <Box sx={({ pb: 3 }, { pt: 3 })}>
+                {/* <Box sx={({ pb: 3 }, { pt: 3 })}>
                   <TextField
                     fullWidth
                     autoComplete="current-password"
@@ -134,7 +134,7 @@ export default function DeleteDialogPopUp(props) {
                     error={Boolean(touched.password && errors.password)}
                     helperText={touched.password && errors.password}
                   />
-                </Box>
+                </Box> */}
               </div>
             </DialogContent>
             <DialogActions>

@@ -1,4 +1,4 @@
-import { Box, Button, TextField,  Dialog,
+import { Box, Button, TextField,  Dialog, Grid,
     FormControl,
     Autocomplete } from "@mui/material";
 import { Form, FormikProvider, useFormik } from 'formik';
@@ -72,9 +72,11 @@ const formik = useFormik({
         onClose={onClose}
         aria-labelledby="responsive-dialog-title"
       >
+
+<Grid marginLeft={5} marginRight={5} marginTop={3} marginBottom={2}>
         <Header
-            title="CREATE USER"
-            subtitle="Create a New User Profile" />
+            title="CREATE CUSTOMER"
+            subtitle="Create a New Customer Profile" />
 
       <FormikProvider value={formik}>
           <Form autoComplete="off" noValidate >
@@ -177,6 +179,7 @@ const formik = useFormik({
 
             </Form>
         </FormikProvider>
+        </Grid>
         </Dialog>
         </div>
   );

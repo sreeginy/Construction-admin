@@ -1,7 +1,6 @@
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
 import { toast } from 'react-toastify';
-import moment from 'moment';
 
 import {
   Card,
@@ -25,6 +24,7 @@ import {
 import Label from '../../components/label';
 import Iconify from '../../components/iconify';
 import { Constant } from '../../utils/Constant';
+import moment from 'moment';
 import messageStyle from '../../components/toast/toastStyle';
 import DeleteDialogPopUp from '../../components/DialogPopUp';
 
@@ -288,6 +288,7 @@ export default function Product() {
           <DeleteDialogPopUp
             onClose={handleDeleteClose}
             onDelete={() => deleteProduct(product._id)}
+            
           />
         ) : (
           ''

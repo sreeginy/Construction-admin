@@ -1,138 +1,156 @@
-import { Box, Button, TextField } from "@mui/material";
-import { Formik } from "formik";
-import * as yup from "yup";
-import useMediaQuery from "@mui/material/useMediaQuery";
-import Header from "../../../components/Header";
+import * as React from 'react';
+import PropTypes from 'prop-types';
 
-const initialValues = {
-    firstName: "",
-    lastName: "",
-    email: "",
-    contact: "",
-    address: "",
-}
-
-const userSchema = yup.object().shape({
-    firstName: yup.string().required("required"),
-    lastName: yup.string().required("required"),
-    email: yup.string().email("invalid email").required("required"),
-    contact: yup.string().required("required"),
-    address: yup.string().required("required"),
-});
+import Table from '@mui/material/Table';
+import TableBody from '@mui/material/TableBody';
+import TableCell, { tableCellClasses } from '@mui/material/TableCell';
+import TableContainer from '@mui/material/TableContainer';
+import TableHead from '@mui/material/TableHead';
+import TableRow from '@mui/material/TableRow';
+import Paper from '@mui/material/Paper';
+import { Dialog, DialogContent, useTheme, DialogTitle, DialogActions, Button } from '@mui/material';
 
 
-const Form = () => {
-    const isNonMobile = useMediaQuery("(min-width:600px");
+// Toast
+import { toast } from 'react-toastify';
+import messageStyle from '../../../components/toast/toastStyle';
 
-    const handleFormSubmit = (values) => {
-        console.log(values);
-    };
 
-    return (<Box m="20px">
-
-        <Header
-            title="CREATE USER"
-            subtitle="Create a New User Profile" />
-
-        <Formik
-            onSubmit={handleFormSubmit}
-            initialValues={initialValues}
-            validationSchema={userSchema}
-        >
-
-            {({ values, errors, touched, handleBlur, handleChange, handleSubmit }) => (
-                <form onSubmit={handleSubmit}>
-
-                    <Box
-                        display="grid"
-                        gap="30px"
-                        gridTemplateColumns="repeat(4, minmax(0, 1fr))"
-                        sx={{
-                            "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
-                        }}
-                    >
-                        <TextField
-                            fullWidth
-                            variant="filled"
-                            type="text"
-                            label="First Name"
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            value={values.firstName}
-                            name="firstName"
-                            error={!!touched.firstName && !!errors.firstName}
-                            helperText={touched.firstName && errors.firstName}
-                            sx={{ gridColumn: "span 2" }}
-                        />
-                        <TextField
-                            fullWidth
-                            variant="filled"
-                            type="text"
-                            label="Last Name"
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            value={values.lastName}
-                            name="lastName"
-                            error={!!touched.lastName && !!errors.lastName}
-                            helperText={touched.lastName && errors.lastName}
-                            sx={{ gridColumn: "span 2" }}
-                        />
-                        <TextField
-                            fullWidth
-                            variant="filled"
-                            type="text"
-                            label="Email"
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            value={values.email}
-                            name="email"
-                            error={!!touched.email && !!errors.email}
-                            helperText={touched.email && errors.email}
-                            sx={{ gridColumn: "span 2" }}
-                        />
-                        <TextField
-                            fullWidth
-                            variant="filled"
-                            type="text"
-                            label="Contact"
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            value={values.contact}
-                            name="contact"
-                            error={!!touched.contact && !!errors.contact}
-                            helperText={touched.contact && errors.contact}
-                            sx={{ gridColumn: "span 2" }}
-                        />
-                        <TextField
-                            fullWidth
-                            variant="filled"
-                            type="text"
-                            label="Address"
-                            onBlur={handleBlur}
-                            onChange={handleChange}
-                            value={values.address}
-                            name="address"
-                            error={!!touched.address && !!errors.address}
-                            helperText={touched.address && errors.address}
-                            sx={{ gridColumn: "span 2" }}
-                        />
-                    </Box>
-                    <Box display="flex" justifyContent="end" mt="50px">
-
-                        <Button type="submit" color="secondary" variant="contained">
-                            Create New User
-                        </Button>
-
-                    </Box>
-
-                </form>
-            )}
-
-        </Formik>
-
-    </Box>
-
-    );
+// validation
+FullViewProducts.propTypes = {
+  onClose: PropTypes.func,
+  data: PropTypes.object,
+  code: PropTypes.string,
+  name: PropTypes.string
 };
+export default function FullViewProducts(props) {
+  const theme = useTheme();
+  const { data, onClose } = props;
+  console.log(data);
 
-export default Form;
+  const placeholder = '/static/placeholder.jpg';
+
+  const fullData = [
+    {
+      id: data?.id || '',
+      pro_name: data?.pro_name || '',
+      pro_type: data?.pro_type || '',
+      price: data?.price || '',
+      pro_item: data?.pro_item || '',
+      pro_status: data?.pro_status || '',
+   
+
+    }
+];
+
+const notifySuccess = (msg) => toast.success(msg, messageStyle);
+return (
+  <div>
+    <Dialog
+      fullWidth
+      maxWidth="xm"
+      open
+      onClose={onClose}
+      aria-labelledby="responsive-dialog-title"
+    >
+      <DialogTitle id="responsive-dialog-title" align="center" >
+        Product Details - {data?.pro_name}
+        <DialogActions>
+          <Button variant="gray" autoFocus onClick={onClose}>
+            Back
+          </Button>
+        </DialogActions>
+      </DialogTitle>
+
+      <DialogContent>
+        <TableContainer component={Paper}>
+          <Table sx={{ minWidth: 500 }} aria-label="customized table">
+            <TableHead sx={{ backgroundColor: 'gray' }}>
+              <TableRow>
+                <TableCell>Heading</TableCell>
+                <TableCell align="left">Value</TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+                
+              {fullData.map((row) => (
+                
+                <>
+                  {data?.id ? (
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        Product ID
+                      </TableCell>
+                      <TableCell align="left">{row.id}</TableCell>
+                    </TableRow>
+                  ) : (
+                    ''
+                  )}
+
+                {data?.pro_name ? (
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        Product Name
+                      </TableCell>
+                      <TableCell align="left">{row.pro_name}</TableCell>
+                    </TableRow>
+                  ) : (
+                    ''
+                  )}    
+
+                  {data?.pro_type ? (
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        Product Type
+                      </TableCell>
+                      <TableCell align="left">{row.pro_type}</TableCell>
+                    </TableRow>
+                  ) : (
+                    ''
+                  )}
+
+                {data?.price ? (
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        Price
+                      </TableCell>
+                      <TableCell align="left">{row.price}</TableCell>
+                    </TableRow>
+                  ) : (
+                    ''
+                  )}
+
+                {data?.pro_item ? (
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        Product Item
+                      </TableCell>
+                      <TableCell align="left">{row.pro_item}</TableCell>
+                    </TableRow>
+                  ) : (
+                    ''
+                  )}
+
+                {data?.pro_status ? (
+                    <TableRow>
+                      <TableCell component="th" scope="row">
+                        Product Status
+                      </TableCell>
+                      <TableCell align="left">{row.pro_status}</TableCell>
+                    </TableRow>
+                  ) : (
+                    ''
+                  )}
+                
+           
+
+</>
+                ))}
+              </TableBody>
+            </Table>
+          </TableContainer>
+        </DialogContent>
+      </Dialog>
+    </div>
+  );
+}
