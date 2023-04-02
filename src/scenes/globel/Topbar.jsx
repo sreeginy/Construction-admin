@@ -33,9 +33,9 @@ const Topbar = () => {
 
 
   return (
-    // <Box display="flex" justifyContent="space-between" p={2}>
-    //   {/* SEARCH BAR */}
-    //  <Box
+    <Box display="flex" justifyContent="space-between" p={2}>
+      {/* SEARCH BAR */}
+      <Box
     //   //         display="flex"
     //   //         borderRadius="3px"
     //   //       >
@@ -44,8 +44,8 @@ const Topbar = () => {
     //   //  placeholder="Search here"
     //   // //  onChange={handleChange}
     //   // //  value={searchInput} 
-    //   />
-      // <Header title="" Color={colors.primary[400]} />
+      />
+      <Header title="" Color={colors.primary[400]} />
 
 
 
@@ -104,7 +104,7 @@ const Topbar = () => {
 
         </IconButton>
       </Box>
-    // </Box>
+     </Box>
   );
 };
 
