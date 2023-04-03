@@ -221,7 +221,7 @@ export default function AddUser(props) {
                 </Box> */}
               </div>
             </DialogContent>
-            <Stack
+            {/* <Stack
               direction="column"
               alignItems="center"
               justifyContent="space-between"
@@ -236,7 +236,7 @@ export default function AddUser(props) {
                 }
                 label="Password Change"
               />
-            </Stack>
+            </Stack> */}
             <DialogActions>
               <Button variant="outlined" autoFocus onClick={onClose}>
                 Close

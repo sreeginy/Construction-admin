@@ -229,7 +229,7 @@ export default function Product() {
   };
 
   useEffect(() => {
-    setPermission(getPermission(Constant.PRODUCT));
+    // setPermission(getPermission(Constant.PRODUCT));
     setIsLoading(true);
     getProductList();
   }, []);

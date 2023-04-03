@@ -1,11 +1,11 @@
 
 import { Navigate, useRoutes } from 'react-router-dom';
 
+import LogoOnlyLayout from './layouts/LogoOnlyLayout';
 import DashboardLayout from './layouts/dashboard';
 import Dashboard from "./scenes/dashboard";
 import User from "./scenes/user/index";
 import Products from "./scenes/products";
-import Form from "./scenes/form/index";
 import Customer from "./scenes/customer/index";
 import Login from './scenes/LoginPage';
 import Register from './scenes/Register';
@@ -16,13 +16,28 @@ import Account from './scenes/account';
 import Employee from './scenes/employee';
 import Role from './scenes/role';
 
+function PrivateRoute({ auth: { isAuthenticated }, children }) {
+  return isAuthenticated ? children : <Navigate to="/login" />;
+}
+function SessionRoute({ auth: { isAuthenticated }, children }) {
+  return !isAuthenticated ? children : <Navigate to="/dashboard/app" />;
+}
 export default function Router() {
-   
-
-    const routes = useRoutes([
-      {
+  const getUser = () => {
+    const USER = JSON.parse(localStorage.getItem('user'));
+    if (USER !== null) {
+      return true;
+    }
+    return false;
+  };
+  return useRoutes([
+    {
         path: '/dashboard',
-        element: <DashboardLayout />,
+        element: (
+          <PrivateRoute auth={{ isAuthenticated: getUser() }}>
+            <DashboardLayout />
+          </PrivateRoute>
+        ),
         children: [
           { element: <Navigate to="/dashboard/app" />, index: true },
           { path: 'app', element: <Dashboard /> },
@@ -39,13 +54,22 @@ export default function Router() {
         ],
       },
       {
+
         path: '/',
-        element: <Login />,
+        element: (
+          <SessionRoute auth={{ isAuthenticated: getUser() }}>
+            <LogoOnlyLayout />
+          </SessionRoute>
+        ),
+
+        children: [
+
+        { path: '/', element: <Navigate to="/login" /> },
+        { path: 'login', element: <Login /> },
+        { path: 'register', element: <Register /> },
+        ]
       },
-      {
-        path: 'register',
-        element: <Register />,
-      },
+      
     //   {
     //     element: <SimpleLayout />,
     //     children: [
@@ -60,5 +84,5 @@ export default function Router() {
     //   },
     ]);
 
-    return routes;
+    // return routes;
   }
