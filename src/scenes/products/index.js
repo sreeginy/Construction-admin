@@ -56,7 +56,7 @@ const TABLE_HEAD = [
   { id: 'pro_name', label: ' Name', alignRight: false },
   { id: 'pro_type', label: 'Type', alignRight: false },
   { id: 'price', label: 'Price', alignRight: false },
-  { id: 'pro_item', label: ' Quantity', alignRight: false },
+  { id: 'quantity', label: ' Quantity', alignRight: false },
   { id: 'pro_status', label: ' Status', alignRight: false },
   { id: '' },
   { id: 'createdAt', label: 'Create At', alignRight: false },
@@ -317,7 +317,7 @@ export default function Product() {
                 pro_name: '',
                 pro_type: '',
                 price: '',
-                pro_item: '',
+                quantity: '',
                 pro_status: '',
               })
             }
@@ -355,7 +355,7 @@ export default function Product() {
               />
               <TableBody>
                 {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                  const { id, pro_name, pro_type, price, pro_item, pro_status, avatarUrl, isVerified, createdAt } = row;
+                  const { id, pro_name, pro_type, price, quantity, pro_status, avatarUrl, isVerified, createdAt } = row;
                   const selectedUser = selected.indexOf(pro_name) !== -1;
 
                   return (
@@ -399,7 +399,7 @@ export default function Product() {
                       <TableCell align="left">{price}</TableCell>
 
 
-                      <TableCell align="left">{pro_item}</TableCell>
+                      <TableCell align="left">{quantity}</TableCell>
 
                       {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
 
