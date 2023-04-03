@@ -23,15 +23,15 @@ import DialogTitle from '@mui/material/DialogTitle';
 import { LoadingButton } from '@mui/lab';
 // Toast
 import { toast, ToastContainer } from 'react-toastify';
-import messageStyle from '../../../components/toast/toastStyle';
+import messageStyle from '../../../../components/toast/toastStyle';
 
 // Api Call
-import apiClient from '../../../api/apiClient';
-import headers from '../../../api/apiHeader';
-import apiHandleError from '../../../api/apiHandleError';
+import apiClient from '../../../../api/apiClient';
+import headers from '../../../../api/apiHeader';
+import apiHandleError from '../../../../api/apiHandleError';
 
 // component
-import Iconify from '../../../components/Iconify';
+import Iconify from '../../../../components/iconify';
 
 // validation
 ChangePasssword.propTypes = {

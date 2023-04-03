@@ -19,13 +19,13 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { toast } from 'react-toastify';
 // component
-import Iconify from '../../../components/Iconify';
+import Iconify from '../../../../components/iconify';
 // Api Call
-import apiClient from '../../../api/apiClient';
-import headers from '../../../api/apiHeader';
-import apiHandleError from '../../../api/apiHandleError';
+import apiClient from '../../../../api/apiClient';
+import headers from '../../../../api/apiHeader';
+import apiHandleError from '../../../../api/apiHandleError';
 // Toast
-import messageStyle from '../../../components/toast/toastStyle';
+import messageStyle from '../../../../components/toast/toastStyle';
 
 // validation
 EditUser.propTypes = {

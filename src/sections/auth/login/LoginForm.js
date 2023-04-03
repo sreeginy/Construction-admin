@@ -23,7 +23,6 @@ import apiClient from '../../../api/apiClient';
 import Iconify from '../../../components/iconify';
 import LoginPassswordChange from './LoginPasswordChange';
 
-
 // ----------------------------------------------------------------------
 
 export default function LoginForm() {
@@ -71,36 +70,33 @@ export default function LoginForm() {
   const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
 
   const rawData = {
-    email: values.email,
+    username: values.email,
     password: values.password
   };
   const notifyError = (msg) => toast.error(msg, messageStyle);
   const handleLogin = async () => {
     setSubmit(isSubmitting);
     try {
-      const res_ = await apiClient.post('users/login', rawData, {
+      const res_ = await apiClient.post('user/login', rawData, {
         headers: {
           'Content-Type': 'application/json'
         }
       });
 
-      if (res_.status === 201) {
-        setToken(res_.data.token);
-        setUser(res_.data.user);
-        if (!res_.data.user.isPasswordChanged) {
-          // if (true) {
-          localStorage.setItem('jwt-token', res_.data.token);
-          localStorage.setItem('user', JSON.stringify(res_.data.user));
-          setSubmit(false);
-          navigate('/dashboard/app', { replace: true });
-        } else {
-          handleOpenPassword();
-        }
+      if (res_.status === 200) {
+        setToken(res_.data.data.token);
+        setUser(res_.data.data);
+        // if (true) {
+        localStorage.setItem('jwt-token', res_.data.data.token);
+        localStorage.setItem('user', JSON.stringify(res_.data.data));
+        setSubmit(false);
+        navigate('/dashboard/app', { replace: true });
       } else if (res_.status === 400) {
-        notifyError(res_.statusText);
+        notifyError('Email address or password not match');
       }
       console.log(res_);
     } catch (error) {
+      notifyError('Email address or password not match');
       setSubmit(false);
       console.log(error);
     }

@@ -3,7 +3,7 @@ import { Link as RouterLink } from 'react-router-dom';
 import PropTypes from 'prop-types';
 import { Menu, MenuItem, IconButton, ListItemIcon, ListItemText } from '@mui/material';
 
-import Iconify from '../../../components/Iconify';
+import Iconify from '../../../../components/iconify';
 
 // ----------------------------------------------------------------------
 UserMoreMenu.prototypes = {

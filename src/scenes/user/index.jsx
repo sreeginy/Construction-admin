@@ -34,13 +34,14 @@ import { useState, useEffect } from 'react';
 import { getPermission } from '../../utils/PermissionUtil';
 
 import {
-  AddEditProductPopUp,
-  ProductListHead,
-  ProductMoreMenu,
-  ProductListToolbar,
-  FullViewProducts,
-  ImageUpload,
-} from '../../sections/@dashboard/product';
+  UserMoreMenu,
+  AddUser,
+  EditUser,
+  MoreMenu,
+  ChangePasssword
+} from '../../sections/@dashboard/user/user';
+
+
 
 // Api Call
 import apiClient from '../../api/apiClient';
@@ -92,8 +93,7 @@ function applySortFilter(array, comparator, query) {
 }
 
 
-export default function Product() {
-
+export default function User() {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
@@ -101,85 +101,29 @@ export default function Product() {
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
-  const [open, setOpen] = useState(null);
+
+  const [userList, setUserList] = useState([]);
+
+
+  const [searchBy, setSearchBy] = useState('firstName');
+
+
+  const [open, setOpen] = useState(false);
   const [editOpen, setEditOpen] = useState(false);
-  const [selectedProductData, setSelectedProductData] = useState();
-  const [SelectedProductId, setSelectedProductId] = useState('');
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [openAdd, setOpenAdd] = useState(false);
-  const [openImage, setOpenImage] = useState(false);
-  const [viewOpen, setViewOpen] = useState(false);
+  const [passwordOpen, setPasswordOpen] = useState(false);
+  const [user, setUser] = useState();
 
-
-  const [productList, setProductList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
-  const [permission, setPermission] = useState({});
-  const [product, setProduct] = useState();
 
-
-  
-  const handleImageClose = () => {
-    setOpenImage(false);
+  const handleChangeRowsPerPage = (event) => {
+    setPage(0);
+    setRowsPerPage(parseInt(event.target.value, 10));
   };
 
-  const openAddEditPopUp = (data) => {
-    setOpen((open) => (open = !open));
-    setSelectedProductData(data);
-
-  };
-
-  const openEditPopUp = (data) => {
-    setEditOpen((editOpen) => (editOpen = !editOpen));
-    setSelectedProductData(data);
-  };
-  const handleOpenAdd = () => {
-    setOpenAdd(true);
-  };
-
-  const handleOpenEdit = (data) => {
-    setProduct(data);
-    setOpenAdd(true);
-  };
-
-  const handleAddClose = () => {
-    setOpenAdd(false);
-    setProduct();
-  };
-
-  const handleDeleteClose = () => {
-    setDeleteOpen(false);
-  };
-
-  const openDeletePopUp = (data) => {
-    setProduct(data);
-    setDeleteOpen((deleteOpen) => (deleteOpen = !deleteOpen));
-  };
-  
-  const openViewPopUp = (data) => {
-    setViewOpen((viewOpen) => (viewOpen = !viewOpen));
-    setProduct(data);
-  };
-  const handleViewClose = () => {
-    setViewOpen(false);
-  };
-
-  const handleOpenMenu = (event) => {
-    setOpen(event.currentTarget);
-  };
-
-  const handleCloseMenu = () => {
-    setOpen(null);
-  };
-
-  const handleOpenImage = (data) => {
-    setProduct(data);
-    setOpenImage(true);
-  };
-
-  const handleRequestSort = (event, property) => {
-    const isAsc = orderBy === property && order === 'asc';
-    setOrder(isAsc ? 'desc' : 'asc');
-    setOrderBy(property);
+  const handleFilterByName = (event) => {
+    setPage(0);
+    setFilterName(event.target.value);
   };
 
   const handleSelectAllClick = (event) => {
@@ -190,6 +134,57 @@ export default function Product() {
     }
     setSelected([]);
   };
+
+  const handleRequestSort = (event, property) => {
+    const isAsc = orderBy === property && order === 'asc';
+    setOrder(isAsc ? 'desc' : 'asc');
+    setOrderBy(property);
+  };
+  const openAddEditPopUp = (data) => {
+    setOpen((open) => (open = !open));
+    setUser(data);
+  };
+
+  const openChangePasswordPopUp = (user) => {
+    setPasswordOpen(true);
+    setUser(user);
+  };
+
+  const handleChangePasswordClose = () => {
+    setPasswordOpen(false);
+  };
+
+  const openEditPopUp = (data) => {
+    setEditOpen((editOpen) => (editOpen = !editOpen));
+    setUser(data);
+  };
+  const openDeletePopUp = (data) => {
+    setDeleteOpen((deleteOpen) => (deleteOpen = !deleteOpen));
+    setUser(data);
+  };
+  const handleDeleteClose = () => {
+    setDeleteOpen(false);
+  };
+
+  const handleEditClose = () => {
+    setEditOpen(false);
+  };
+  const handleClose = () => {
+    setOpen(false);
+  };
+
+
+  useEffect(() => {
+    //setPermission(getPermission(Constant.USER));
+    setIsLoading(true);
+    getUsersList();
+  }, []);
+
+
+  const handleSuccess = () => {
+    getUsersList();
+  };
+
 
   const handleClick = (event, pro_name) => {
     const selectedIndex = selected.indexOf(pro_name);
@@ -206,39 +201,22 @@ export default function Product() {
     setSelected(newSelected);
   };
 
+  
   const handleChangePage = (event, newPage) => {
     setPage(newPage);
   };
 
-  const handleChangeRowsPerPage = (event) => {
-    setPage(0);
-    setRowsPerPage(parseInt(event.target.value, 10));
-  };
-
-  const handleFilterByName = (event) => {
-    setPage(0);
-    setFilterName(event.target.value);
-  };
-
-  const handleClose = () => {
-    setOpen(false);
-    // getProjectList();
-
-  };
-
-  useEffect(() => {
-    setPermission(getPermission(Constant.PRODUCT));
-    setIsLoading(true);
-    getProductList();
-  }, []);
-
-  const getProductList = async () => {
+  const getUsersList = async () => {
     try {
-      const response = await apiClient.get('products', {
+      const response = await apiClient.get('/user/all', {
         headers: headers()
       });
+
       if (response.status === 200) {
-        setProductList(response.data.products);
+        if (response.data.status === 1000) {
+          setUserList(response.data.data);
+        }
+        // setUserList(response.data);
         setIsLoading(false);
       } else {
         apiHandleError(response);
@@ -249,25 +227,31 @@ export default function Product() {
     }
   };
 
+  
+  const deleteUser = async (id) => {
+    try {
+      const response = await apiClient.get(`user/delete/${id}`, {
+        headers: headers()
+      });
 
-    /* API Delete Products */
-    const deleteProduct = async (id) => {
-      try {
-        const response = await apiClient.delete(`product/${id}`, {
-          headers: headers()
-        });
-        if (response.status === 200) {
-          notifySuccess(response.statusText);
+      if (response.status === 200) {
+        if (response.data.status === 1000) {
+          notifySuccess(response.data.message);
           handleDeleteClose();
-          getProductList();
-        } else {
-          apiHandleError(response);
+          getUsersList();
         }
-        console.log('delete', response);
-      } catch (error) {
-        console.log(error);
+      } else {
+        apiHandleError(response);
       }
-    };
+
+      console.log('Delete', response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+   
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
 
@@ -280,69 +264,44 @@ export default function Product() {
 
   return (
     <>
-
-      <Container maxWidth="xl">
-      {deleteOpen ? (
-          <DeleteDialogPopUp
-            onClose={handleDeleteClose}
-            onDelete={() => deleteProduct(product._id)}
-            
-          />
-        ) : (
-          ''
-        )}
-        {openImage ? (
-          <ImageUpload onClose={handleImageClose} data={product} onSuccess={getProductList} />
-        ) : (
-          ''
-        )}
-        {viewOpen ? <FullViewProducts onClose={handleViewClose} data={product} /> : ''}
-    
+ <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
-          <Typography variant="h4" gutterBottom >
-           USERS &nbsp; 
+          <Typography variant="h4" gutterBottom>
+            User
           </Typography>
-          {/* <Typography  alignItems="center">Create a New User Profile</Typography>  */}
-          {/* {permission?.read && ( */}
-          <Button
-            // color="info" 
-            variant="contained"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-            onClick={() =>
-              openAddEditPopUp({
-                id: '',
-                avatarUrl: '',
-                pro_name: '',
-                pro_type: '',
-                price: '',
-                quantity: '',
-                pro_status: '',
-              })
-            }
-          >
-            Add Users
-          </Button>
-
-            {/*  )}    */}
+          {true && (
+            <Button
+              variant="contained"
+              endIcon={<Iconify icon="carbon:add-filled" />}
+              onClick={() =>
+                openAddEditPopUp({
+                  name: '',
+                  email: '',
+                  role: '',
+                  createdAt: ''
+                })
+              }
+            >
+              Add User
+            </Button>
+          )}
         </Stack>
-
-        {open ? (
-          <AddEditProductPopUp onClose={handleClose} data={selectedProductData} />
+        {open ? <AddUser onClose={handleClose} data={user} onSuccess={handleSuccess} /> : ''}
+        {editOpen ? <EditUser onClose={handleEditClose} data={user} /> : ''}
+        {deleteOpen ? (
+          <DeleteDialogPopUp onClose={handleDeleteClose} onDelete={() => deleteUser(user.id)} />
         ) : (
           ''
         )}
-        {/* {deleteOpen ? (
-          <DeleteDialogPopUp onDelete={handleDelete} onClose={handleDeleteClose} />
-        ) : (
-          ''
-        )} */}
+        {passwordOpen ? <ChangePasssword onClose={handleChangePasswordClose} data={user} /> : ''}
+  
         <Card>
-          <ProductListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
 
           <TableContainer sx={{ minWidth: 800 }}>
             <Table>
-              <ProductListHead
+              <UserListHead
                 order={order}
                 orderBy={orderBy}
                 headLabel={TABLE_HEAD}
@@ -362,36 +321,7 @@ export default function Product() {
                         <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, firstName)} />
                       </TableCell>
 
-                      {/* <TableCell align="left">{id}</TableCell> */}
-
-                      {/* <TableCell align="left">
-                        <img
-                          width="80"
-                          height="55"
-                          srcSet={avatarUrl}
-                          src={placeholder}
-                          alt={avatarUrl}
-                          loading="lazy"
-                        />
-                        <Avatar
-                                style={{ aspectRatio: 16 / 9 }}
-                                alt="image"
-                                variant="square"
-                                src="/static/placeholder.jpg"
-                              /> 
-                      </TableCell> */}
-
-
                       <TableCell align="left">{firstName}</TableCell>
-
-                      {/* <TableCell component="th" scope="row" padding="none">
-                          <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={pro_name} src={avatarUrl} />
-                            <Typography variant="subtitle2" noWrap>
-                              {pro_name}
-                            </Typography>
-                          </Stack>
-                        </TableCell> */}
 
                       <TableCell align="left">{lastName}</TableCell>
                       <TableCell align="left">{email}</TableCell>
@@ -400,7 +330,7 @@ export default function Product() {
                       <TableCell align="left">{password}</TableCell>
 
                 
-                     <TableCell align="right">
+                     {/* <TableCell align="right">
                       <ProductMoreMenu
                                 permission={permission}
                                 onEditClick={() => handleOpenEdit(row)}
@@ -408,7 +338,7 @@ export default function Product() {
                                 onViewClick={() => openViewPopUp(row)}
                                 onImageClick={() => handleOpenImage(row)}
                               />
-                      </TableCell>
+                      </TableCell> */}
               
 
                       <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
