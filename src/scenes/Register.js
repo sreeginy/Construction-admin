@@ -10,7 +10,7 @@ import Iconify from '../components/iconify';
 // sections
 import { RegisterForm } from '../sections/auth/register';
 import  AuthSocial from '../sections/auth/AuthSocial';
-
+import { Link as RouterLink } from 'react-router-dom';
 // ----------------------------------------------------------------------
 
 const ContentStyle = styled('div')(({ theme }) => ({
@@ -73,9 +73,9 @@ export default function Register() {
             Already have an account?&nbsp;
            <NavLink to="/login">Login</NavLink>
 
-            {/* <Link underline="hover" to="/login" component={RouterLink}>
+            <Link underline="hover" to="/login" component={RouterLink}>
               Login
-            </Link> */}
+            </Link>
           </Typography>
         </ContentStyle>
       </Container>

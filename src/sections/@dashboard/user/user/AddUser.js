@@ -188,7 +188,7 @@ export default function AddUser(props) {
                     helperText={touched.password && errors.password}
                   />
                 </Box>
-                <Box sx={({ pb: 3 }, { pt: 5 })}>
+                {/* <Box sx={({ pb: 3 }, { pt: 5 })}>
                   <FormControl fullWidth>
                     <InputLabel
                       id="demo-simple-select-label"
@@ -218,7 +218,7 @@ export default function AddUser(props) {
                       {touched.role && errors.role}
                     </FormHelperText>
                   </FormControl>
-                </Box>
+                </Box> */}
               </div>
             </DialogContent>
             <Stack

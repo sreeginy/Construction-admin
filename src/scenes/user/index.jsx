@@ -29,7 +29,7 @@ import messageStyle from '../../components/toast/toastStyle';
 import DeleteDialogPopUp from '../../components/DialogPopUp';
 
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
-import USERLIST from '../../_mock/users';
+
 import { useState, useEffect } from 'react';
 import { getPermission } from '../../utils/PermissionUtil';
 
@@ -87,7 +87,7 @@ function applySortFilter(array, comparator, query) {
   });
   if (query) {
 
-    return filter(array, (_user) => _user.pro_name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.firstName.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -97,7 +97,7 @@ export default function User() {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('pro_name');
+  const [orderBy, setOrderBy] = useState('firstName');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -128,7 +128,7 @@ export default function User() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.pro_name);
+      const newSelecteds = userList.map((n) => n.firstName);
       setSelected(newSelecteds);
       return;
     }
@@ -186,11 +186,11 @@ export default function User() {
   };
 
 
-  const handleClick = (event, pro_name) => {
-    const selectedIndex = selected.indexOf(pro_name);
+  const handleClick = (event, firstName) => {
+    const selectedIndex = selected.indexOf(firstName);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, pro_name);
+      newSelected = newSelected.concat(selected, firstName);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -253,9 +253,9 @@ export default function User() {
 
    
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - userList.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
   const notifySuccess = (msg) => toast.success(msg, messageStyle);
@@ -305,7 +305,7 @@ export default function User() {
                 order={order}
                 orderBy={orderBy}
                 headLabel={TABLE_HEAD}
-                rowCount={USERLIST.length}
+                rowCount={userList.length}
                 numSelected={selected.length}
                 onRequestSort={handleRequestSort}
                 onSelectAllClick={handleSelectAllClick}
@@ -330,15 +330,29 @@ export default function User() {
                       <TableCell align="left">{password}</TableCell>
 
                 
-                     {/* <TableCell align="right">
-                      <ProductMoreMenu
-                                permission={permission}
-                                onEditClick={() => handleOpenEdit(row)}
-                                onDelete={() => openDeletePopUp(row)}
-                                onViewClick={() => openViewPopUp(row)}
-                                onImageClick={() => handleOpenImage(row)}
+                     <TableCell align="right">
+                     <MoreMenu
+                                onEditClick={() =>
+                                  openEditPopUp({
+                                    id,
+                                    firstName,
+                                    lastName,
+                                    password,
+                                    email
+                                  })
+                                }
+                                onDelete={() =>
+                                  openDeletePopUp({
+                                    id,
+                                    firstName,
+                                    lastName,
+                                    password,
+                                    email
+                                  })
+                                }
+                                onPassword={() => openChangePasswordPopUp(row)}
                               />
-                      </TableCell> */}
+                      </TableCell>
               
 
                       <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
@@ -384,7 +398,7 @@ export default function User() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={userList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
