@@ -267,12 +267,12 @@ export default function User() {
  <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom>
-            User
+           ACCOUNT USER DETAILS 
           </Typography>
           {true && (
-            <Button
-              variant="contained"
-              endIcon={<Iconify icon="carbon:add-filled" />}
+         <Button
+         variant="contained"
+         startIcon={<Iconify icon="eva:plus-fill" />}
               onClick={() =>
                 openAddEditPopUp({
                   name: '',
@@ -293,8 +293,7 @@ export default function User() {
         ) : (
           ''
         )}
-        {passwordOpen ? <ChangePasssword onClose={handleChangePasswordClose} data={user} /> : ''}
-  
+        
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
@@ -341,16 +340,7 @@ export default function User() {
                                     email
                                   })
                                 }
-                                onDelete={() =>
-                                  openDeletePopUp({
-                                    id,
-                                    firstName,
-                                    lastName,
-                                    password,
-                                    email
-                                  })
-                                }
-                                onPassword={() => openChangePasswordPopUp(row)}
+                                onDelete={() => openDeletePopUp(row)}
                               />
                       </TableCell>
               

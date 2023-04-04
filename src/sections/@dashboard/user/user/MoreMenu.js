@@ -14,7 +14,7 @@ MoreMenu.prototypes = {
 };
 
 export default function MoreMenu(props) {
-  const { onEditClick, onDelete, isRight, onPassword, permission } = props;
+  const { onEditClick, onDelete, isRight, onPassword } = props;
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
@@ -24,7 +24,7 @@ export default function MoreMenu(props) {
         <Iconify icon="eva:more-vertical-fill" width={20} height={20} />
       </IconButton>
 
-      {(!permission?.delete && !permission?.update) || (
+      {(!true && !true) || (
         <Menu
           open={isOpen}
           anchorEl={ref.current}
@@ -35,7 +35,7 @@ export default function MoreMenu(props) {
           anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
-          {permission?.delete && (
+          {true && (
             <MenuItem
               sx={{ color: 'text.secondary' }}
               onClick={() => {
@@ -46,10 +46,10 @@ export default function MoreMenu(props) {
               <ListItemIcon>
                 <Iconify icon="eva:trash-2-outline" width={24} height={24} />
               </ListItemIcon>
-              <ListItemText primary="Deleteeeee" primaryTypographyProps={{ variant: 'body2' }} />
+              <ListItemText primary="Delete" primaryTypographyProps={{ variant: 'body2' }} />
             </MenuItem>
           )}
-          {permission?.update && (
+          {true && (
             <MenuItem
               component={RouterLink}
               to="#"
@@ -65,7 +65,7 @@ export default function MoreMenu(props) {
               <ListItemText primary="Edit" primaryTypographyProps={{ variant: 'body2' }} />
             </MenuItem>
           )}
-          {permission?.update && (
+          {true && (
             <MenuItem
               sx={{ color: 'text.secondary' }}
               onClick={() => {
@@ -73,13 +73,13 @@ export default function MoreMenu(props) {
                 setIsOpen(false);
               }}
             >
-              <ListItemIcon>
+              {/* <ListItemIcon>
                 <Iconify icon="eva:eye-fill" width={24} height={24} />
-              </ListItemIcon>
-              <ListItemText
+              </ListItemIcon> */}
+              {/* <ListItemText
                 primary="Change Password"
                 primaryTypographyProps={{ variant: 'body2' }}
-              />
+              /> */}
             </MenuItem>
           )}
         </Menu>

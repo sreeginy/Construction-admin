@@ -48,31 +48,32 @@ export default function AddUser(props) {
   const [dataValue, setDataValue] = React.useState('');
   const [showPassword, setShowPassword] = React.useState(false);
   const [userData, setUserData] = React.useState({
-    name: data.name,
-    email: data.email,
-    role: data.role
+    firstName: data.firstName,
+    lastName: data.lastName,
+    email: data.email
   });
 
   React.useEffect(() => {
-    getRolesList();
+    // getRolesList();
   }, []);
 
   const notifySuccess = (msg) => toast.success(msg, messageStyle);
+  const notifyError = (msg) => toast.error(msg, messageStyle);
 
   // Validation State
   const AddSchema = Yup.object().shape({
-    name: Yup.string().required('name is required'),
+    firstName: Yup.string().required('firstname is required'),
+    lastName: Yup.string().required('lastname is required'),
     email: Yup.string().required('email is required'),
-    role: Yup.string().required('role is required'),
     password: Yup.string().required('password is required')
   });
 
   const formik = useFormik({
     initialValues: {
-      name: userData.name,
+      firstName: userData.firstName,
+      lastName: userData.lastName,
       email: userData.email,
       password: '',
-      role: userData.role,
       isPasswordChanged: true
     },
     validationSchema: AddSchema,
@@ -88,33 +89,37 @@ export default function AddUser(props) {
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
   };
-  const getRolesList = async () => {
+  // const getRolesList = async () => {
+  //   try {
+  //     const response = await apiClient.get('roles', {
+  //       headers: headers()
+  //     });
+
+  //     if (response.status === 200) {
+  //       setRoleList(response.data.role);
+  //     } else {
+  //       apiHandleError(response);
+  //     }
+  //     console.log(response.data);
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
+  const addNewUser = async () => {
     try {
-      const response = await apiClient.get('roles', {
+      const response = await apiClient.post('/user/add', rawData, {
         headers: headers()
       });
 
       if (response.status === 200) {
-        setRoleList(response.data.role);
-      } else {
-        apiHandleError(response);
-      }
-      console.log(response.data);
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const addNewUser = async () => {
-    try {
-      const response = await apiClient.post('users', rawData, {
-        headers: headers()
-      });
-
-      if (response.status === 201) {
-        notifySuccess(response.statusText);
-        onSuccess();
-        onClose();
+        if (response.data.status === 1000) {
+          notifySuccess(response.data.message);
+          onSuccess();
+          onClose();
+        } else {
+          notifyError(response.data.message);
+        }
       } else {
         apiHandleError(response);
       }
@@ -125,11 +130,11 @@ export default function AddUser(props) {
   };
 
   const rawData = {
-    name: formik.values.name,
+    firstName: formik.values.firstName,
+    lastName: formik.values.lastName,
     email: formik.values.email,
     password: formik.values.password,
-    isPasswordChanged: formik.values.isPasswordChanged,
-    roleId
+    isPasswordChanged: formik.values.isPasswordChanged
   };
 
   const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
@@ -152,10 +157,20 @@ export default function AddUser(props) {
                   <TextField
                     fullWidth
                     id="outlined-basic"
-                    label="Name"
-                    {...getFieldProps('name')}
-                    error={Boolean(touched.name && errors.name)}
-                    helperText={touched.name && errors.name}
+                    label="First Name"
+                    {...getFieldProps('firstName')}
+                    error={Boolean(touched.firstName && errors.firstName)}
+                    helperText={touched.firstName && errors.firstName}
+                  />
+                </Box>
+                <Box sx={({ pb: 3 }, { pt: 3 })}>
+                  <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    label="Last Name"
+                    {...getFieldProps('lastName')}
+                    error={Boolean(touched.lastName && errors.lastName)}
+                    helperText={touched.lastName && errors.lastName}
                   />
                 </Box>
                 <Box sx={({ pb: 3 }, { pt: 3 })}>
@@ -188,37 +203,6 @@ export default function AddUser(props) {
                     helperText={touched.password && errors.password}
                   />
                 </Box>
-                {/* <Box sx={({ pb: 3 }, { pt: 5 })}>
-                  <FormControl fullWidth>
-                    <InputLabel
-                      id="demo-simple-select-label"
-                      error={Boolean(touched.role && errors.role)}
-                    >
-                      Role
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={roleList}
-                      label="Role"
-                      {...getFieldProps('role')}
-                      error={Boolean(touched.role && errors.role)}
-                    >
-                      {roleList.map((role) => (
-                        <MenuItem
-                          key={role._id}
-                          value={role.roleName}
-                          onClick={() => setDropDownValue(role._id)}
-                        >
-                          {role.roleName}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    <FormHelperText error={Boolean(touched.role && errors.role)}>
-                      {touched.role && errors.role}
-                    </FormHelperText>
-                  </FormControl>
-                </Box> */}
               </div>
             </DialogContent>
             {/* <Stack

@@ -27,7 +27,10 @@ import { useTheme } from '@mui/material/styles';
 import { toast } from 'react-toastify';
 import { LoadingButton } from '@mui/lab';
 import Iconify from './iconify';
-
+// Api Call
+import apiClient from '../api/apiClient';
+import headers from '../api/apiHeader';
+import apiHandleError from '../api/apiHandleError';
 
 // Toast
 import messageStyle from './toast/toastStyle';
@@ -43,19 +46,9 @@ export default function DeleteDialogPopUp(props) {
   const [showPassword, setShowPassword] = React.useState(false);
   const [user, setUser] = useState([]);
 
-  useEffect(() => {
-    const user = JSON.parse(localStorage.getItem('user'));
-    if (user) {
-      setUser(user);
-    }
-  }, []);
-  console.log(user);
-
   // Validation State
 
-  const AddSchema = Yup.object().shape({
-    password: Yup.string().required('password is required')
-  });
+  const AddSchema = Yup.object().shape({});
 
   const notifySuccess = (msg) => toast.success(msg, messageStyle);
   const formik = useFormik({
@@ -66,10 +59,10 @@ export default function DeleteDialogPopUp(props) {
       password: ''
     },
 
-    // validationSchema: AddSchema,
-    // onSubmit: () => {
-    //   validatePasssword();
-    // }
+    validationSchema: AddSchema,
+    onSubmit: () => {
+      validatePasssword();
+    }
   });
 
   const handleShowPassword = () => {
@@ -82,22 +75,9 @@ export default function DeleteDialogPopUp(props) {
   };
   console.log(rawData);
 
-  // const validatePasssword = async () => {
-  //   try {
-  //     const response = await apiClient.post(`users/validatepassword`, rawData, {
-  //       headers: headers()
-  //     });
-
-  //     if (response.status === 200) {
-  //       onDelete();
-  //     } else {
-  //       apiHandleError(response);
-  //     }
-  //     console.log(response);
-  //   } catch (error) {
-  //     console.log(error);
-  //   }
-  // };
+  const validatePasssword = async () => {
+    onDelete();
+  };
 
   const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
 

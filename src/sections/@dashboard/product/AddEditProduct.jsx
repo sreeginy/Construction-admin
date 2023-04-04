@@ -1,5 +1,4 @@
-
-
+import { toast } from 'react-toastify';
 import {
   Button,
   TextField,
@@ -26,12 +25,17 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../../components/Header";
 import PropTypes from 'prop-types';
 import DialogContent from '@mui/material/DialogContent';
+// API
+import apiClient from '../../../api/apiClient';
+import headers from '../../../api/apiHeader';
+import messageStyle from '../../../components/toast/toastStyle';
+import apiHandleError from '../../../api/apiHandleError';
 
 // validation
 AddEditProductPopUp.propTypes = {
   onClose: PropTypes.func,
   data: PropTypes.object,
-  title: PropTypes.string
+  pro_name: PropTypes.string
 };
 
 const initialValues = {
@@ -44,7 +48,7 @@ const initialValues = {
 }
 
 export default function AddEditProductPopUp(props) {
-  const { data, onClose } = props;
+  const { data, onClose, onSuccess } = props;
   const [roleData, setRoleData] = React.useState(data);
   const { id, pro_name, pro_type, price, pro_item, pro_status } = roleData;
 
@@ -74,9 +78,9 @@ export default function AddEditProductPopUp(props) {
       pro_status,
     },
     validationSchema: AddSchema,
-    // onSubmit: () => {
-    //    savePitchTracker(formik.values);
-    // }
+    onSubmit: () => {
+       addProduct(formik.values);
+    }
   });
 
   // const Form = () => {
@@ -86,8 +90,47 @@ export default function AddEditProductPopUp(props) {
   //         console.log(values);
   //     };
 
-  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps, setFieldValue } =
-    formik;
+   /* API Update Genre */
+
+   const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps, setSubmitting } =
+   formik;
+ const notifySuccess = (msg) => toast.success(msg, messageStyle);
+ const notifyError = (msg) => toast.error(msg, messageStyle);
+
+ const addProduct = async (rawData) => {
+   console.log(rawData);
+   try {
+     const products = {
+      id: rawData.id,
+      pro_name: rawData.pro_name,
+      pro_type: rawData.pro_type,
+      price: rawData.price,
+      quantity: rawData.quantity,
+      pro_status: rawData.pro_status,
+    
+     };
+     const response = await apiClient.post(`product/add`, products, {
+       headers: headers()
+     });
+     if (response.status === 200) {
+       if (response.data.status === 1000) {
+         notifySuccess(response.data.message);
+         onSuccess();
+         onClose();
+       } else {
+         setSubmitting(false);
+         notifyError(response.data.message);
+       }
+     } else {
+       setSubmitting(false);
+       apiHandleError(response);
+     }
+     console.log('post', response);
+   } catch (error) {
+     setSubmitting(false);
+     console.log(error);
+   }
+ };
 
   return (
 

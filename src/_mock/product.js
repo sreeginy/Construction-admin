@@ -5,13 +5,13 @@ import { mockImgProduct } from '../../src/utils/mockImages';
 // ----------------------------------------------------------------------
 
 const users = [...Array(24)].map((_, index) => ({
-  id: faker.datatype.number(),
+  productNo: faker.datatype.number(),
   avatarUrl:  mockImgProduct(index + 1),
-  pro_name: faker.name.fullName(),
-  pro_type: sample(['stone', 'soil']),
+  productName: faker.name.fullName(),
+  productType: sample(['stone', 'soil']),
   price: faker.commerce.price(100, 200, 0,'Rs'),
   quantity: sample(['8','2','3','4','5','10','15']), 
-  pro_status: sample(['active', 'banned']),
+  productStatus: sample(['active', 'banned']),
   createdAt: faker.date.recent().getTime(),
  
 }));

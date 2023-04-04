@@ -51,13 +51,13 @@ const placeholder = '/static/placeholder.jpg';
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'id', label: 'Product No', alignRight: false },
+  { id: 'productNo', label: 'Product No', alignRight: false },
   { id: 'avatarUrl', label: 'Product ', alignRight: false },
-  { id: 'pro_name', label: ' Name', alignRight: false },
-  { id: 'pro_type', label: 'Type', alignRight: false },
+  { id: 'productName', label: ' Name', alignRight: false },
+  { id: 'productType', label: 'Type', alignRight: false },
   { id: 'price', label: 'Price', alignRight: false },
   { id: 'quantity', label: ' Quantity', alignRight: false },
-  { id: 'pro_status', label: ' Status', alignRight: false },
+  { id: 'productStatus', label: ' Status', alignRight: false },
   { id: '' },
   { id: 'createdAt', label: 'Create At', alignRight: false },
 ];
@@ -88,7 +88,7 @@ function applySortFilter(array, comparator, query) {
   });
   if (query) {
 
-    return filter(array, (_user) => _user.pro_name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.productName.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -99,7 +99,7 @@ export default function Product() {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('pro_name');
+  const [orderBy, setOrderBy] = useState('productName');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -186,18 +186,18 @@ export default function Product() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.pro_name);
+      const newSelecteds = USERLIST.map((n) => n.productName);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, pro_name) => {
-    const selectedIndex = selected.indexOf(pro_name);
+  const handleClick = (event, productName) => {
+    const selectedIndex = selected.indexOf(productName);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, pro_name);
+      newSelected = newSelected.concat(selected, productName);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -313,12 +313,13 @@ export default function Product() {
             onClick={() =>
               openAddEditPopUp({
                 id: '',
+                productNo: '',
                 avatarUrl: '',
-                pro_name: '',
-                pro_type: '',
+                productName: '',
+                productType: '',
                 price: '',
                 quantity: '',
-                pro_status: '',
+                productStatus: '',
               })
             }
           >
@@ -355,16 +356,16 @@ export default function Product() {
               />
               <TableBody>
                 {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                  const { id, pro_name, pro_type, price, quantity, pro_status, avatarUrl, isVerified, createdAt } = row;
-                  const selectedUser = selected.indexOf(pro_name) !== -1;
+                  const { id,productNo, productName, productType, price, quantity, productStatus, avatarUrl, isVerified, createdAt } = row;
+                  const selectedUser = selected.indexOf(productName) !== -1;
 
                   return (
                     <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                       <TableCell padding="checkbox">
-                        <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, pro_name)} />
+                        <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, productName)} />
                       </TableCell>
 
-                      <TableCell align="left">{id}</TableCell>
+                      <TableCell align="left">{productNo}</TableCell>
 
                       <TableCell align="left">
                         <img
@@ -384,7 +385,7 @@ export default function Product() {
                       </TableCell>
 
 
-                      <TableCell align="left">{pro_name}</TableCell>
+                      <TableCell align="left">{productName}</TableCell>
 
                       {/* <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
@@ -395,7 +396,7 @@ export default function Product() {
                           </Stack>
                         </TableCell> */}
 
-                      <TableCell align="left">{pro_type}</TableCell>
+                      <TableCell align="left">{productType}</TableCell>
                       <TableCell align="left">{price}</TableCell>
 
 
@@ -404,7 +405,7 @@ export default function Product() {
                       {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
 
                       <TableCell align="left">
-                        <Label color={(pro_status === 'banned' && 'error') || 'success'}>{sentenceCase(pro_status)}</Label>
+                        <Label color={(productStatus === 'banned' && 'error') || 'success'}>{sentenceCase(productStatus)}</Label>
                       </TableCell>
 
                       <TableCell align="right">

@@ -36,6 +36,7 @@ EditUser.propTypes = {
 };
 
 const notifySuccess = (msg) => toast.success(msg, messageStyle);
+const notifyError = (msg) => toast.error(msg, messageStyle);
 
 export default function EditUser(props) {
   const { data, onClose, onSuccess } = props;
@@ -46,13 +47,13 @@ export default function EditUser(props) {
   const [showPassword, setShowPassword] = React.useState(false);
 
   const [userData, setUserData] = React.useState({
-    name: data.name,
-    email: data.email,
-    roleId: data.roleId
+    firstName: data.firstName,
+    lastName: data.lastName,
+    email: data.email
   });
 
   React.useEffect(() => {
-    getRolesList();
+    // getRolesList();
   }, []);
 
   const getRolesList = async () => {
@@ -74,40 +75,43 @@ export default function EditUser(props) {
 
   // Validation State
   const AddSchema = Yup.object().shape({
-    name: Yup.string().required('name is required'),
-    email: Yup.string().required('email is required'),
-    role: Yup.string().required('role is required')
+    firstName: Yup.string().required('firstname is required'),
+    lastName: Yup.string().required('lastname is required'),
+    email: Yup.string().required('email is required')
   });
 
   const formik = useFormik({
     initialValues: {
-      name: userData.name,
-      email: userData.email,
-      role: userData.roleId && userData.roleId.roleName
+      firstName: userData.firstName,
+      lastName: userData.lastName,
+      email: userData.email
     },
     validationSchema: AddSchema,
     onSubmit: () => {
-      updateUser(data._id);
+      updateUser(data.id);
     }
   });
 
   const rawData = {
-    name: formik.values.name,
-    email: formik.values.email,
-    password: formik.values.password,
-    roleId
+    firstName: formik.values.firstName,
+    lastName: formik.values.lastName,
+    email: formik.values.email
   };
 
   const updateUser = async (id) => {
     try {
-      const response = await apiClient.patch(`users/${id}`, rawData, {
+      const response = await apiClient.post(`user/update/${id}`, rawData, {
         headers: headers()
       });
 
-      if (response.status === 201) {
-        onClose();
-        notifySuccess(response.statusText);
-        onSuccess();
+      if (response.status === 200) {
+        if (response.data.status === 1000) {
+          onClose();
+          notifySuccess(response.data.message);
+          onSuccess();
+        } else {
+          notifyError(response.data.message);
+        }
       } else {
         apiHandleError(response);
       }
@@ -145,10 +149,20 @@ export default function EditUser(props) {
                   <TextField
                     fullWidth
                     id="outlined-basic"
-                    label="Name"
-                    {...getFieldProps('name')}
-                    error={Boolean(touched.name && errors.name)}
-                    helperText={touched.name && errors.name}
+                    label="First Name"
+                    {...getFieldProps('firstName')}
+                    error={Boolean(touched.firstName && errors.firstName)}
+                    helperText={touched.firstName && errors.firstName}
+                  />
+                </Box>
+                <Box sx={({ pb: 3 }, { pt: 3 })}>
+                  <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    label="Last Name"
+                    {...getFieldProps('lastName')}
+                    error={Boolean(touched.lastName && errors.lastName)}
+                    helperText={touched.lastName && errors.lastName}
                   />
                 </Box>
                 <Box sx={({ pb: 3 }, { pt: 3 })}>
@@ -160,39 +174,6 @@ export default function EditUser(props) {
                     error={Boolean(touched.email && errors.email)}
                     helperText={touched.email && errors.email}
                   />
-                </Box>
-
-                <Box sx={({ pb: 3 }, { pt: 5 })}>
-                  <FormControl fullWidth>
-                    <InputLabel
-                      id="demo-simple-select-label"
-                      error={Boolean(touched.role && errors.role)}
-                    >
-                      Role
-                    </InputLabel>
-                    <Select
-                      labelId="demo-simple-select-label"
-                      id="demo-simple-select"
-                      value={values.role}
-                      defaultValue=""
-                      label="Role"
-                      {...getFieldProps('role')}
-                      error={Boolean(touched.role && errors.role)}
-                    >
-                      {roleList.map((role) => (
-                        <MenuItem
-                          key={role._id}
-                          value={role.roleName}
-                          onClick={() => setDropDownValue(role._id)}
-                        >
-                          {role.roleName}
-                        </MenuItem>
-                      ))}
-                    </Select>
-                    <FormHelperText error={Boolean(touched.role && errors.role)}>
-                      {touched.role && errors.role}
-                    </FormHelperText>
-                  </FormControl>
                 </Box>
               </div>
             </DialogContent>

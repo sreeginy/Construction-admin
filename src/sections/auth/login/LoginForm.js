@@ -106,65 +106,66 @@ export default function LoginForm() {
     setShowPassword((show) => !show);
   };
 
+
   return (
     <FormikProvider value={formik}>
-      <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
-        {openPassword ? (
-          <LoginPassswordChange
-            onClose={handlePasswordClose}
-            submit={onPasswordChange}
-            data={user}
-            token={token}
-          />
-        ) : (
-          ''
-        )}
-        <Stack spacing={3}>
-          <TextField
-            fullWidth
-            autoComplete="username"
-            type="email"
-            label="Email address"
-            {...getFieldProps('email')}
-            error={Boolean(touched.email && errors.email)}
-            helperText={touched.email && errors.email}
-          />
+    <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
+      {openPassword ? (
+        <LoginPassswordChange
+          onClose={handlePasswordClose}
+          submit={onPasswordChange}
+          data={user}
+          token={token}
+        />
+      ) : (
+        ''
+      )}
+      <Stack spacing={3}>
+        <TextField
+          fullWidth
+          autoComplete="username"
+          type="email"
+          label="Email address"
+          {...getFieldProps('email')}
+          error={Boolean(touched.email && errors.email)}
+          helperText={touched.email && errors.email}
+        />
 
-          <TextField
-            fullWidth
-            autoComplete="current-password"
-            type={showPassword ? 'text' : 'password'}
-            label="Password"
-            {...getFieldProps('password')}
-            InputProps={{
-              endAdornment: (
-                <InputAdornment position="end">
-                  <IconButton onClick={handleShowPassword} edge="end">
-                    <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                  </IconButton>
-                </InputAdornment>
-              )
-            }}
-            error={Boolean(touched.password && errors.password)}
-            helperText={touched.password && errors.password}
-          />
-        </Stack>
+        <TextField
+          fullWidth
+          autoComplete="current-password"
+          type={showPassword ? 'text' : 'password'}
+          label="Password"
+          {...getFieldProps('password')}
+          InputProps={{
+            endAdornment: (
+              <InputAdornment position="end">
+                <IconButton onClick={handleShowPassword} edge="end">
+                  <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                </IconButton>
+              </InputAdornment>
+            )
+          }}
+          error={Boolean(touched.password && errors.password)}
+          helperText={touched.password && errors.password}
+        />
+      </Stack>
 
-        <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
-          <FormControlLabel
-            control={<Checkbox {...getFieldProps('remember')} checked={values.remember} />}
-            label="Remember me"
-          />
+      <Stack direction="row" alignItems="center" justifyContent="space-between" sx={{ my: 2 }}>
+        <FormControlLabel
+          control={<Checkbox {...getFieldProps('remember')} checked={values.remember} />}
+          label="Remember me"
+        />
 
-          {/* <Link component={RouterLink} variant="subtitle2" to="#" underline="hover">
-            Forgot password?
-          </Link> */}
-        </Stack>
+        {/* <Link component={RouterLink} variant="subtitle2" to="#" underline="hover">
+          Forgot password?
+        </Link> */}
+      </Stack>
 
-        <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={submit}>
-          Login
-        </LoadingButton>
-      </Form>
-    </FormikProvider>
+      <LoadingButton fullWidth size="large" type="submit" variant="contained" loading={submit}>
+        Login
+      </LoadingButton>
+    </Form>
+  </FormikProvider>
   );
 }
