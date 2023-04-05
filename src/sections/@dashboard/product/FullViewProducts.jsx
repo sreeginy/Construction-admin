@@ -10,7 +10,6 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import { Dialog, DialogContent, useTheme, DialogTitle, DialogActions, Button } from '@mui/material';
 
-
 // Toast
 import { toast } from 'react-toastify';
 import messageStyle from '../../../components/toast/toastStyle';
