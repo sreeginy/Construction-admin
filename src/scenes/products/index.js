@@ -224,7 +224,7 @@ export default function Product() {
 
   const handleClose = () => {
     setOpen(false);
-    // getProjectList();
+   getProductList();
 
   };
 

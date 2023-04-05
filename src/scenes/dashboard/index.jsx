@@ -170,7 +170,7 @@ export default function UserPage() {
       <Container>
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom >
-            EMPLOYEE &nbsp; DETAILS
+            DASHBOARD EMPLOYEE &nbsp; DETAILS
           </Typography>
           {/* <Typography  alignItems="center">Create a New User Profile</Typography> */}
           <Button color="info" variant="contained" startIcon={<Iconify icon="eva:plus-fill" />}>
@@ -180,7 +180,6 @@ export default function UserPage() {
 
         <Card>
           <UserListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-
 
           <TableContainer sx={{ minWidth: 800 }}>
             <Table>
