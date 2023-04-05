@@ -1,7 +1,6 @@
 import { Box, Button, TextField,  Dialog,
     FormControl,
     Autocomplete } from "@mui/material";
-// import { Formik } from "formik";
 import { Form, FormikProvider, useFormik } from 'formik';
 import * as yup from "yup";
 import * as React from 'react';
@@ -33,9 +32,6 @@ export default function AddEditProjectPopUp(props) {
    
     const [projectNameList, setProjectStatusList] = React.useState([]);
 
-
-
-   
 
 const AddSchema = yup.object().shape({
     id: yup.string().required("required"),
@@ -191,5 +187,3 @@ const formik = useFormik({
         </div>
   );
 }
-
-// export default Form;

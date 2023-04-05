@@ -24,8 +24,8 @@ import { Constant } from '../utils/Constant';
 const PERMISSIONLIST = [
   {
     id: 1,
-    path: Constant.LIBRARY,
-    name: 'Library',
+    path: Constant.PRODUCT,
+    name: 'Products',
     readBool: false,
     updateBool: false,
     deleteBool: false,
