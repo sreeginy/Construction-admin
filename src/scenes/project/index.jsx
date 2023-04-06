@@ -45,7 +45,6 @@ import {
   ProjectListToolbar,
   ProjectMoreMenu
 } from '../../sections/@dashboard/project';
-
 // sections
 // import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 // mock

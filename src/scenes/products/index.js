@@ -1,7 +1,6 @@
 import { filter } from 'lodash';
 import { sentenceCase } from 'change-case';
 import { toast } from 'react-toastify';
-
 import {
   Card,
   Table,

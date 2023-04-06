@@ -55,7 +55,7 @@ const Form = () => {
                             fullWidth
                             variant="filled"
                             type="text"
-                            label="First Name"
+                            label="First g Name"
                             onBlur={handleBlur}
                             onChange={handleChange}
                             value={values.firstName}
