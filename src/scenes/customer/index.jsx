@@ -54,11 +54,13 @@ import {
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'id', label: 'ID', alignRight: false },
-  { id: 'name', label: 'Full Name', alignRight: false },
+  // { id: 'id', label: 'ID', alignRight: false },
+  { id: 'firstName', label: 'First Name', alignRight: false },
+  { id: 'lastName', label: 'Last Name ', alignRight: false },
   { id: 'address', label: 'Address', alignRight: false },
   { id: 'userEmail', label: 'E-mail', alignRight: false },
   { id: 'contact', label: 'Contact Number', alignRight: false },
+  { id: 'deliveryAddress', label: 'Delivery Address', alignRight: false },
   { id: '' },
   { id: 'createdAt', label: 'Created At', alignRight: false  },
 ];
@@ -88,7 +90,7 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.firstName.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -100,7 +102,7 @@ export default function Customer() {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('firstName');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -144,18 +146,18 @@ export default function Customer() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = USERLIST.map((n) => n.firstName);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, firstName) => {
+    const selectedIndex = selected.indexOf(firstName);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, firstName);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -238,7 +240,7 @@ export default function Customer() {
           onClick={() => 
           openAddEditPopUp ({
               id: '',
-              name: '',
+              firstName: '',
               address: '',
               userEmail: '',
               contact: '',
@@ -278,31 +280,35 @@ export default function Customer() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, name, address, userEmail, contact, avatarUrl, isVerified, createdAt } = row;
-                    const selectedUser = selected.indexOf(name) !== -1;
+                    const { id, firstName, lastName,address, userEmail, contact, avatarUrl,deliveryAddress, isVerified, createdAt } = row;
+                    const selectedUser = selected.indexOf(firstName) !== -1;
 
                     return (
                       <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                         <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
+                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, firstName)} />
                         </TableCell>
 
-                        <TableCell align="left">{id}</TableCell>
+                        {/* <TableCell align="left">{id}</TableCell> */}
 
                         <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={name} src={avatarUrl} />
+                            <Avatar alt={firstName} src={avatarUrl} />
                             <Typography variant="subtitle2" noWrap>
-                              {name}
+                              {firstName}
                             </Typography>
                           </Stack>
                         </TableCell>
+
+                        <TableCell align="left">{lastName}</TableCell>
 
                         <TableCell align="left">{address}</TableCell>
 
                         <TableCell align="left">{userEmail}</TableCell>
 
                         <TableCell align="left">{contact}</TableCell>
+
+                        <TableCell align="left">{deliveryAddress}</TableCell>
 
                         {/* <TableCell align="left">
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
