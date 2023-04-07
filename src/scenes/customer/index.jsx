@@ -48,8 +48,10 @@ import {
   AddEditCustomerPopUp,
   CustomerListHead,
   CustomerListToolbar,
-  CustomerMoreMenu
+  CustomerMoreMenu,
 } from '../../sections/@dashboard/customer';
+
+import {  MoreMenu } from '../../sections/@dashboard/user/user'
 
 // ----------------------------------------------------------------------
 
@@ -115,6 +117,7 @@ export default function Customer() {
   const [customerList, setCustomerList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [permission, setPermission] = useState({});
+  const [user, setUser] = useState();
 
   const openAddEditPopUp = (data) => {
   setOpen((open) => (open = !open));
@@ -124,6 +127,10 @@ export default function Customer() {
   const openEditPopUp = (data) => {
     setEditOpen((editOpen) => (editOpen = !editOpen));
     setSelectedCustomerData(data);
+  };
+  const openDeletePopUp = (data) => {
+    setDeleteOpen((deleteOpen) => (deleteOpen = !deleteOpen));
+    setUser(data);
   };
 
   const handleDeleteClose = () => {
@@ -314,11 +321,22 @@ export default function Customer() {
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
                         </TableCell> */}
 
-                        <TableCell align="right">
-                          <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
-                            <Iconify icon={'eva:more-vertical-fill'} />
-                          </IconButton>
-                        </TableCell>
+<TableCell align="right">
+                     <MoreMenu
+                                onEditClick={() =>
+                                  openEditPopUp({
+                                    id,
+                                    firstName,
+                                    lastName,
+                                    address,
+                                    userEmail,
+                                    contact,
+                                    deliveryAddress
+                                  })
+                                }
+                                onDelete={() => openDeletePopUp(row)}
+                              />
+                      </TableCell>
 
                         <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
 
