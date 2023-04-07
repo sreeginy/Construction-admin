@@ -187,7 +187,7 @@ export default function Customer() {
   };
 
   useEffect(() => {
-    setPermission(getPermission(Constant.CUSTOMERPAGE));
+  //  setPermission(getPermission(Constant.CUSTOMERPAGE));
     setIsLoading(true);
     // getProjectList();
   }, []);

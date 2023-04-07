@@ -189,7 +189,7 @@ export default function Order() {
   };
 
   useEffect(() => {
-    setPermission(getPermission(Constant.ORDERPAGE));
+    // setPermission(getPermission(Constant.ORDERPAGE));
     setIsLoading(true);
     // getProjectList();
   }, []);
