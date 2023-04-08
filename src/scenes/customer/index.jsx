@@ -41,8 +41,11 @@ import Iconify from '../../components/iconify';
 
 // sections
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
-import USERLIST from '../../_mock/customer';
-
+// import USERLIST from '../../_mock/customer';
+// Api Call
+import apiClient from '../../api/apiClient';
+import headers from '../../api/apiHeader';
+import apiHandleError from '../../api/apiHandleError';
 
 import {
   AddEditCustomerPopUp,
@@ -60,8 +63,8 @@ const TABLE_HEAD = [
   { id: 'firstName', label: 'First Name', alignRight: false },
   { id: 'lastName', label: 'Last Name ', alignRight: false },
   { id: 'address', label: 'Address', alignRight: false },
-  { id: 'userEmail', label: 'E-mail', alignRight: false },
-  { id: 'contact', label: 'Contact Number', alignRight: false },
+  { id: 'email', label: 'E-mail', alignRight: false },
+  { id: 'contactNo', label: 'Contact Number', alignRight: false },
   { id: 'deliveryAddress', label: 'Delivery Address', alignRight: false },
   { id: '' },
   { id: 'createdAt', label: 'Created At', alignRight: false  },
@@ -118,6 +121,7 @@ export default function Customer() {
   const [isLoading, setIsLoading] = useState(false);
   const [permission, setPermission] = useState({});
   const [user, setUser] = useState();
+  // const [userList, setUserList] = useState([]);
 
   const openAddEditPopUp = (data) => {
   setOpen((open) => (open = !open));
@@ -153,7 +157,7 @@ export default function Customer() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.firstName);
+      const newSelecteds = customerList.map((n) => n.firstName);
       setSelected(newSelecteds);
       return;
     }
@@ -195,11 +199,38 @@ export default function Customer() {
 
   };
 
+    const getCustomerList = async () => {
+    try {
+      const response = await apiClient.get('/customers/all', {
+        headers: headers()
+      });
+
+      if (response.status === 200) {
+        if (response.data.status === 1000) {
+          setCustomerList(response.data.data);
+        }
+        // setUserList(response.data);
+        setIsLoading(false);
+      } else {
+        apiHandleError(response);
+      }
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
   useEffect(() => {
   //  setPermission(getPermission(Constant.CUSTOMERPAGE));
     setIsLoading(true);
-    // getProjectList();
+     getCustomerList();
   }, []);
+
+
+  const handleSuccess = () => {
+    getCustomerList();
+  };
 
   const handleDelete = async () => {
     try {
@@ -220,9 +251,9 @@ export default function Customer() {
   };
 
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - customerList.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(customerList, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
   const notifySuccess = (msg) => toast.success(msg, messageStyle);
@@ -249,7 +280,7 @@ export default function Customer() {
               id: '',
               firstName: '',
               address: '',
-              userEmail: '',
+              email: '',
               contact: '',
              })
            }
@@ -280,14 +311,14 @@ export default function Customer() {
                   order={order}
                   orderBy={orderBy}
                   headLabel={TABLE_HEAD}
-                  rowCount={USERLIST.length}
+                  rowCount={customerList.length}
                   numSelected={selected.length}
                   onRequestSort={handleRequestSort}
                   onSelectAllClick={handleSelectAllClick}
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, firstName, lastName,address, userEmail, contact, avatarUrl,deliveryAddress, isVerified, createdAt } = row;
+                    const { id, firstName, lastName,address, email, contactNo, avatarUrl,deliveryAddress, isVerified, createdAt } = row;
                     const selectedUser = selected.indexOf(firstName) !== -1;
 
                     return (
@@ -311,9 +342,9 @@ export default function Customer() {
 
                         <TableCell align="left">{address}</TableCell>
 
-                        <TableCell align="left">{userEmail}</TableCell>
+                        <TableCell align="left">{email}</TableCell>
 
-                        <TableCell align="left">{contact}</TableCell>
+                        <TableCell align="left">{contactNo}</TableCell>
 
                         <TableCell align="left">{deliveryAddress}</TableCell>
 
@@ -329,8 +360,8 @@ export default function Customer() {
                                     firstName,
                                     lastName,
                                     address,
-                                    userEmail,
-                                    contact,
+                                    email,
+                                    contactNo,
                                     deliveryAddress
                                   })
                                 }
@@ -380,7 +411,7 @@ export default function Customer() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={customerList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

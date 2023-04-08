@@ -34,7 +34,8 @@ AddEditCustomerPopUp.propTypes = {
 export default function AddEditCustomerPopUp(props) {
     const { data, onClose, onSuccess} = props;
     const [roleData, setRoleData] = React.useState(data);
-    const { id, firstName,lastName, address, userEmail, contact,deliveryAddress } = roleData;
+    const [roleId, setRoleId] = React.useState('');
+    const { id, firstName,lastName, address, email, contactNo,deliveryAddress } = roleData;
     const [projectNameList, setProjectStatusList] = React.useState([]);
     const [userData, setUserData] = React.useState({
       firstName: data.firstName,
@@ -55,8 +56,8 @@ const AddSchema = yup.object().shape({
     firstName: yup.string().required("required"),
     lastName: yup.string().required("required"),
     address: yup.string().required("required"),
-    userEmail: yup.string().email("invalid email").required("required"),
-    contact: yup.string().required("required"),
+    email: yup.string().email("invalid email").required("required"),
+    contactNo: yup.string().required("required"),
     deliveryAddress: yup.string().required("required"),
 });
 
@@ -65,8 +66,8 @@ const formik = useFormik({
       firstName: userData.firstName,
       lastName: userData.lastName,
       address: userData.address,
-      userEmail: userData.userEmail,
-      contact: userData.contact,
+      email: userData.email,
+      contactNo: userData.contactNo,
       deliveryAddress: userData.deliveryAddress,
     },
     validationSchema: AddSchema,
@@ -75,6 +76,10 @@ const formik = useFormik({
       console.log(rawData);
     }
   });
+
+  const setDropDownValue = (value) => {
+    setRoleId(value);
+  };
 
 //   const initialValues = {
 //     id: "",
@@ -118,8 +123,8 @@ const formik = useFormik({
     firstName: formik.values.firstName,
     lastName: formik.values.lastName,
     address: formik.values.address,
-    userEmail: formik.values.userEmail,
-    contact: formik.values.contact,
+    email: formik.values.email,
+    contactNo: formik.values.contactNo,
     deliveryAddress: formik.values.deliveryAddress
   };
 
@@ -220,9 +225,9 @@ const formik = useFormik({
                       fullWidth
                       id="outlined-basic"
                       label="Email"
-                      {...getFieldProps('userEmail')}
-                      error={Boolean(touched.userEmail && errors.userEmail)}
-                      helperText={touched.userEmail && errors.userEmail}
+                      {...getFieldProps('email')}
+                      error={Boolean(touched.email && errors.email)}
+                      helperText={touched.email && errors.email}
                     />
                   </Grid>
                   <Grid item xs={12} >
@@ -230,9 +235,9 @@ const formik = useFormik({
                       fullWidth
                       id="outlined-basic"
                       label="Contact No"
-                      {...getFieldProps('contact')}
-                      error={Boolean(touched.contact && errors.contact)}
-                      helperText={touched.contact && errors.contact}
+                      {...getFieldProps('contactNo')}
+                      error={Boolean(touched.contactNo && errors.contactNo)}
+                      helperText={touched.contactNo && errors.contactNo}
                     />
                   </Grid>
                   <Grid item xs={12} >
@@ -259,11 +264,7 @@ const formik = useFormik({
                     </Button> */}
                   </DialogActions>
 
-
                 </Grid>
-
-
-
               </Form>
             </FormikProvider>
           </div>
