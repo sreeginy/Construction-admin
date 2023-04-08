@@ -10,6 +10,7 @@ import PropTypes from 'prop-types';
 import DialogContent from '@mui/material/DialogContent';
 import DialogActions from '@mui/material/DialogActions';
 import { LoadingButton } from '@mui/lab';
+import DialogTitle from '@mui/material/DialogTitle';
 
 // Api Call
 import apiClient from '../../../api/apiClient';
@@ -27,28 +28,31 @@ AddEditCustomerPopUp.propTypes = {
     data: PropTypes.object,
     title: PropTypes.string,
     code: PropTypes.string,
-    name: PropTypes.string
+    name: PropTypes.string,
+    onSuccess: PropTypes.func,
   };
 
 
 export default function AddEditCustomerPopUp(props) {
-    const { data, onClose, onSuccess} = props;
-    const [roleData, setRoleData] = React.useState(data);
+  const { data, onClose, onAdd, isEdit, onSuccess } = props;
+// const [roleData, setRoleData] = React.useState(data);
     const [roleId, setRoleId] = React.useState('');
-    const { id, firstName,lastName, address, email, contactNo,deliveryAddress } = roleData;
+//  const { id, firstName,lastName, address, email, contactNo,deliveryAddress } = roleData;
     const [projectNameList, setProjectStatusList] = React.useState([]);
-    const [userData, setUserData] = React.useState({
+    const [customerData, setCustomerData] = React.useState({
       firstName: data.firstName,
       lastName: data.lastName,
-      email: data.email
+      address: data.address,
+      email: data.email,
+      contactNo: data.contactNo,
+      deliveryAddress: data.deliveryAddress,
     });
 
     React.useEffect(() => {
       // getRolesList();
     }, []);
 
-    const notifySuccess = (msg) => toast.success(msg, messageStyle);
-    const notifyError = (msg) => toast.error(msg, messageStyle);
+  
 
 
 const AddSchema = yup.object().shape({
@@ -63,23 +67,36 @@ const AddSchema = yup.object().shape({
 
 const formik = useFormik({
     initialValues: {
-      firstName: userData.firstName,
-      lastName: userData.lastName,
-      address: userData.address,
-      email: userData.email,
-      contactNo: userData.contactNo,
-      deliveryAddress: userData.deliveryAddress,
+      firstName: data.firstName,
+      lastName: data.lastName,
+      address: data.address,
+      email: data.email,
+      contactNo: data.contactNo,
+      deliveryAddress: data.deliveryAddress,
     },
     validationSchema: AddSchema,
     onSubmit: () => {
+      console.log("submitted");
       addNewCustomer();
-      console.log(rawData);
     }
   });
 
-  const setDropDownValue = (value) => {
-    setRoleId(value);
+  const rawData = {
+    firstName: formik.values.firstName,
+    lastName: formik.values.lastName,
+    address: formik.values.address,
+    email: formik.values.email,
+    contactNo: formik.values.contactNo,
+    deliveryAddress: formik.values.deliveryAddress
   };
+
+  const notifySuccess = (msg) => toast.success(msg, messageStyle);
+  const notifyError = (msg) => toast.error(msg, messageStyle);
+
+
+  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps, setFieldValue } =
+  formik;
+
 
 //   const initialValues = {
 //     id: "",
@@ -108,9 +125,11 @@ const formik = useFormik({
           onSuccess();
           onClose();
         } else {
+          formik.isSubmitting = false
           notifyError(response.data.message);
         }
       } else {
+        formik.isSubmitting = false
         apiHandleError(response);
       }
       console.log(response);
@@ -119,13 +138,30 @@ const formik = useFormik({
     }
   };
 
-  const rawData = {
-    firstName: formik.values.firstName,
-    lastName: formik.values.lastName,
-    address: formik.values.address,
-    email: formik.values.email,
-    contactNo: formik.values.contactNo,
-    deliveryAddress: formik.values.deliveryAddress
+
+  // Update customer Api
+  const updateCustomer = async (id) => {
+    // try {
+    //   const response = await apiClient.post(`customers/update/${id}`, rawData, {
+    //     headers: headers()
+    //   });
+
+    //   if (response.status === 200) {
+    //     if (response.data.status === 1000) {
+    //       notifySuccess(response.data.message);
+    //     onSuccess();
+    //     onClose();
+    //     } else {
+    //       notifyError(response.data.message);
+    //     }
+      
+    //   } else {
+    //     apiHandleError(response);
+    //   }
+    //   console.log(response);
+    // } catch (error) {
+    //   console.log(error);
+    // }
   };
 
     // const addNewCustomer = async (rawData) => {
@@ -164,8 +200,7 @@ const formik = useFormik({
     //   }
     // };
     
-    const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps, setFieldValue } =
-    formik;
+
 
     return (
     
@@ -178,6 +213,10 @@ const formik = useFormik({
         aria-labelledby="responsive-dialog-title"
 
       >
+
+<DialogTitle id="responsive-dialog-title">
+          {data.firstName !== '' ? 'Edit Customer' : 'Add Customer'}
+        </DialogTitle>
         <Grid marginLeft={5} marginRight={5} marginTop={3} marginBottom={2}>
 
           <Header
@@ -256,12 +295,32 @@ const formik = useFormik({
                     <Button variant="outlined" autoFocus onClick={onClose} color={"info"}>
                       Close
                     </Button>
-                    <LoadingButton size="medium" type="submit" variant="contained" loading={isSubmitting}>
+                    {/* <LoadingButton size="medium" type="submit" variant="contained" loading={isSubmitting}>
                 Create
-              </LoadingButton>
+              </LoadingButton> */}
                     {/* <Button type="submit" variant="contained" autoFocus color={"info"}>
                       {id !== '' ? 'Edit' : 'Add Customer'}
                     </Button> */}
+
+{data.firstName !== '' ? (
+                <LoadingButton
+                  onClick={() => updateCustomer(data?.id)}
+                  size="medium"
+                  variant="contained"
+                  loading={isSubmitting}
+                >
+                  Save
+                </LoadingButton>
+              ) : (
+                <LoadingButton
+                  size="medium"
+                  type="submit"
+                  variant="contained"
+                  loading={isSubmitting}
+                >
+                  Create
+                </LoadingButton>
+              )}
                   </DialogActions>
 
                 </Grid>

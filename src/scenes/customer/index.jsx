@@ -120,21 +120,27 @@ export default function Customer() {
   const [customerList, setCustomerList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [permission, setPermission] = useState({});
-  const [user, setUser] = useState();
+  const [customer, setCustomer] = useState();
   // const [userList, setUserList] = useState([]);
+  const [selectedData, setselectedData] = useState();
 
   const openAddEditPopUp = (data) => {
-  setOpen((open) => (open = !open));
-  setSelectedCustomerData(data);
+    setOpen((open) => (open = !open));
+    setselectedData(data);
   };
 
+  // const openAddEditPopUp = (data) => {
+  //   setOpen((open) => (open = !open));
+  //   setCustomer(data);
+  // };
+
   const openEditPopUp = (data) => {
-    setEditOpen((editOpen) => (editOpen = !editOpen));
-    setSelectedCustomerData(data);
+    setOpen((open) => (open = !open));
+    setCustomer(data);
   };
   const openDeletePopUp = (data) => {
     setDeleteOpen((deleteOpen) => (deleteOpen = !deleteOpen));
-    setUser(data);
+    setCustomer(data);
   };
 
   const handleDeleteClose = () => {
@@ -223,7 +229,7 @@ export default function Customer() {
 
   useEffect(() => {
   //  setPermission(getPermission(Constant.CUSTOMERPAGE));
-    setIsLoading(true);
+    // setIsLoading(true);
      getCustomerList();
   }, []);
 
@@ -271,28 +277,32 @@ export default function Customer() {
           </Typography>
           {/* <Typography  alignItems="center">Create a New User Profile</Typography>  */}
            {/* {permission?.read && ( */}
+           {true && (
           <Button 
           // color="info" 
           variant="contained" 
           startIcon={<Iconify icon="eva:plus-fill" />}
           onClick={() => 
           openAddEditPopUp ({
-              id: '',
+            
               firstName: '',
+              lastName: '',
               address: '',
               email: '',
-              contact: '',
+              contactNo: '',
+              deliveryAddress: '',
              })
            }
           >
             Add New Customer
           </Button>
-
+     )}
         {/* )}    */}
         </Stack>
 
         {open ? (
-          <AddEditCustomerPopUp onClose={handleClose} data={selectedCustomerData} />
+          <AddEditCustomerPopUp onClose={handleClose}   data={selectedData}
+          onSuccess={getCustomerList} /> 
         ) : (
           ''
         )}
