@@ -6,7 +6,6 @@ import Header from "../../components/Header";
 import DeleteDialogPopUp from '../../components/DialogPopUp';
 import messageStyle from '../../components/toast/toastStyle';
 
-
 import { Constant } from '../../utils/Constant';
 import { getPermission } from '../../utils/PermissionUtil';
 import moment from 'moment';
@@ -42,6 +41,7 @@ import Iconify from '../../components/iconify';
 // sections
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 // import USERLIST from '../../_mock/customer';
+
 // Api Call
 import apiClient from '../../api/apiClient';
 import headers from '../../api/apiHeader';
@@ -54,7 +54,7 @@ import {
   CustomerMoreMenu,
 } from '../../sections/@dashboard/customer';
 
-import {  MoreMenu } from '../../sections/@dashboard/user/user'
+import { MoreMenu } from '../../sections/@dashboard/user/user'
 
 // ----------------------------------------------------------------------
 
@@ -67,7 +67,7 @@ const TABLE_HEAD = [
   { id: 'contactNo', label: 'Contact Number', alignRight: false },
   { id: 'deliveryAddress', label: 'Delivery Address', alignRight: false },
   { id: '' },
-  { id: 'createdAt', label: 'Created At', alignRight: false  },
+  { id: 'createdAt', label: 'Created At', alignRight: false },
 ];
 
 
@@ -100,10 +100,9 @@ function applySortFilter(array, comparator, query) {
   return stabilizedThis.map((el) => el[0]);
 }
 
-// export default function Project() {
 
 export default function Customer() {
- 
+
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
@@ -122,11 +121,7 @@ export default function Customer() {
   const [isLoading, setIsLoading] = useState(false);
   const [permission, setPermission] = useState({});
   const [customer, setCustomer] = useState();
-  // const [userList, setUserList] = useState([]);
   const [selectedData, setselectedData] = useState();
-
-
-
 
 
   const notifySuccess = (msg) => toast.success(msg, messageStyle);
@@ -204,18 +199,18 @@ export default function Customer() {
 
   const handleClose = () => {
     setOpen(false);
-   // getProjectList();
+    // getProjectList();
 
   };
 
   useEffect(() => {
     //  setPermission(getPermission(Constant.CUSTOMERPAGE));
-      // setIsLoading(true);
-       getCustomerList();
-    }, []);
+    // setIsLoading(true);
+    getCustomerList();
+  }, []);
 
 
-    const getCustomerList = async () => {
+  const getCustomerList = async () => {
     try {
       const response = await apiClient.get('customers/all', {
         headers: headers()
@@ -277,80 +272,80 @@ export default function Customer() {
     <>
 
 
-      <Container  maxWidth="xl">
+      <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom >
             CUSTOMER &nbsp; LIST
           </Typography>
           {/* <Typography  alignItems="center">Create a New User Profile</Typography>  */}
-           {/* {permission?.read && ( */}
-           {true && (
-          <Button 
-          // color="info" 
-          variant="contained" 
-          startIcon={<Iconify icon="eva:plus-fill" />}
-          onClick={() => 
-          openAddEditPopUp ({
-            
-              firstName: '',
-              lastName: '',
-              address: '',
-              email: '',
-              contactNo: '',
-              deliveryAddress: '',
-              password: '',
-             })
-           }
-          >
-            Add New Customer
-          </Button>
-     )}
-        {/* )}    */}
+          {/* {permission?.read && ( */}
+          {true && (
+            <Button
+              // color="info" 
+              variant="contained"
+              startIcon={<Iconify icon="eva:plus-fill" />}
+              onClick={() =>
+                openAddEditPopUp({
+
+                  firstName: '',
+                  lastName: '',
+                  address: '',
+                  email: '',
+                  contactNo: '',
+                  deliveryAddress: '',
+                  password: '',
+                })
+              }
+            >
+              Add New Customer
+            </Button>
+          )}
+          {/* )}    */}
         </Stack>
 
         {open ? (
-          <AddEditCustomerPopUp onClose={handleClose}   data={selectedData}
-          onSuccess={getCustomerList} /> 
+          <AddEditCustomerPopUp onClose={handleClose} data={selectedData}
+            onSuccess={getCustomerList} />
         ) : (
           ''
         )}
-          {deleteOpen ? (
+        {deleteOpen ? (
           <DeleteDialogPopUp
-          onClose={handleDeleteClose}
-          onDelete={() => deleteCustomer(customer.id) }
-           />
+            onClose={handleDeleteClose}
+            onDelete={() => deleteCustomer(customer.id)}
+          />
         ) : (
           ''
         )}
         <Card>
           <CustomerListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-          
 
-            <TableContainer sx={{ minWidth: 800 }}>
-              <Table>
-                <CustomerListHead
-                  order={order}
-                  orderBy={orderBy}
-                  headLabel={TABLE_HEAD}
-                  rowCount={customerList.length}
-                  numSelected={selected.length}
-                  onRequestSort={handleRequestSort}
-                  onSelectAllClick={handleSelectAllClick}
-                />
-                <TableBody>
-                  {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, firstName, lastName,address, email, contactNo, avatarUrl,deliveryAddress, isVerified,password, createdAt } = row;
-                    const selectedUser = selected.indexOf(firstName) !== -1;
 
-                    return (
-                      <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
-                        <TableCell padding="checkbox">
-                          <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, firstName)} />
-                        </TableCell>
+          <TableContainer sx={{ minWidth: 800 }}>
+            <Table>
+              <CustomerListHead
+                order={order}
+                orderBy={orderBy}
+                headLabel={TABLE_HEAD}
+                rowCount={customerList.length}
+                numSelected={selected.length}
+                onRequestSort={handleRequestSort}
+                onSelectAllClick={handleSelectAllClick}
+              />
+              <TableBody>
+                {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
+                  const { id, firstName, lastName, address, email, contactNo, avatarUrl, deliveryAddress, isVerified, password, createdAt } = row;
+                  const selectedUser = selected.indexOf(firstName) !== -1;
 
-                        {/* <TableCell align="left">{id}</TableCell> */}
+                  return (
+                    <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
+                      <TableCell padding="checkbox">
+                        <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, firstName)} />
+                      </TableCell>
 
-                        {/* <TableCell component="th" scope="row" padding="none">
+                      {/* <TableCell align="left">{id}</TableCell> */}
+
+                      {/* <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
                             <Avatar alt={firstName} src={avatarUrl} />
                             <Typography variant="subtitle2" noWrap>
@@ -358,72 +353,72 @@ export default function Customer() {
                             </Typography>
                           </Stack>
                         </TableCell> */}
-                          <TableCell align="left">{firstName}</TableCell>
+                      <TableCell align="left">{firstName}</TableCell>
 
-                        <TableCell align="left">{lastName}</TableCell>
+                      <TableCell align="left">{lastName}</TableCell>
 
-                        <TableCell align="left">{email}</TableCell>
+                      <TableCell align="left">{email}</TableCell>
 
-                        <TableCell align="left">{address}</TableCell>
+                      <TableCell align="left">{address}</TableCell>
 
-                        <TableCell align="left">{deliveryAddress}</TableCell>
+                      <TableCell align="left">{deliveryAddress}</TableCell>
 
-                        <TableCell align="left">{password}</TableCell>
+                      <TableCell align="left">{password}</TableCell>
 
-                    
-                        <TableCell align="left">{contactNo}</TableCell>
 
-                        {/* <TableCell align="left">
+                      <TableCell align="left">{contactNo}</TableCell>
+
+                      {/* <TableCell align="left">
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
                         </TableCell> */}
 
-<TableCell align="right">
-                     <CustomerMoreMenu
-                                onEditClick={() =>
-                                  openAddEditPopUp(row)
-                                }
-                                onDelete={() => openDeletePopUp(row)}
-                              />
+                      <TableCell align="right">
+                        <CustomerMoreMenu
+                          onEditClick={() =>
+                            openAddEditPopUp(row)
+                          }
+                          onDelete={() => openDeletePopUp(row)}
+                        />
                       </TableCell>
 
-                        <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
+                      <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
 
-                      </TableRow>
-                    );
-                  })}
-                  {emptyRows > 0 && (
-                    <TableRow style={{ height: 53 * emptyRows }}>
-                      <TableCell colSpan={6} />
                     </TableRow>
-                  )}
-                </TableBody>
-
-                {isNotFound && (
-                  <TableBody>
-                    <TableRow>
-                      <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                        <Paper
-                          sx={{
-                            textAlign: 'center',
-                          }}
-                        >
-                          <Typography variant="h6" paragraph>
-                            Not found
-                          </Typography>
-
-                          <Typography variant="body2">
-                            No results found for &nbsp;
-                            <strong>&quot;{filterName}&quot;</strong>.
-                            <br /> Try checking for typos or using complete words.
-                          </Typography>
-                        </Paper>
-                      </TableCell>
-                    </TableRow>
-                  </TableBody>
+                  );
+                })}
+                {emptyRows > 0 && (
+                  <TableRow style={{ height: 53 * emptyRows }}>
+                    <TableCell colSpan={6} />
+                  </TableRow>
                 )}
-              </Table>
-            </TableContainer>
-  
+              </TableBody>
+
+              {isNotFound && (
+                <TableBody>
+                  <TableRow>
+                    <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
+                      <Paper
+                        sx={{
+                          textAlign: 'center',
+                        }}
+                      >
+                        <Typography variant="h6" paragraph>
+                          Not found
+                        </Typography>
+
+                        <Typography variant="body2">
+                          No results found for &nbsp;
+                          <strong>&quot;{filterName}&quot;</strong>.
+                          <br /> Try checking for typos or using complete words.
+                        </Typography>
+                      </Paper>
+                    </TableCell>
+                  </TableRow>
+                </TableBody>
+              )}
+            </Table>
+          </TableContainer>
+
 
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
@@ -436,7 +431,7 @@ export default function Customer() {
           />
         </Card>
       </Container>
-        
+
 
       {/* <Popover
         open={Boolean(open)}
