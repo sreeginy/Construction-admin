@@ -289,7 +289,8 @@ export default function User() {
         {open ? <AddUser onClose={handleClose} data={user} onSuccess={handleSuccess} /> : ''}
         {editOpen ? <EditUser onClose={handleEditClose} data={user} /> : ''}
         {deleteOpen ? (
-          <DeleteDialogPopUp onClose={handleDeleteClose} onDelete={() => deleteUser(user.id)} />
+          <DeleteDialogPopUp onClose={handleDeleteClose} 
+          onDelete={() => deleteUser(user.id)} />
         ) : (
           ''
         )}

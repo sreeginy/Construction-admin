@@ -12,18 +12,18 @@ CustomerMoreMenu.prototypes = {
   onDelete: PropTypes.func
 };
 
+
 export default function CustomerMoreMenu(props) {
-  const { onEditClick, onDelete, isRight, onRight, permission } = props;
+  const { onEditClick, onDelete, isRight, onRight } = props;
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-    <IconButton ref={ref} onClick={() => setIsOpen(true)}>
+      <IconButton ref={ref} onClick={() => setIsOpen(true)}>
         <Iconify icon="eva:more-vertical-fill" width={20} height={20} />
       </IconButton>
-
-      {(!permission?.delete && !permission?.update) || (
+      {(!true && !true) || (
         <Menu
           open={isOpen}
           anchorEl={ref.current}
@@ -34,7 +34,7 @@ export default function CustomerMoreMenu(props) {
           anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
-          {permission?.delete && (
+          {true && (
             <MenuItem
               sx={{ color: 'text.secondary' }}
               onClick={() => {
@@ -48,7 +48,8 @@ export default function CustomerMoreMenu(props) {
               <ListItemText primary="Delete" primaryTypographyProps={{ variant: 'body2' }} />
             </MenuItem>
           )}
-          {permission?.update && (
+
+          {true && (
             <MenuItem
               component={RouterLink}
               to="#"
@@ -86,3 +87,4 @@ export default function CustomerMoreMenu(props) {
     </>
   );
 }
+

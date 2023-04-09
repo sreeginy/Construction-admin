@@ -1,4 +1,4 @@
-import { Box, Button, TextField,  Dialog, Grid,
+import { Box, Button, TextField,  Dialog, Grid,  InputAdornment,  IconButton,
     FormControl,
     Autocomplete } from "@mui/material";
 import { Form, FormikProvider, useFormik } from 'formik';
@@ -20,7 +20,8 @@ import apiHandleError from '../../../api/apiHandleError';
 import { toast, ToastContainer } from 'react-toastify';
 // Toast
 import messageStyle from '../../../components/toast/toastStyle';
-
+// component
+import Iconify from '../../../components/iconify';
 
 // validation
 AddEditCustomerPopUp.propTypes = {
@@ -37,6 +38,7 @@ export default function AddEditCustomerPopUp(props) {
   const { data, onClose, onAdd, isEdit, onSuccess } = props;
 // const [roleData, setRoleData] = React.useState(data);
     const [roleId, setRoleId] = React.useState('');
+    const [showPassword, setShowPassword] = React.useState(false);
 //  const { id, firstName,lastName, address, email, contactNo,deliveryAddress } = roleData;
     const [projectNameList, setProjectStatusList] = React.useState([]);
     const [customerData, setCustomerData] = React.useState({
@@ -61,6 +63,7 @@ const AddSchema = yup.object().shape({
     lastName: yup.string().required("required"),
     address: yup.string().required("required"),
     email: yup.string().email("invalid email").required("required"),
+    password: yup.string().required('password is required'),
     contactNo: yup.string().required("required"),
     deliveryAddress: yup.string().required("required"),
 });
@@ -69,10 +72,12 @@ const formik = useFormik({
     initialValues: {
       firstName: data.firstName,
       lastName: data.lastName,
-      address: data.address,
       email: data.email,
-      contactNo: data.contactNo,
+      address: data.address,
       deliveryAddress: data.deliveryAddress,
+      contactNo: data.contactNo,
+      password: ''
+      
     },
     validationSchema: AddSchema,
     onSubmit: () => {
@@ -86,8 +91,14 @@ const formik = useFormik({
     lastName: formik.values.lastName,
     address: formik.values.address,
     email: formik.values.email,
+    password: formik.values.password,
     contactNo: formik.values.contactNo,
     deliveryAddress: formik.values.deliveryAddress
+  };
+
+  
+  const handleShowPassword = () => {
+    setShowPassword((show) => !show);
   };
 
   const notifySuccess = (msg) => toast.success(msg, messageStyle);
@@ -141,27 +152,27 @@ const formik = useFormik({
 
   // Update customer Api
   const updateCustomer = async (id) => {
-    // try {
-    //   const response = await apiClient.post(`customers/update/${id}`, rawData, {
-    //     headers: headers()
-    //   });
+    try {
+      const response = await apiClient.post(`customers/update/${id}`, rawData, {
+        headers: headers()
+      });
 
-    //   if (response.status === 200) {
-    //     if (response.data.status === 1000) {
-    //       notifySuccess(response.data.message);
-    //     onSuccess();
-    //     onClose();
-    //     } else {
-    //       notifyError(response.data.message);
-    //     }
+      if (response.status === 200) {
+        if (response.data.status === 1000) {
+          notifySuccess(response.data.message);
+        onSuccess();
+        onClose();
+        } else {
+          notifyError(response.data.message);
+        }
       
-    //   } else {
-    //     apiHandleError(response);
-    //   }
-    //   console.log(response);
-    // } catch (error) {
-    //   console.log(error);
-    // }
+      } else {
+        apiHandleError(response);
+      }
+      console.log(response);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
     // const addNewCustomer = async (rawData) => {
@@ -289,6 +300,27 @@ const formik = useFormik({
                       helperText={touched.deliveryAddress && errors.deliveryAddress}
                     />
                   </Grid>
+
+                  {data.firstName !== '' ? ' ' : <Box sx={({ pb: 3 }, { pt: 3 })}>
+                  <TextField
+                    fullWidth
+                    autoComplete="current-password"
+                    type={showPassword ? 'text' : 'password'}
+                    label="Password"
+                    {...getFieldProps('password')}
+                    InputProps={{
+                      endAdornment: (
+                        <InputAdornment position="end">
+                          <IconButton onClick={handleShowPassword} edge="end">
+                            <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
+                          </IconButton>
+                        </InputAdornment>
+                      )
+                    }}
+                    error={Boolean(touched.password && errors.password)}
+                    helperText={touched.password && errors.password}
+                  />
+                </Box>}
 
             
                   <DialogActions sx={{ mt: 3, marginLeft: 39 }}>

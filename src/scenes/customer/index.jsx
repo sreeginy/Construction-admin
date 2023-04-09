@@ -117,6 +117,7 @@ export default function Customer() {
   const [SelectedCustomerId, setSelectedCustomerId] = useState('');
   const [deleteOpen, setDeleteOpen] = useState(false);
 
+
   const [customerList, setCustomerList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [permission, setPermission] = useState({});
@@ -124,28 +125,30 @@ export default function Customer() {
   // const [userList, setUserList] = useState([]);
   const [selectedData, setselectedData] = useState();
 
+
+
+
+
+  const notifySuccess = (msg) => toast.success(msg, messageStyle);
+  const notifyError = (msg) => toast.error(msg, messageStyle);
+
   const openAddEditPopUp = (data) => {
     setOpen((open) => (open = !open));
     setselectedData(data);
   };
 
-  // const openAddEditPopUp = (data) => {
-  //   setOpen((open) => (open = !open));
-  //   setCustomer(data);
-  // };
-
   const openEditPopUp = (data) => {
     setOpen((open) => (open = !open));
-    setCustomer(data);
+    setselectedData(data);
   };
   const openDeletePopUp = (data) => {
     setDeleteOpen((deleteOpen) => (deleteOpen = !deleteOpen));
     setCustomer(data);
   };
-
   const handleDeleteClose = () => {
     setDeleteOpen(false);
   };
+
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -205,9 +208,16 @@ export default function Customer() {
 
   };
 
+  useEffect(() => {
+    //  setPermission(getPermission(Constant.CUSTOMERPAGE));
+      // setIsLoading(true);
+       getCustomerList();
+    }, []);
+
+
     const getCustomerList = async () => {
     try {
-      const response = await apiClient.get('/customers/all', {
+      const response = await apiClient.get('customers/all', {
         headers: headers()
       });
 
@@ -216,7 +226,7 @@ export default function Customer() {
           setCustomerList(response.data.data);
         }
         // setUserList(response.data);
-        setIsLoading(false);
+        // setIsLoading(false);
       } else {
         apiHandleError(response);
       }
@@ -227,31 +237,28 @@ export default function Customer() {
   };
 
 
-  useEffect(() => {
-  //  setPermission(getPermission(Constant.CUSTOMERPAGE));
-    // setIsLoading(true);
-     getCustomerList();
-  }, []);
-
-
   const handleSuccess = () => {
     getCustomerList();
   };
 
-  const handleDelete = async () => {
+  const deleteCustomer = async (id) => {
     try {
-      // const response = await apiClient.delete(`pitchtracker/${selectedPitchTrackerId}`, {
-      //   headers: headers()
-      // });
-      // if (response.status === 200) {
-      //   notifySuccess(response.statusText);
-      //   setDeleteOpen(false);
-      //   getPitchList();
-      // } else {
-      //   apiHandleError(response);
-      // }
-      // console.log(response);
+      const response = await apiClient.delete(`customers/delete/${id}`, {
+        headers: headers()
+      });
+      if (response.status === 200) {
+        if (response.data.status === 1000) {
+          notifySuccess(response.data.message);
+          handleDeleteClose();
+          getCustomerList();
+        }
+      } else {
+        apiHandleError(response);
+      }
+      console.log('post', response);
     } catch (error) {
+      setDeleteOpen(false);
+      notifyError('Customer has in order');
       console.log(error);
     }
   };
@@ -262,7 +269,7 @@ export default function Customer() {
   const filteredUsers = applySortFilter(customerList, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
-  const notifySuccess = (msg) => toast.success(msg, messageStyle);
+  // const notifySuccess = (msg) => toast.success(msg, messageStyle);
   const notifyFail = (msg) => toast.error(msg, messageStyle);
 
 
@@ -291,6 +298,7 @@ export default function Customer() {
               email: '',
               contactNo: '',
               deliveryAddress: '',
+              password: '',
              })
            }
           >
@@ -306,11 +314,14 @@ export default function Customer() {
         ) : (
           ''
         )}
-          {/* {deleteOpen ? (
-          <DeleteDialogPopUp onDelete={handleDelete} onClose={handleDeleteClose} />
+          {deleteOpen ? (
+          <DeleteDialogPopUp
+          onClose={handleDeleteClose}
+          onDelete={() => deleteCustomer(customer.id) }
+           />
         ) : (
           ''
-        )} */}
+        )}
         <Card>
           <CustomerListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
           
@@ -328,7 +339,7 @@ export default function Customer() {
                 />
                 <TableBody>
                   {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                    const { id, firstName, lastName,address, email, contactNo, avatarUrl,deliveryAddress, isVerified, createdAt } = row;
+                    const { id, firstName, lastName,address, email, contactNo, avatarUrl,deliveryAddress, isVerified,password, createdAt } = row;
                     const selectedUser = selected.indexOf(firstName) !== -1;
 
                     return (
@@ -339,41 +350,37 @@ export default function Customer() {
 
                         {/* <TableCell align="left">{id}</TableCell> */}
 
-                        <TableCell component="th" scope="row" padding="none">
+                        {/* <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
                             <Avatar alt={firstName} src={avatarUrl} />
                             <Typography variant="subtitle2" noWrap>
                               {firstName}
                             </Typography>
                           </Stack>
-                        </TableCell>
+                        </TableCell> */}
+                          <TableCell align="left">{firstName}</TableCell>
 
                         <TableCell align="left">{lastName}</TableCell>
 
-                        <TableCell align="left">{address}</TableCell>
-
                         <TableCell align="left">{email}</TableCell>
 
-                        <TableCell align="left">{contactNo}</TableCell>
+                        <TableCell align="left">{address}</TableCell>
 
                         <TableCell align="left">{deliveryAddress}</TableCell>
+
+                        <TableCell align="left">{password}</TableCell>
+
+                    
+                        <TableCell align="left">{contactNo}</TableCell>
 
                         {/* <TableCell align="left">
                           <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
                         </TableCell> */}
 
 <TableCell align="right">
-                     <MoreMenu
+                     <CustomerMoreMenu
                                 onEditClick={() =>
-                                  openEditPopUp({
-                                    id,
-                                    firstName,
-                                    lastName,
-                                    address,
-                                    email,
-                                    contactNo,
-                                    deliveryAddress
-                                  })
+                                  openAddEditPopUp(row)
                                 }
                                 onDelete={() => openDeletePopUp(row)}
                               />
