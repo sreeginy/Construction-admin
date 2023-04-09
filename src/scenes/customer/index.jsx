@@ -63,9 +63,10 @@ const TABLE_HEAD = [
   { id: 'firstName', label: 'First Name', alignRight: false },
   { id: 'lastName', label: 'Last Name ', alignRight: false },
   { id: 'address', label: 'Address', alignRight: false },
-  { id: 'email', label: 'E-mail', alignRight: false },
-  { id: 'contactNo', label: 'Contact Number', alignRight: false },
   { id: 'deliveryAddress', label: 'Delivery Address', alignRight: false },
+  { id: 'email', label: 'E-mail', alignRight: false },
+  { id: 'password', label: 'Password', alignRight: false },
+  { id: 'contactNo', label: 'Contact Number', alignRight: false },
   { id: '' },
   { id: 'createdAt', label: 'Created At', alignRight: false },
 ];
@@ -289,10 +290,11 @@ export default function Customer() {
                   firstName: '',
                   lastName: '',
                   address: '',
-                  email: '',
-                  contactNo: '',
                   deliveryAddress: '',
+                  email: '',
                   password: '',
+                  contactNo: '',
+        
                 })
               }
             >
@@ -356,14 +358,13 @@ export default function Customer() {
 
                       <TableCell align="left">{lastName}</TableCell>
 
-                      <TableCell align="left">{email}</TableCell>
-
                       <TableCell align="left">{address}</TableCell>
 
                       <TableCell align="left">{deliveryAddress}</TableCell>
 
-                      <TableCell align="left">{password}</TableCell>
+                      <TableCell align="left">{email}</TableCell>
 
+                      <TableCell align="left">{password}</TableCell>
 
                       <TableCell align="left">{contactNo}</TableCell>
 

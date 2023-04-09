@@ -305,15 +305,14 @@ export default function Product() {
           </Typography>
           {/* <Typography  alignItems="center">Create a New User Profile</Typography>  */}
           {/* {permission?.read && ( */}
+          {true && (
           <Button
             // color="info" 
             variant="contained"
             startIcon={<Iconify icon="eva:plus-fill" />}
             onClick={() =>
               openAddEditPopUp({
-                id: '',
                 productNo: '',
-                avatarUrl: '',
                 productName: '',
                 productType: '',
                 price: '',
@@ -324,6 +323,7 @@ export default function Product() {
           >
             Add Product
           </Button>
+              )}
 
             {/*  )}    */}
         </Stack>
@@ -333,11 +333,11 @@ export default function Product() {
         ) : (
           ''
         )}
-        {/* {deleteOpen ? (
-          <DeleteDialogPopUp onDelete={handleDelete} onClose={handleDeleteClose} />
+        {deleteOpen ? (
+          <DeleteDialogPopUp onDelete={handleClose} onClose={handleDeleteClose} />
         ) : (
           ''
-        )} */}
+        )}
         <Card>
           <ProductListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
@@ -410,7 +410,7 @@ export default function Product() {
                       <TableCell align="right">
                       <ProductMoreMenu
                                 permission={permission}
-                                onEditClick={() => handleOpenEdit(row)}
+                                onEditClick={() => openAddEditPopUp(row)}
                                 onDelete={() => openDeletePopUp(row)}
                                 onViewClick={() => openViewPopUp(row)}
                                 onImageClick={() => handleOpenImage(row)}

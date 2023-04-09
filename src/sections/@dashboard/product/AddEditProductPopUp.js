@@ -45,7 +45,7 @@ import Iconify from '../../../components/iconify';
 // validation
 AddEditOutgoingPopUp.propTypes = {
   onClose: PropTypes.func,
-  data: PropTypes.object,
+  data: PropTypes.object,  
   onSuccess: PropTypes.func,
   title: PropTypes.string
 };
@@ -53,32 +53,33 @@ AddEditOutgoingPopUp.propTypes = {
 export default function AddEditOutgoingPopUp(props) {
   const { data, onClose, onSuccess } = props;
   const [showPassword, setShowPassword] = React.useState(false);
+  const [statusId, setStatusId] = React.useState();
   const [partnersData, setPartnersData] = React.useState({
     name: data.name,
     cost: data.cost,
     duration: data.duration
   });
 
+
+
   // Validations
   const AddSchema = Yup.object().shape({
-    firstName: Yup.string().required('First name is required'),
-    lastName: Yup.string().required('Last name is required'),
-    address: Yup.string().required('Address is required'),
-    deliveryAddress: Yup.string().required('Delivery Address is required'),
-    email: Yup.string().required('Email is required'),
-    password:Yup.string().required('password is required'),
-    contactNo:Yup.number("Contact number must be number").required('Contact no is required'),
+    productNo: Yup.string().required("Product number is required"),
+    productName: Yup.string().required("Product name is required"),
+    productType: Yup.string().required("Product type is required"),
+    price: Yup.string().required("Product price is required"),
+    quantity: Yup.string().required("Product quantity is required"),
+    productStatus: Yup.string().required("Product status is required"),
   });
 
   const formik = useFormik({
     initialValues: {
-      firstName: data.firstName,
-      lastName: data.lastName,
-      address: data.address,
-      deliveryAddress: data.deliveryAddress,
-      email: data.email,
-      password: '',
-      contactNo: data.contactNo,
+      productNo: data.productNo,
+      productName: data.productName,
+      productType: data.productType,
+      price: data.price,
+      quantity: data.quantity,
+      productStatus: data.productStatus,
     },
     validationSchema: AddSchema,
     onSubmit: () => {
@@ -87,14 +88,16 @@ export default function AddEditOutgoingPopUp(props) {
     }
   });
 
+  const setDropDownValue = (value) => {
+    setStatusId(value);
+  };
   const rawData = {
-    firstName: formik.values.firstName,
-    lastName: formik.values.lastName,
-    address: formik.values.address,
-    deliveryAddress: formik.values.deliveryAddress,
-    email: formik.values.email,
-    password: formik.values.password,
-    contactNo: formik.values.contactNo,
+    productNo: formik.values.productNo,
+    productName: formik.values.productName,
+    productType: formik.values.productType,
+    price: formik.values.price,
+    quantity: formik.values.quantity,
+    productStatus: formik.values.productStatus,
   };
 
   const handleShowPassword = () => {
@@ -108,7 +111,7 @@ export default function AddEditOutgoingPopUp(props) {
   const addNewCustomer = async () => {
     try {
       
-      const response = await apiClient.post('customers/add', rawData, {
+      const response = await apiClient.post('product/add', rawData, {
         headers: headers()
       });
 
@@ -134,7 +137,7 @@ export default function AddEditOutgoingPopUp(props) {
   // Update customer Api
   const updateCustomer = async (id) => {
     try {
-      const response = await apiClient.post(`customers/update/${id}`, rawData, {
+      const response = await apiClient.post(`product/update/${id}`, rawData, {
         headers: headers()
       });
 
@@ -168,9 +171,9 @@ export default function AddEditOutgoingPopUp(props) {
         aria-labelledby="responsive-dialog-title"
       >
         <DialogTitle id="responsive-dialog-title"  pt={3} >
-          {data.firstName !== '' ? 'Edit Customer' : 'Add Customer'}
+          {data.productName !== '' ? 'Edit Product' : 'Add Product'}
           <Header
-            subtitle="Create a New Customers"
+            subtitle="Create a New Products"
           />
         </DialogTitle>
         <FormikProvider value={formik}>
@@ -181,82 +184,111 @@ export default function AddEditOutgoingPopUp(props) {
                   <TextField
                     fullWidth
                     id="outlined-basic"
-                    label="First Name"
-                    {...getFieldProps('firstName')}
-                    error={Boolean(touched.firstName && errors.firstName)}
-                    helperText={touched.firstName && errors.firstName}
+                    label="Product No"
+                    {...getFieldProps('productNo')}
+                    error={Boolean(touched.productNo && errors.productNo)}
+                    helperText={touched.productNo && errors.productNo}
                   />
                 </Box>
                 <Box sx={({ pb: 3 }, { pt: 3 })}>
                   <TextField
                     fullWidth
                     id="outlined-basic"
-                    label="Last Name"
-                    {...getFieldProps('lastName')}
-                    error={Boolean(touched.lastName && errors.lastName)}
-                    helperText={touched.lastName && errors.lastName}
+                    label="Product Name"
+                    {...getFieldProps('productName')}
+                    error={Boolean(touched.productName && errors.productName)}
+                    helperText={touched.productName && errors.productName}
+                  />
+                </Box>
+                <Box sx={({ pb: 3 }, { pt: 3 })}>
+                <FormControl fullWidth>
+                    <InputLabel
+                      id="demo-simple-select-label"
+                      error={Boolean(touched.productType && errors.productType)}
+                    >
+                      Product Type
+                    </InputLabel>
+                    <Select
+                      labelId="demo-simple-select-label"
+                      id="demo-simple-select"
+                      name="productType"
+                      label="productType"
+                      defaultValue=""
+                      {...getFieldProps('productType')}
+                      error={Boolean(touched.productType && errors.productType)}
+                    >
+                      <MenuItem
+                        key={0}
+                        value={'Cement' ?? ''}
+                        onClick={() => setDropDownValue('Cement')}
+                      >
+                        Cement
+                      </MenuItem>
+                      <MenuItem
+                        key={0}
+                        value={'Soil' ?? ''}
+                        onClick={() => setDropDownValue('Soil')}
+                      >
+                        Soil
+                      </MenuItem>
+                     
+                    </Select>
+                    <FormHelperText error={Boolean(touched.productType && errors.productType)}>
+                      {touched.productType && errors.productType}
+                    </FormHelperText>
+                  </FormControl>
+                  
+                </Box>
+                <Box sx={({ pb: 3 }, { pt: 3 })}>
+                  <TextField
+                    fullWidth
+                    id="outlined-basic"
+                    label="Price"
+                    {...getFieldProps('price')}
+                    error={Boolean(touched.price && errors.price)}
+                    helperText={touched.price && errors.price}
                   />
                 </Box>
                 <Box sx={({ pb: 3 }, { pt: 3 })}>
                   <TextField
                     fullWidth
                     id="outlined-basic"
-                    label="Address"
-                    {...getFieldProps('address')}
-                    error={Boolean(touched.address && errors.address)}
-                    helperText={touched.address && errors.address}
+                    label="Quantity"
+                    {...getFieldProps('quantity')}
+                    error={Boolean(touched.quantity && errors.quantity)}
+                    helperText={touched.quantity && errors.quantity}
                   />
                 </Box>
+               
                 <Box sx={({ pb: 3 }, { pt: 3 })}>
-                  <TextField
-                    fullWidth
-                    id="outlined-basic"
-                    label="Delivery Address"
-                    {...getFieldProps('deliveryAddress')}
-                    error={Boolean(touched.deliveryAddress && errors.deliveryAddress)}
-                    helperText={touched.deliveryAddress && errors.deliveryAddress}
-                  />
-                </Box>
-                <Box sx={({ pb: 3 }, { pt: 3 })}>
-                  <TextField
-                    fullWidth
-                    id="outlined-basic"
-                    label="Email"
-                    {...getFieldProps('email')}
-                    error={Boolean(touched.email && errors.email)}
-                    helperText={touched.email && errors.email}
-                  />
-                </Box>
-                {data.firstName !== '' ? ' ' : <Box sx={({ pb: 3 }, { pt: 3 })}>
-                  <TextField
-                    fullWidth
-                    autoComplete="current-password"
-                    type={showPassword ? 'text' : 'password'}
-                    label="Password"
-                    {...getFieldProps('password')}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton onClick={handleShowPassword} edge="end">
-                            <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                          </IconButton>
-                        </InputAdornment>
-                      )
-                    }}
-                    error={Boolean(touched.password && errors.password)}
-                    helperText={touched.password && errors.password}
-                  />
-                </Box>}
-                <Box sx={({ pb: 3 }, { pt: 3 })}>
-                  <TextField
-                    fullWidth
-                    type="number"
-                    id="outlined-basic"
-                    label="Contact No"
-                    {...getFieldProps('contactNo')}
-                    error={Boolean(touched.contactNo && errors.contactNo)}
-                    helperText={touched.contactNo && errors.contactNo}
-                  />
+                
+                    <FormControl fullWidth>
+                      <InputLabel
+                        id="demo-simple-select-label"
+                        error={Boolean(touched.productStatus && errors.productStatus)}
+                      >
+                        Product status
+                      </InputLabel>
+                      <Select
+                        labelId="demo-simple-select-label"
+                        id="demo-simple-select"
+                        label="Product Status"
+                        defaultValue=""
+                        {...getFieldProps('productStatus')}
+                        error={Boolean(touched.productStatus && errors.productStatus)}
+                      >
+                        <MenuItem key={0} value="Active" onClick={() => setDropDownValue('Active')}>
+                          Active
+                        </MenuItem>
+                        <MenuItem key={1} value="Banned" onClick={() => setDropDownValue('Banned')}>
+                          Banned
+                        </MenuItem>
+                      </Select>
+                      <FormHelperText error={Boolean(touched.productStatus && errors.productStatus)}>
+                        {touched.productStatus && errors.productStatus}
+                      </FormHelperText>
+                    </FormControl>
+                 
                 </Box>
                
                 
@@ -266,7 +298,7 @@ export default function AddEditOutgoingPopUp(props) {
               <Button variant="outlined" autoFocus onClick={onClose}>
                 Close
               </Button>
-              {data.firstName !== '' ? (
+              {data.productName !== '' ? (
                 <LoadingButton
                   onClick={() => updateCustomer(data?.id)}
                   size="medium"
