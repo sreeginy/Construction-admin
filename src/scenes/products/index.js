@@ -28,10 +28,10 @@ import messageStyle from '../../components/toast/toastStyle';
 import DeleteDialogPopUp from '../../components/DialogPopUp';
 
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
-import USERLIST from '../../_mock/product';
+
 import { useState, useEffect } from 'react';
 import { getPermission } from '../../utils/PermissionUtil';
-
+// import USERLIST from '../../_mock/customer';
 import {
   AddEditProductPopUp,
   ProductListHead,
@@ -110,6 +110,7 @@ export default function Product() {
   const [openAdd, setOpenAdd] = useState(false);
   const [openImage, setOpenImage] = useState(false);
   const [viewOpen, setViewOpen] = useState(false);
+  const [selectedData, setselectedData] = useState();
 
 
   const [productList, setProductList] = useState([]);
@@ -125,17 +126,21 @@ export default function Product() {
 
   const openAddEditPopUp = (data) => {
     setOpen((open) => (open = !open));
-    setSelectedProductData(data);
-
+    setselectedData(data);
   };
-
+  const openDeletePopUp = (data) => {
+    setDeleteOpen((deleteOpen) => (deleteOpen = !deleteOpen));
+    setselectedData(data);
+  };
   const openEditPopUp = (data) => {
     setEditOpen((editOpen) => (editOpen = !editOpen));
-    setSelectedProductData(data);
+    setselectedData(data);
   };
   const handleOpenAdd = () => {
     setOpenAdd(true);
   };
+
+
 
   const handleOpenEdit = (data) => {
     setProduct(data);
@@ -151,11 +156,7 @@ export default function Product() {
     setDeleteOpen(false);
   };
 
-  const openDeletePopUp = (data) => {
-    setProduct(data);
-    setDeleteOpen((deleteOpen) => (deleteOpen = !deleteOpen));
-  };
-  
+
   const openViewPopUp = (data) => {
     setViewOpen((viewOpen) => (viewOpen = !viewOpen));
     setProduct(data);
@@ -185,7 +186,7 @@ export default function Product() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.productName);
+      const newSelecteds = productList.map((n) => n.productName);
       setSelected(newSelecteds);
       return;
     }
@@ -229,18 +230,18 @@ export default function Product() {
 
   useEffect(() => {
     //  setPermission(getPermission(Constant.PRODUCT));
-    setIsLoading(true);
+    // setIsLoading(true);
     getProductList();
   }, []);
 
   const getProductList = async () => {
     try {
-      const response = await apiClient.get('products', {
+      const response = await apiClient.get('/product/all', {
         headers: headers()
       });
       if (response.status === 200) {
-        setProductList(response.data.products);
-        setIsLoading(false);
+        setProductList(response.data.data);
+        // setIsLoading(false);
       } else {
         apiHandleError(response);
       }
@@ -270,9 +271,9 @@ export default function Product() {
       }
     };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - productList.length) : 0;
 
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(productList, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
   const notifySuccess = (msg) => toast.success(msg, messageStyle);
@@ -329,12 +330,12 @@ export default function Product() {
         </Stack>
 
         {open ? (
-          <AddEditProductPopUp onClose={handleClose} data={selectedProductData} />
+          <AddEditProductPopUp onClose={handleClose} data={selectedData} />
         ) : (
           ''
         )}
         {deleteOpen ? (
-          <DeleteDialogPopUp onDelete={handleClose} onClose={handleDeleteClose} />
+          <DeleteDialogPopUp onDelete={handleClose} onClose={selectedData.id} />
         ) : (
           ''
         )}
@@ -348,7 +349,7 @@ export default function Product() {
                 order={order}
                 orderBy={orderBy}
                 headLabel={TABLE_HEAD}
-                rowCount={USERLIST.length}
+                rowCount={productList.length}
                 numSelected={selected.length}
                 onRequestSort={handleRequestSort}
                 onSelectAllClick={handleSelectAllClick}
@@ -458,7 +459,7 @@ export default function Product() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={productList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

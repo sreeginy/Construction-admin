@@ -111,7 +111,7 @@ export default function AddEditOutgoingPopUp(props) {
   const addNewCustomer = async () => {
     try {
       
-      const response = await apiClient.post('product/add', rawData, {
+      const response = await apiClient.post('/product/add', rawData, {
         headers: headers()
       });
 
@@ -135,7 +135,7 @@ export default function AddEditOutgoingPopUp(props) {
   };
 
   // Update customer Api
-  const updateCustomer = async (id) => {
+  const updateProduct = async (id) => {
     try {
       const response = await apiClient.post(`product/update/${id}`, rawData, {
         headers: headers()
@@ -300,7 +300,7 @@ export default function AddEditOutgoingPopUp(props) {
               </Button>
               {data.productName !== '' ? (
                 <LoadingButton
-                  onClick={() => updateCustomer(data?.id)}
+                  onClick={() => updateProduct(data?.id)}
                   size="medium"
                   variant="contained"
                   loading={isSubmitting}
