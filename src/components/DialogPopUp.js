@@ -94,28 +94,7 @@ export default function DeleteDialogPopUp(props) {
         <FormikProvider value={formik}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
             <DialogContent>
-              <div>
-                {/* <Box sx={({ pb: 3 }, { pt: 3 })}>
-                  <TextField
-                    fullWidth
-                    autoComplete="current-password"
-                    type={showPassword ? 'text' : 'password'}
-                    label="Password"
-                    {...getFieldProps('password')}
-                    InputProps={{
-                      endAdornment: (
-                        <InputAdornment position="end">
-                          <IconButton onClick={handleShowPassword} edge="end">
-                            <Iconify icon={showPassword ? 'eva:eye-fill' : 'eva:eye-off-fill'} />
-                          </IconButton>
-                        </InputAdornment>
-                      )
-                    }}
-                    error={Boolean(touched.password && errors.password)}
-                    helperText={touched.password && errors.password}
-                  />
-                </Box> */}
-              </div>
+
             </DialogContent>
             <DialogActions>
               <Button variant="outlined" autoFocus onClick={onClose}>

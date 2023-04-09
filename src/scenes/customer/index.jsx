@@ -138,12 +138,15 @@ export default function Customer() {
   };
   const openDeletePopUp = (data) => {
     setDeleteOpen((deleteOpen) => (deleteOpen = !deleteOpen));
-    setCustomer(data);
+    setselectedData(data);
   };
   const handleDeleteClose = () => {
     setDeleteOpen(false);
   };
-
+  const handleClose = () => {
+    console.log('close');
+    setOpen(false);
+  };
 
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
@@ -197,11 +200,7 @@ export default function Customer() {
     setFilterName(event.target.value);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-    // getProjectList();
 
-  };
 
   useEffect(() => {
     //  setPermission(getPermission(Constant.CUSTOMERPAGE));
@@ -312,7 +311,7 @@ export default function Customer() {
         {deleteOpen ? (
           <DeleteDialogPopUp
             onClose={handleDeleteClose}
-            onDelete={() => deleteCustomer(customer.id)}
+            onDelete={() => deleteCustomer(selectedData.id)}
           />
         ) : (
           ''
@@ -374,9 +373,7 @@ export default function Customer() {
 
                       <TableCell align="right">
                         <CustomerMoreMenu
-                          onEditClick={() =>
-                            openAddEditPopUp(row)
-                          }
+                          onEditClick={() => openAddEditPopUp(row) }
                           onDelete={() => openDeletePopUp(row)}
                         />
                       </TableCell>

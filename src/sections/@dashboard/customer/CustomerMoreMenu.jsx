@@ -1,4 +1,4 @@
-// material
+
 import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
@@ -7,6 +7,8 @@ import { Link as RouterLink } from 'react-router-dom';
 import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
+
+
 CustomerMoreMenu.prototypes = {
   onEditClick: PropTypes.func,
   onDelete: PropTypes.func
