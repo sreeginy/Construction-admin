@@ -79,7 +79,7 @@ export default function AddEditOutgoingPopUp(props) {
     validationSchema: AddSchema,
     onSubmit: () => {
       console.log("submitted")
-      addNewCustomer();
+      addNewMaterial();
     }
   });
 
@@ -97,10 +97,10 @@ export default function AddEditOutgoingPopUp(props) {
   const notifyError = (msg) => toast.error(msg, messageStyle);
   const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
 
-  const addNewCustomer = async () => {
+  const addNewMaterial = async () => {
     try {
       
-      const response = await apiClient.post('customers/add', rawData, {
+      const response = await apiClient.post('material/add', rawData, {
         headers: headers()
       });
 
@@ -124,9 +124,9 @@ export default function AddEditOutgoingPopUp(props) {
   };
 
   // Update customer Api
-  const updateCustomer = async (id) => {
+  const updateMaterial = async (id) => {
     try {
-      const response = await apiClient.post(`customers/update/${id}`, rawData, {
+      const response = await apiClient.post(`material/update/${id}`, rawData, {
         headers: headers()
       });
 
@@ -188,39 +188,39 @@ export default function AddEditOutgoingPopUp(props) {
                     >
                       <MenuItem
                         key={0}
-                        value={'design' ?? ''}
-                        onClick={() => setDropDownValue('design')}
+                        value={'Design & Drawings' ?? ''}
+                        onClick={() => setDropDownValue('Design & Drawings')}
                       >
                         Design & Drawings
                       </MenuItem>
                       <MenuItem
                         key={0}
-                        value={'architectual' ?? ''}
-                        onClick={() => setDropDownValue('architectual')}
+                        value={'Architectual Design' ?? ''}
+                        onClick={() => setDropDownValue('Architectual Design')}
                       >
                         Architectual Design
                       </MenuItem>
 
                       <MenuItem
                         key={0}
-                        value={'tilles' ?? ''}
-                        onClick={() => setDropDownValue('tilles')}
+                        value={'Flooring and Wall Tilling' ?? ''}
+                        onClick={() => setDropDownValue('Flooring and Wall Tilling')}
                       >
                         Flooring and Wall Tilling
                       </MenuItem>
 
                       <MenuItem
                         key={0}
-                        value={'wall' ?? ''}
-                        onClick={() => setDropDownValue('wall')}
+                        value={'Compound wall' ?? ''}
+                        onClick={() => setDropDownValue('Compound wall')}
                       >
                         Compound wall
                       </MenuItem>
 
                       <MenuItem
                         key={0}
-                        value={'incidentals' ?? ''}
-                        onClick={() => setDropDownValue('incidentals')}
+                        value={'Exclusions &incidentals' ?? ''}
+                        onClick={() => setDropDownValue('Exclusions & Incidentals')}
                       >
                         Exclusions & Incidentals
                       </MenuItem>
@@ -255,31 +255,31 @@ export default function AddEditOutgoingPopUp(props) {
                     >
                       <MenuItem
                         key={0}
-                        value={'essential' ?? ''}
-                        onClick={() => setDropDownValue('essential')}
+                        value={'ESSENTIAL' ?? ''}
+                        onClick={() => setDropDownValue('ESSENTIAL')}
                       >
                         ESSENTIAL
                       </MenuItem>
                       <MenuItem
                         key={0}
-                        value={'premium' ?? ''}
-                        onClick={() => setDropDownValue('premium')}
+                        value={'PREMIUM' ?? ''}
+                        onClick={() => setDropDownValue('PREMIUM')}
                       >
                         PREMIUM
                       </MenuItem>
 
                       <MenuItem
                         key={0}
-                        value={'luxurious' ?? ''}
-                        onClick={() => setDropDownValue('luxurious')}
+                        value={'LUXURIOUS' ?? ''}
+                        onClick={() => setDropDownValue('LUXURIOUS')}
                       >
                         LUXURIOUS
                       </MenuItem>
 
                       <MenuItem
                         key={0}
-                        value={'theOne' ?? ''}
-                        onClick={() => setDropDownValue('theOne')}
+                        value={'THE ONE' ?? ''}
+                        onClick={() => setDropDownValue('THE ONE')}
                       >
                         THE ONE
                       </MenuItem>
@@ -312,7 +312,7 @@ export default function AddEditOutgoingPopUp(props) {
               </Button>
               {data.name !== '' ? (
                 <LoadingButton
-                  onClick={() => updateCustomer(data?.id)}
+                  onClick={() => updateMaterial(data?.id)}
                   size="medium"
                   variant="contained"
                   loading={isSubmitting}

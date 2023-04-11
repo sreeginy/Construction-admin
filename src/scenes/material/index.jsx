@@ -62,7 +62,7 @@ const TABLE_HEAD = [
   { id: 'name', label: 'Material Name', alignRight: false },
   // { id: 'type', label: 'Material Type', alignRight: false },
   { id: 'packages', label: 'Material Package', alignRight: false },
-  { id: 'cost', label: 'Cost/per SqFt', alignRight: false },
+  { id: 'cost', label: 'Cost [per SqFt]', alignRight: false },
   // { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
   { id: 'createdAt', label: 'Created At', alignRight: false  },
@@ -209,7 +209,7 @@ export default function Customer() {
 
   const getMaterialList = async () => {
     try {
-      const response = await apiClient.get('customers/all', {
+      const response = await apiClient.get('material/all', {
         headers: headers()
       });
 
@@ -235,7 +235,7 @@ export default function Customer() {
 
   const deleteCustomer = async (id) => {
     try {
-      const response = await apiClient.delete(`customers/delete/${id}`, {
+      const response = await apiClient.delete(`material/delete/${id}`, {
         headers: headers()
       });
       if (response.status === 200) {
@@ -340,7 +340,7 @@ export default function Customer() {
 
                       <TableCell align="left">{packages}</TableCell>
 
-                      <TableCell align="left">{cost}/* SqFt</TableCell>
+                      <TableCell align="left">{cost} /* SqFt</TableCell>
 
                       <TableCell align="right">
                         <MaterialMoreMenu
