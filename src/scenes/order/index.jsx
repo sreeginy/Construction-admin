@@ -1,3 +1,4 @@
+import { Link as RouterLink } from 'react-router-dom';
 import { Box, TextField } from "@mui/material";
 import { Formik } from "formik";
 import * as yup from "yup";
@@ -14,6 +15,8 @@ import { filter } from 'lodash';
 import { useState, useEffect } from 'react';
 import { sentenceCase } from 'change-case';
 import { toast } from 'react-toastify';
+import SearchNotFound from '../../components/SearchNotFound';
+import AddOrder from '../../sections/@dashboard/order/AddOrder';
 
 import {
   Card,
@@ -37,29 +40,39 @@ import {
 import Label from '../../components/label';
 import Iconify from '../../components/iconify';
 
+// Api Call
+import apiClient from '../../api/apiClient';
+import headers from '../../api/apiHeader';
+import apiHandleError from '../../api/apiHandleError';
+
 // sections
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
-// mock
-import USERLIST from '../../_mock/order';
+// // mock
+// import USERLIST from '../../_mock/order';
 
 import {
   AddEditOrderPopUp,
   OrderListHead,
   OrderListToolbar,
-  OrderMoreMenu
+  OrderMoreMenu,
+  FullViewOrder,
+  ImageUpload,
+
 } from '../../sections/@dashboard/order';
+
+import ChangeStatus from '../../sections/@dashboard/order/ChangeStatus';
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
   { id: 'id', label: 'Order ID', alignRight: false },
-  { id: 'name', label: 'Customer Name', alignRight: false },
-  { id: 'productName', label: 'Products', alignRight: false },
-  { id: 'total', label: 'Total', alignRight: false },
-  { id: 'deliveryAddress', label: 'Delivery Address', alignRight: false },
-  { id: 'deliveryDate', label: 'Delivery Date', alignRight: false },
-  { id: 'contactNo', label: 'Contact Number', alignRight: false },
+  { id: 'customerName', label: 'Customer Name', alignRight: false },
+  { id: 'deliveryPartnerName', label: 'Delivery Partner', alignRight: false },
+  { id: 'products', label: 'Products', alignRight: false },
   { id: 'orderStatus', label: 'Order Status', alignRight: false },
+  { id: 'deliveryDate', label: 'Delivery Date', alignRight: false },
+  { id: 'deliveryAddress', label: 'Delivery Address', alignRight: false },
+  { id: 'total', label: 'Total', alignRight: false },
   { id: '' },
   { id: 'createdAt', label: 'Created_At', alignRight: false },
 ];
@@ -102,7 +115,7 @@ export default function Order() {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('customerName');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -111,10 +124,23 @@ export default function Order() {
   const [selectedOrderData, setSelectedOrderData] = useState();
   const [SelectedOrderId, setSelectedOrderId] = useState('');
   const [deleteOpen, setDeleteOpen] = useState(false);
+  const [openFilter, setOpenFilter] = useState(false);
+  const [openAdd, setOpenAdd] = useState(false);
+  const [openEdit, setOpenEdit] = useState(false);
 
-  const [projectList, setProjectList] = useState([]);
+  const [orderList, setOrderList] = useState([]);
+  const [orders, setOrders] = useState();
+  const [openImport, setOpenImport] = useState(false);
+  const [openImage, setOpenImage] = useState(false);
+
   const [isLoading, setIsLoading] = useState(false);
   const [permission, setPermission] = useState({});
+  const [openExport, setOpenExport] = useState(false);
+  const [viewOpen, setViewOpen] = useState(false);
+
+  const [libraryList, setLibraryList] = useState([]);
+
+
 
   const openAddEditPopUp = (data) => {
     setOpen((open) => (open = !open));
@@ -130,12 +156,78 @@ export default function Order() {
     setDeleteOpen(false);
   };
 
+  const handleOpenAdd = () => {
+    setOpenAdd(true);
+  };
+
+  
+  const handleOpenEdit = (data) => {
+    setOrders(data);
+    setOpenEdit(true);
+  };
+
+  const handleCloseEdit = () => {
+    setOrders();
+    setOpenEdit(false);
+  };
+
+  const openDeletePopUp = (data) => {
+    setOrders(data);
+    setDeleteOpen((deleteOpen) => (deleteOpen = !deleteOpen));
+  };
+
+
+  const handleAddClose = () => {
+    setOpenAdd(false);
+   
+  };
+
+  const openViewPopUp = (data) => {
+    setViewOpen((viewOpen) => (viewOpen = !viewOpen));
+    setOrders(data);
+  };
+
+  const handleViewClose = () => {
+    setViewOpen(false);
+  };
+
   const handleOpenMenu = (event) => {
     setOpen(event.currentTarget);
   };
 
   const handleCloseMenu = () => {
     setOpen(null);
+  };
+
+  const handleImportClose = () => {
+    setOpenImport(false);
+  };
+
+  const handleImageClose = () => {
+    setOpenImage(false);
+  };
+
+  /* API Import Library */
+  const importLibraryList = async (file) => {
+    const data = new FormData();
+    data.append('library_csv', file);
+    try {
+      const response = await apiClient.post('libraryimport', data, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+          Authorization: `Bearer ${localStorage.getItem('jwt-token')}`
+        }
+      });
+      if (response.status === 201) {
+        handleImportClose();
+        getOrderList();
+        notifySuccess(response.statusText);
+      } else {
+        apiHandleError(response);
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleRequestSort = (event, property) => {
@@ -146,18 +238,18 @@ export default function Order() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = USERLIST.map((n) => n.name);
+      const newSelecteds = orderList.map((n) => n.customerName);
       setSelected(newSelecteds);
       return;
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, customerName) => {
+    const selectedIndex = selected.indexOf(customerName);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, customerName);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -182,6 +274,7 @@ export default function Order() {
     setFilterName(event.target.value);
   };
 
+
   const handleClose = () => {
     setOpen(false);
     // getProjectList();
@@ -189,36 +282,57 @@ export default function Order() {
   };
 
   useEffect(() => {
-    // setPermission(getPermission(Constant.ORDERPAGE));
+    // setPermission(getPermission(Constant.LIBRARY));
     setIsLoading(true);
-    // getProjectList();
+    getOrderList();
   }, []);
 
-  const handleDelete = async () => {
+  /* API GET ALL Library */
+  const getOrderList = async () => {
     try {
-      // const response = await apiClient.delete(`pitchtracker/${selectedPitchTrackerId}`, {
-      //   headers: headers()
-      // });
-      // if (response.status === 200) {
-      //   notifySuccess(response.statusText);
-      //   setDeleteOpen(false);
-      //   getPitchList();
-      // } else {
-      //   apiHandleError(response);
-      // }
-      // console.log(response);
+      const response = await apiClient.get('orders/all', {
+        headers: headers()
+      });
+      if (response.status === 200) {
+        console.log(response.data.data);
+        setOrderList(response.data.data);
+        setIsLoading(false);
+      } else {
+        apiHandleError(response);
+      }
     } catch (error) {
       console.log(error);
     }
   };
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - USERLIST.length) : 0;
-  const filteredUsers = applySortFilter(USERLIST, getComparator(order, orderBy), filterName);
+  /* API Delete Country */
+  const deleteLibrary = async (id) => {
+    try {
+      const response = await apiClient.delete(`library/${id}`, {
+        headers: headers()
+      });
+      if (response.status === 200) {
+        notifySuccess(response.statusText);
+        handleDeleteClose();
+        getOrderList();
+      } else {
+        apiHandleError(response);
+      }
+      console.log('delete', response);
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+
+
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - orderList.length) : 0;
+  const filteredUsers = applySortFilter(orderList, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
   const notifySuccess = (msg) => toast.success(msg, messageStyle);
   const notifyFail = (msg) => toast.error(msg, messageStyle);
-
+  const isUserNotFound = filteredUsers.length === 0;
 
   return (
     <>
@@ -229,36 +343,43 @@ export default function Order() {
           <Typography variant="h4" gutterBottom >
             ORDER &nbsp; LIST
           </Typography>
-          {/* <Typography  alignItems="center">Create a New User Profile</Typography>  */}
-          {/* {permission?.read && ( */}
+          {true && (
           <Button
             // color="info" 
             variant="contained"
+            component={RouterLink}
             startIcon={<Iconify icon="eva:plus-fill" />}
-            onClick={() =>
-              openAddEditPopUp({
-                id: '',
-                name: '',
-                productName: '',
-                total: '',
-                deliveryAddress: '',
-                deliveryDate: '',
-                contactNo: '',
-                orderStatus: '',
-              })
-            }
+            onClick={handleOpenAdd}
+
           >
-            New Order
+            Create Order
           </Button>
 
-          {/* )}    */}
+)}
         </Stack>
 
-        {open ? (
-          <AddEditOrderPopUp onClose={handleClose} data={selectedOrderData} />
+        {openAdd ? (
+          <AddOrder onClose={handleAddClose} data={orders} onSuccess={getOrderList} />
         ) : (
           ''
         )}
+         {openEdit ? (
+          <ChangeStatus onClose={handleCloseEdit} data={orders}  />
+        ) : (
+          ''
+        )}
+    
+        {deleteOpen ? (
+          <DeleteDialogPopUp
+            onClose={handleDeleteClose}
+            onDelete={() => deleteLibrary(orders.id)}
+          />
+        ) : (
+          ''
+        )}
+       
+        {viewOpen ? <FullViewOrder onClose={handleViewClose} data={orders} /> : ''}
+
         {/* {deleteOpen ? (
           <DeleteDialogPopUp onDelete={handleDelete} onClose={handleDeleteClose} />
         ) : (
@@ -274,50 +395,54 @@ export default function Order() {
                 order={order}
                 orderBy={orderBy}
                 headLabel={TABLE_HEAD}
-                rowCount={USERLIST.length}
+                rowCount={orderList.length}
                 numSelected={selected.length}
                 onRequestSort={handleRequestSort}
                 onSelectAllClick={handleSelectAllClick}
               />
               <TableBody>
                 {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                  const { id, name, productName, total, deliveryDate, deliveryAddress, orderStatus, contactNo, createdAt, avatarUrl } = row;
-                  const selectedUser = selected.indexOf(name) !== -1;
-
+                  const { id, customerName, deliveryPartnerName, products, orderStatus, deliveryDate, deliveryAddress, createdAt, customer, partners, product } = row;
+                  const selectedUser = selected.indexOf(customerName) !== -1;
+                  const isItemSelected = selected.indexOf(id) !== -1;
+                  let total = 0;
+                  product.map((row) => (total += row.total));
                   return (
                     <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                       <TableCell padding="checkbox">
-                        <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
+                        <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, customerName)} />
                       </TableCell>
 
                       <TableCell align="left">{id}</TableCell>
-
-                      <TableCell component="th" scope="row" padding="none">
-                        <Stack direction="row" alignItems="center" spacing={2}>
-                          <Avatar alt={name} src={avatarUrl} />
-                          <Typography variant="subtitle2" noWrap>
-                            {name}
-                          </Typography>
-                        </Stack>
-                      </TableCell>
-
-                      <TableCell align="left">{productName}</TableCell>
-
-                      <TableCell align="left">{total}</TableCell>
-
-                      <TableCell align="left">{deliveryAddress}</TableCell>
-                      <TableCell align="left">{deliveryDate ? moment(deliveryDate).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
-
-                      <TableCell align="left">{contactNo}</TableCell>
-
-                      <TableCell align="left">
-                        <Label color={(orderStatus === 'process' && 'error') || 'success'}>{sentenceCase(orderStatus)}</Label>
-                      </TableCell>
+                            <TableCell align="left">
+                              {`${customer.firstName} ${customer.lastName}`}
+                            </TableCell>
+                            <TableCell align="left">{partners.name}</TableCell>
+                            <TableCell align="left">
+                              {product.map(
+                                (row) => `${row.product.productName} X ${`${row.quantity} `}`
+                              )}
+                            </TableCell>
+                            <TableCell align="left">{orderStatus.toString()}</TableCell>
+                            <TableCell align="left">
+                              {moment(createdAt, Constant.LISTDATEFORMAT)
+                                .add(partners.duration, 'days')
+                                .format(Constant.DATEONLYFORMAT)}
+                            </TableCell>
+                            <TableCell align="left">{customer.deliveryAddress}</TableCell>
+                            <TableCell align="left">{total}</TableCell>
 
                       <TableCell align="right">
-                        <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
+                        {/* <IconButton size="large" color="inherit" onClick={handleOpenMenu}>
                           <Iconify icon={'eva:more-vertical-fill'} />
-                        </IconButton>
+                        </IconButton> */}
+
+                        <OrderMoreMenu
+                                permission={permission}
+                                onEditClick={() => handleOpenEdit(row)}
+                                onDelete={() => openDeletePopUp(row)}
+                                onViewClick={() => openViewPopUp(row)}
+                              />
                       </TableCell>
 
                       <TableCell align="left">{createdAt ? moment(deliveryDate).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
@@ -330,30 +455,16 @@ export default function Order() {
                   </TableRow>
                 )}
               </TableBody>
-
-              {isNotFound && (
-                <TableBody>
-                  <TableRow>
-                    <TableCell align="center" colSpan={6} sx={{ py: 3 }}>
-                      <Paper
-                        sx={{
-                          textAlign: 'center',
-                        }}
-                      >
-                        <Typography variant="h6" paragraph>
-                          Not found
-                        </Typography>
-
-                        <Typography variant="body2">
-                          No results found for &nbsp;
-                          <strong>&quot;{filterName}&quot;</strong>.
-                          <br /> Try checking for typos or using complete words.
-                        </Typography>
-                      </Paper>
-                    </TableCell>
-                  </TableRow>
-                </TableBody>
-              )}
+              {isUserNotFound && (
+                    <TableBody>
+                      <TableRow>
+                        <TableCell align="center" colSpan={11} sx={{ py: 3 }}>
+                          <SearchNotFound searchQuery={filterName} />
+                        </TableCell>
+                      </TableRow>
+                    </TableBody>
+                  )}
+       
             </Table>
           </TableContainer>
 
@@ -361,7 +472,7 @@ export default function Order() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={USERLIST.length}
+            count={orderList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}

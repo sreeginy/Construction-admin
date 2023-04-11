@@ -9,13 +9,13 @@ import Iconify from '../../../components/iconify';
 // ----------------------------------------------------------------------
 
 
-MaterialMoreMenu.prototypes = {
+DeliveryMoreMenu.prototypes = {
   onEditClick: PropTypes.func,
   onDelete: PropTypes.func
 };
 
 
-export default function MaterialMoreMenu(props) {
+export default function DeliveryMoreMenu(props) {
   const { onEditClick, onDelete, isRight, onRight } = props;
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);

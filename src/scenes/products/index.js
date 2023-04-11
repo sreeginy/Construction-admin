@@ -397,10 +397,10 @@ export default function Product() {
                         </TableCell> */}
 
                       <TableCell align="left">{productType}</TableCell>
-                      <TableCell align="left">{price}</TableCell>
+                      <TableCell align="left">Rs {price} </TableCell>
 
 
-                      <TableCell align="left">{quantity}</TableCell>
+                      <TableCell align="left">{quantity} items</TableCell>
 
                       {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
 

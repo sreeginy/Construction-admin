@@ -48,24 +48,24 @@ import headers from '../../api/apiHeader';
 import apiHandleError from '../../api/apiHandleError';
 
 import {
-  AddEditMaterialPopUp,
-  MaterialListHead,
-  MaterialListToolbar,
-  MaterialMoreMenu,
-} from '../../sections/@dashboard/material';
+  AddEditDeliveryPopUp,
+  DeliveryListHead,
+  DeliveryListToolbar,
+  DeliveryMoreMenu,
+} from '../../sections/@dashboard/delivery';
 
 import { MoreMenu } from '../../sections/@dashboard/user/user'
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Material Name', alignRight: false },
-  // { id: 'type', label: 'Material Type', alignRight: false },
-  { id: 'packages', label: 'Material Package', alignRight: false },
-  { id: 'cost', label: 'Cost/per SqFt', alignRight: false },
-  // { id: 'status', label: 'Status', alignRight: false },
+  // { id: 'id', label: 'ID', alignRight: false },
+  { id: 'name', label: 'Delivery Partner Name', alignRight: false },
+  { id: 'cost', label: 'Cost ', alignRight: false },
+  { id: 'duration', label: 'duration', alignRight: false },
   { id: '' },
-  { id: 'createdAt', label: 'Created At', alignRight: false  },
+  { id: 'createdAt', label: 'Created At', alignRight: false },
+
 ];
 
 
@@ -115,7 +115,7 @@ export default function Customer() {
   const [deleteOpen, setDeleteOpen] = useState(false);
 
 
-  const [materialList, setMaterialList] = useState([]);
+  const [partnersList, setPartnersList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [permission, setPermission] = useState({});
   const [customer, setCustomer] = useState();
@@ -162,7 +162,7 @@ export default function Customer() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = materialList.map((n) => n.name);
+      const newSelecteds = partnersList.map((n) => n.name);
       setSelected(newSelecteds);
       return;
     }
@@ -203,19 +203,19 @@ export default function Customer() {
   useEffect(() => {
     //  setPermission(getPermission(Constant.CUSTOMERPAGE));
     // setIsLoading(true);
-    getMaterialList();
+    getPartnersList();
   }, []);
 
 
-  const getMaterialList = async () => {
+  const getPartnersList = async () => {
     try {
-      const response = await apiClient.get('customers/all', {
+      const response = await apiClient.get('partners/all', {
         headers: headers()
       });
 
       if (response.status === 200) {
         if (response.data.status === 1000) {
-          setMaterialList(response.data.data);
+          setPartnersList(response.data.data);
         }
         // setUserList(response.data);
         // setIsLoading(false);
@@ -230,19 +230,19 @@ export default function Customer() {
 
 
   const handleSuccess = () => {
-    getMaterialList();
+    getPartnersList();
   };
 
-  const deleteCustomer = async (id) => {
+  const deleteDelivery = async (id) => {
     try {
-      const response = await apiClient.delete(`customers/delete/${id}`, {
+      const response = await apiClient.delete(`partners/delete/${id}`, {
         headers: headers()
       });
       if (response.status === 200) {
         if (response.data.status === 1000) {
           notifySuccess(response.data.message);
           handleDeleteClose();
-          getMaterialList();
+          getPartnersList();
         }
       } else {
         apiHandleError(response);
@@ -256,9 +256,9 @@ export default function Customer() {
   };
 
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - materialList.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - partnersList.length) : 0;
 
-  const filteredUsers = applySortFilter(materialList, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(partnersList, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
   // const notifySuccess = (msg) => toast.success(msg, messageStyle);
@@ -272,9 +272,9 @@ export default function Customer() {
       <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom >
-          MATERIAL &nbsp; ITEMS
+          DELIVERY &nbsp; PARTNER &nbsp; LIST
           </Typography>
-          {/* <Typography  alignItems="center">Get clear ideas of what raw materials to be used to your home!</Typography>  */}
+          {/* <Typography  alignItems="center">Create a New User Profile</Typography>  */}
           {/* {permission?.read && ( */}
           {true && (
             <Button
@@ -285,49 +285,50 @@ export default function Customer() {
                 openAddEditPopUp({
 
                   name: '',
-                  package: '',
                   cost: '',
+                  duration: '',
+        
                 })
               }
             >
-              Add New Material
+              Add Delivery Partner
             </Button>
           )}
           {/* )}    */}
         </Stack>
 
         {open ? (
-          <AddEditMaterialPopUp onClose={handleClose} data={selectedData}
-            onSuccess={getMaterialList} />
+          <AddEditDeliveryPopUp onClose={handleClose} data={selectedData}
+            onSuccess={getPartnersList} />
         ) : (
           ''
         )}
         {deleteOpen ? (
           <DeleteDialogPopUp
             onClose={handleDeleteClose}
-            onDelete={() => deleteCustomer(selectedData.id)}
+            onDelete={() => deleteDelivery(selectedData.id)}
           />
         ) : (
           ''
         )}
         <Card>
-          <MaterialListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <DeliveryListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
 
           <TableContainer sx={{ minWidth: 800 }}>
             <Table>
-              <MaterialListHead
+              <DeliveryListHead
                 order={order}
                 orderBy={orderBy}
                 headLabel={TABLE_HEAD}
-                rowCount={materialList.length}
+                rowCount={partnersList.length}
                 numSelected={selected.length}
                 onRequestSort={handleRequestSort}
                 onSelectAllClick={handleSelectAllClick}
               />
               <TableBody>
                 {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                  const { id, name, cost, packages, status, createdAt } = row;
+                  const { id, name, cost, duration, createdAt } = row;
                   const selectedUser = selected.indexOf(name) !== -1;
 
                   return (
@@ -336,14 +337,17 @@ export default function Customer() {
                         <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
                       </TableCell>
 
-                      <TableCell align="left">{name}</TableCell>
+  {/* <TableCell align="left">{id}</TableCell> */}
 
-                      <TableCell align="left">{packages}</TableCell>
+                 
+  <TableCell align="left">{name}</TableCell>
 
-                      <TableCell align="left">{cost}/* SqFt</TableCell>
+<TableCell align="left">{cost} % </TableCell>
+
+<TableCell align="left">{duration} Days</TableCell>
 
                       <TableCell align="right">
-                        <MaterialMoreMenu
+                        <DeliveryMoreMenu
                           onEditClick={() => openAddEditPopUp(row) }
                           onDelete={() => openDeletePopUp(row)}
                         />
@@ -391,7 +395,7 @@ export default function Customer() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={materialList.length}
+            count={partnersList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
@@ -399,6 +403,38 @@ export default function Customer() {
           />
         </Card>
       </Container>
+
+
+      {/* <Popover
+        open={Boolean(open)}
+        anchorEl={open}
+        onClose={handleCloseMenu}
+        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
+        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
+        PaperProps={{
+          sx: {
+            p: 1,
+            width: 140,
+            '& .MuiMenuItem-root': {
+              px: 1,
+              typography: 'body2',
+              borderRadius: 0.75,
+            },
+          },
+        }}
+      >
+        <MenuItem
+        >
+          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} />
+          Edit
+        </MenuItem>
+  
+        <MenuItem sx={{ color: 'error.main' }}
+       >
+          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
+          Delete
+        </MenuItem>
+      </Popover> */}
     </>
   );
 }

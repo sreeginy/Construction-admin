@@ -7,7 +7,7 @@ const project = [...Array(24)].map((_, index) => ({
   id: faker.datatype.number(),
   avatarUrl: `../../assets/user${index + 1}.png`,
   name: faker.name.fullName(),
-  type: sample(['house', 'office', 'school', 'shop']),
+  type: sample([ 'ESSENTIAL', 'PREMIUM', 'LUXURIOUS', 'THE ONE']),
   description: faker.lorem.sentence(3),
   duration: sample([' 12 Months', '15 Months', '20 Months' ]),
   status: sample(['complete', 'process']),

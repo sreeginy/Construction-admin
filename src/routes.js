@@ -7,6 +7,7 @@ import Dashboard from "./scenes/dashboard";
 import User from "./scenes/user/index";
 import Products from "./scenes/products";
 import Customer from "./scenes/customer/index";
+import Delivery from "./scenes/delivery/index";
 import Login from './scenes/LoginPage';
 import Register from './scenes/Register';
 import Order from './scenes/order';
@@ -44,6 +45,7 @@ export default function Router() {
           { path: 'user', element: <User /> },
           { path: 'products', element: <Products /> },
           { path: 'customer', element: <Customer /> },
+          { path: 'delivery', element: <Delivery /> },
           { path: 'order', element: <Order /> },
           { path: 'project', element: <Project /> },
           { path: 'material', element: <Material /> },

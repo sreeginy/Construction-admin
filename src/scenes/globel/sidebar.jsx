@@ -15,6 +15,7 @@ import DomainOutlinedIcon from '@mui/icons-material/DomainOutlined';
 import ContactPageOutlinedIcon from '@mui/icons-material/ContactPageOutlined';
 import PercentOutlinedIcon from '@mui/icons-material/PercentOutlined';
 import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
+import SendTimeExtensionOutlinedIcon from '@mui/icons-material/SendTimeExtensionOutlined';
 
 
 import { CssBaseline, ThemeProvider } from '@mui/material';
@@ -146,6 +147,15 @@ const Sidebar = () => {
                 sx={{ m: "15px 0 5px 20px" }}>
 
                 RK Yard </Typography>
+
+                <Item
+                tittle="Order"
+                to="/dashboard/order"
+                icon={<NoteAltOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+
+              ></Item>
               <Item
                 tittle="Product"
                 to="/dashboard/products"
@@ -162,10 +172,11 @@ const Sidebar = () => {
                 setSelected={setSelected}
 
               ></Item>
-              <Item
-                tittle="Order"
-                to="/dashboard/order"
-                icon={<NoteAltOutlinedIcon />}
+             
+                     <Item
+                tittle="Delivery Partner"
+                to="/dashboard/delivery"
+                icon={<SendTimeExtensionOutlinedIcon />}
                 selected={selected}
                 setSelected={setSelected}
 

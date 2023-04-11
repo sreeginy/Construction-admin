@@ -55,7 +55,7 @@ import USERLIST from '../../_mock/project';
 const TABLE_HEAD = [
   { id: 'id', label: 'Project_ID', alignRight: false },
   { id: 'name', label: 'Project Name', alignRight: false },
-  { id: 'type', label: 'Type', alignRight: false },
+  { id: 'type', label: 'Material Type', alignRight: false },
   { id: 'description', label: 'Description', alignRight: false },
   { id: 'duration', label: 'Duration', alignRight: false },
   { id: 'location', label: 'Location ', alignRight: false },
@@ -189,7 +189,7 @@ export default function Project() {
   };
 
   useEffect(() => {
-    setPermission(getPermission(Constant.PROJECT));
+    // setPermission(getPermission(Constant.PROJECT));
     setIsLoading(true);
     // getProjectList();
   }, []);

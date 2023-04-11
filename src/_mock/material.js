@@ -9,8 +9,9 @@ const users = [...Array(24)].map((_, index) => ({
   name: sample([' Wall tiling ', 'Compound wall', 'Interior Design']),
   projectName: faker.company.name(),
   description: faker.lorem.sentence(3),
-  category: sample([ 'ESSENTIAL', 'PREMIUM', 'LUXURIOUS', 'THE ONE']),
-  isVerified: faker.datatype.boolean(),
+  packages: sample([ 'ESSENTIAL', 'PREMIUM', 'LUXURIOUS', 'THE ONE']),
+  type: sample(['Design','Construction','Wall Tille']),
+  cost: faker.datatype.number(),
   status: sample(['active', 'banned']),
   createdAt: faker.date.recent().getTime(),
 }));

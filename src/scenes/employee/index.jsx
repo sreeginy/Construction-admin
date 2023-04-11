@@ -193,7 +193,7 @@ export default function Employee() {
   };
 
   useEffect(() => {
-    setPermission(getPermission(Constant.EMPLOYEEPAGE));
+    // setPermission(getPermission(Constant.EMPLOYEEPAGE));
     setIsLoading(true);
     // getProjectList();
   }, []);
