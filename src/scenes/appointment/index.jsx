@@ -48,22 +48,23 @@ import headers from '../../api/apiHeader';
 import apiHandleError from '../../api/apiHandleError';
 
 import {
-  AddEditMaterialPopUp,
-  MaterialListHead,
-  MaterialListToolbar,
-  MaterialMoreMenu,
-} from '../../sections/@dashboard/material';
+  AddEditAppointmentPopUp,
+  AppointmentListHead,
+  AppointmentListToolbar,
+  AppointmentMoreMenu,
+} from '../../sections/@dashboard/appointment';
 
 import { MoreMenu } from '../../sections/@dashboard/user/user'
 
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
-  { id: 'name', label: 'Material Name', alignRight: false },
-  // { id: 'type', label: 'Material Type', alignRight: false },
-  { id: 'packages', label: 'Material Package', alignRight: false },
-  { id: 'cost', label: 'Cost [per SqFt]', alignRight: false },
-  // { id: 'status', label: 'Status', alignRight: false },
+  { id: 'firstName', label: 'Customer firstName', alignRight: false },
+  { id: 'lastName', label: ' LastName', alignRight: false },
+  { id: 'email', label: 'Email', alignRight: false },
+  { id: 'joinDate', label: 'Appointment Date', alignRight: false },
+  { id: 'packages', label: 'Package Name', alignRight: false },
+  { id: 'status', label: 'Status', alignRight: false },
   { id: '' },
   { id: 'createdAt', label: 'Created At', alignRight: false  },
 ];
@@ -93,7 +94,7 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-    return filter(array, (_user) => _user.name.toLowerCase().indexOf(query.toLowerCase()) !== -1);
+    return filter(array, (_user) => _user.firstName.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
@@ -104,7 +105,7 @@ export default function Customer() {
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
   const [selected, setSelected] = useState([]);
-  const [orderBy, setOrderBy] = useState('name');
+  const [orderBy, setOrderBy] = useState('firstName');
   const [filterName, setFilterName] = useState('');
   const [rowsPerPage, setRowsPerPage] = useState(5);
 
@@ -115,7 +116,7 @@ export default function Customer() {
   const [deleteOpen, setDeleteOpen] = useState(false);
 
 
-  const [materialList, setMaterialList] = useState([]);
+  const [appointmentList, setAppointmentList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [permission, setPermission] = useState({});
   const [customer, setCustomer] = useState();
@@ -162,18 +163,18 @@ export default function Customer() {
 
   const handleSelectAllClick = (event) => {
     if (event.target.checked) {
-      const newSelecteds = materialList.map((n) => n.name);
+      const newSelecteds = appointmentList.map((n) => n.firstName);
       setSelected(newSelecteds);
-      return;
+      return; 
     }
     setSelected([]);
   };
 
-  const handleClick = (event, name) => {
-    const selectedIndex = selected.indexOf(name);
+  const handleClick = (event, firstName) => {
+    const selectedIndex = selected.indexOf(firstName);
     let newSelected = [];
     if (selectedIndex === -1) {
-      newSelected = newSelected.concat(selected, name);
+      newSelected = newSelected.concat(selected, firstName);
     } else if (selectedIndex === 0) {
       newSelected = newSelected.concat(selected.slice(1));
     } else if (selectedIndex === selected.length - 1) {
@@ -203,19 +204,19 @@ export default function Customer() {
   useEffect(() => {
     //  setPermission(getPermission(Constant.CUSTOMERPAGE));
     // setIsLoading(true);
-    getMaterialList();
+    getAppointmentList();
   }, []);
 
 
-  const getMaterialList = async () => {
+  const getAppointmentList = async () => {
     try {
-      const response = await apiClient.get('material/all', {
+      const response = await apiClient.get('appointment/all', {
         headers: headers()
       });
 
       if (response.status === 200) {
         if (response.data.status === 1000) {
-          setMaterialList(response.data.data);
+          setAppointmentList(response.data.data);
         }
         // setUserList(response.data);
         // setIsLoading(false);
@@ -230,19 +231,19 @@ export default function Customer() {
 
 
   const handleSuccess = () => {
-    getMaterialList();
+    getAppointmentList();
   };
 
   const deleteCustomer = async (id) => {
     try {
-      const response = await apiClient.delete(`material/delete/${id}`, {
+      const response = await apiClient.delete(`appointment/delete/${id}`, {
         headers: headers()
       });
       if (response.status === 200) {
         if (response.data.status === 1000) {
           notifySuccess(response.data.message);
           handleDeleteClose();
-          getMaterialList();
+          getAppointmentList();
         }
       } else {
         apiHandleError(response);
@@ -256,9 +257,9 @@ export default function Customer() {
   };
 
 
-  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - materialList.length) : 0;
+  const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - appointmentList.length) : 0;
 
-  const filteredUsers = applySortFilter(materialList, getComparator(order, orderBy), filterName);
+  const filteredUsers = applySortFilter(appointmentList, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
   // const notifySuccess = (msg) => toast.success(msg, messageStyle);
@@ -284,21 +285,24 @@ export default function Customer() {
               onClick={() =>
                 openAddEditPopUp({
 
-                  name: '',
-                  package: '',
-                  cost: '',
+                  firstName: '',
+                  lastName: '',
+                  email: '',
+                  joinDate: '',
+                  packages: '',
+                  status: '',
                 })
               }
             >
-              Add New Material
+              Add New Appointment
             </Button>
           )}
           {/* )}    */}
         </Stack>
 
         {open ? (
-          <AddEditMaterialPopUp onClose={handleClose} data={selectedData}
-            onSuccess={getMaterialList} />
+          <AddEditAppointmentPopUp onClose={handleClose} data={selectedData}
+            onSuccess={getAppointmentList} />
         ) : (
           ''
         )}
@@ -311,39 +315,46 @@ export default function Customer() {
           ''
         )}
         <Card>
-          <MaterialListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
+          <AppointmentListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
 
           <TableContainer sx={{ minWidth: 800 }}>
             <Table>
-              <MaterialListHead
+              <AppointmentListHead
                 order={order}
                 orderBy={orderBy}
                 headLabel={TABLE_HEAD}
-                rowCount={materialList.length}
+                rowCount={appointmentList.length}
                 numSelected={selected.length}
                 onRequestSort={handleRequestSort}
                 onSelectAllClick={handleSelectAllClick}
               />
               <TableBody>
                 {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                  const { id, name, cost, packages, status, createdAt } = row;
-                  const selectedUser = selected.indexOf(name) !== -1;
+                  const { id, firstName, lastName, email,joinDate, status,packages, createdAt } = row;
+                  const selectedUser = selected.indexOf(firstName) !== -1;
 
                   return (
                     <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                       <TableCell padding="checkbox">
-                        <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, name)} />
+                        <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, firstName)} />
+
+                      
                       </TableCell>
 
-                      <TableCell align="left">{name}</TableCell>
+                      <TableCell align="left">{firstName}</TableCell>
 
+                      <TableCell align="left">{lastName}</TableCell>
+
+                      <TableCell align="left">{email}</TableCell>
+                      <TableCell align="left">{joinDate ? moment(joinDate).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
                       <TableCell align="left">{packages}</TableCell>
-
-                      <TableCell align="left">{cost} /* SqFt</TableCell>
-
+                      {/* <TableCell align="left">
+                        <Label color={(status === 'Pending' && 'error') || 'Proceed'}>{sentenceCase(status)}</Label>
+                      </TableCell> */}
+  <TableCell align="left">{status}</TableCell>
                       <TableCell align="right">
-                        <MaterialMoreMenu
+                        <AppointmentMoreMenu
                           onEditClick={() => openAddEditPopUp(row) }
                           onDelete={() => openDeletePopUp(row)}
                         />
@@ -391,7 +402,7 @@ export default function Customer() {
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
-            count={materialList.length}
+            count={appointmentList.length}
             rowsPerPage={rowsPerPage}
             page={page}
             onPageChange={handleChangePage}
