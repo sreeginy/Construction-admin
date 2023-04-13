@@ -16,7 +16,7 @@ import ContactPageOutlinedIcon from '@mui/icons-material/ContactPageOutlined';
 import PercentOutlinedIcon from '@mui/icons-material/PercentOutlined';
 import AssignmentIndOutlinedIcon from '@mui/icons-material/AssignmentIndOutlined';
 import SendTimeExtensionOutlinedIcon from '@mui/icons-material/SendTimeExtensionOutlined';
-
+import LocalLibraryOutlinedIcon from '@mui/icons-material/LocalLibraryOutlined';
 
 import { CssBaseline, ThemeProvider } from '@mui/material';
 import Topbar from "../../scenes/globel/Topbar";
@@ -187,6 +187,15 @@ const Sidebar = () => {
                 sx={{ m: "15px 0 5px 20px" }}>
 
                 RK Construction </Typography>
+
+                <Item
+                tittle="Appointment"
+                to="/dashboard/appointment"
+                icon={<LocalLibraryOutlinedIcon />}
+                selected={selected}
+                setSelected={setSelected}
+
+              ></Item>
 
               <Item
                 tittle="Projects"

@@ -15,7 +15,8 @@ import Project from './scenes/project';
 import Material from './scenes/material';
 import Account from './scenes/account';
 import Employee from './scenes/employee';
-import Role from './scenes/role';
+import Role from './scenes/role/index';
+import Appointment from './scenes/appointment';
 
 function PrivateRoute({ auth: { isAuthenticated }, children }) {
   return isAuthenticated ? children : <Navigate to="/login" />;
@@ -47,6 +48,7 @@ export default function Router() {
           { path: 'customer', element: <Customer /> },
           { path: 'delivery', element: <Delivery /> },
           { path: 'order', element: <Order /> },
+          { path: 'appointment', element: <Appointment /> },
           { path: 'project', element: <Project /> },
           { path: 'material', element: <Material /> },
           { path: 'account', element: <Account /> },

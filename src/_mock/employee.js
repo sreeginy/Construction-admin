@@ -8,7 +8,7 @@ import { mockImgAvatar, mockImgProduct } from '../../src/utils/mockImages';
 const employee = [...Array(10)].map((_, index) => ({
   id: faker.datatype.number(),
   avatarUrl: mockImgAvatar(index + 1),
-  name: faker.name.fullName(),
+  EmployeeName: faker.name.fullName(),
   position: sample(['Engineer','Supervisor', 'Manager']),
   bio: faker.lorem.sentence(3),
   email: faker.internet.url(),

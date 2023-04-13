@@ -90,7 +90,7 @@ export default function AddEditOutgoingPopUp(props) {
     validationSchema: AddSchema,
     onSubmit: () => {
       console.log("submitted")
-      addNewCustomer();
+      addNewProject();
     }
   });
 
@@ -117,10 +117,10 @@ export default function AddEditOutgoingPopUp(props) {
   const notifyError = (msg) => toast.error(msg, messageStyle);
   const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
 
-  const addNewCustomer = async () => {
+  const addNewProject = async () => {
     try {
       
-      const response = await apiClient.post('customers/add', rawData, {
+      const response = await apiClient.post('project/add', rawData, {
         headers: headers()
       });
 
@@ -144,9 +144,9 @@ export default function AddEditOutgoingPopUp(props) {
   };
 
   // Update customer Api
-  const updateCustomer = async (id) => {
+  const updateProject = async (id) => {
     try {
-      const response = await apiClient.post(`customers/update/${id}`, rawData, {
+      const response = await apiClient.post(`project/update/${id}`, rawData, {
         headers: headers()
       });
 
@@ -182,7 +182,7 @@ export default function AddEditOutgoingPopUp(props) {
 
 
         <DialogTitle id="responsive-dialog-title" variant="h3" mt={2}>
-          {data.projectName !== '' ? 'Edit Project' : 'Add Project'}
+          {data.projectName !== '' ? 'EDIT  PROJECT  DETAILS' : 'ADD PROJECT DETAILS'}
           <Header
             subtitle="Create a New Portfolio"
           />
@@ -192,7 +192,7 @@ export default function AddEditOutgoingPopUp(props) {
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
             <DialogContent>
               <div>
-                <Box >
+                <Box sx={({ pb: 3 })} >
                   <TextField
                     fullWidth
                     id="outlined-basic"
@@ -306,7 +306,7 @@ export default function AddEditOutgoingPopUp(props) {
                     fullWidth
                     type="number"
                     id="outlined-basic"
-                    label="Contact No"
+                    label="projectSqft"
                     {...getFieldProps('projectSqft')}
                     error={Boolean(touched.projectSqft && errors.projectSqft)}
                     helperText={touched.projectSqft && errors.projectSqft}
@@ -370,9 +370,9 @@ export default function AddEditOutgoingPopUp(props) {
               <Button variant="outlined" autoFocus onClick={onClose}>
                 Close
               </Button>
-              {data.firstName !== '' ? (
+              {data.projectName !== '' ? (
                 <LoadingButton
-                  onClick={() => updateCustomer(data?.id)}
+                  onClick={() => updateProject(data?.id)}
                   size="medium"
                   variant="contained"
                   loading={isSubmitting}

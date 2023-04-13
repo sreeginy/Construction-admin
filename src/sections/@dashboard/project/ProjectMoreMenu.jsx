@@ -1,4 +1,4 @@
-// material
+
 import { IconButton, ListItemIcon, ListItemText, Menu, MenuItem } from '@mui/material';
 import PropTypes from 'prop-types';
 import { useRef, useState } from 'react';
@@ -7,23 +7,25 @@ import { Link as RouterLink } from 'react-router-dom';
 import Iconify from '../../../components/iconify';
 
 // ----------------------------------------------------------------------
+
+
 ProjectMoreMenu.prototypes = {
   onEditClick: PropTypes.func,
   onDelete: PropTypes.func
 };
 
+
 export default function ProjectMoreMenu(props) {
-  const { onEditClick, onDelete, isRight, onRight, permission } = props;
+  const { onEditClick, onDelete, isRight, onRight } = props;
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);
 
   return (
     <>
-    <IconButton ref={ref} onClick={() => setIsOpen(true)}>
+      <IconButton ref={ref} onClick={() => setIsOpen(true)}>
         <Iconify icon="eva:more-vertical-fill" width={20} height={20} />
       </IconButton>
-
-      {(!permission?.delete && !permission?.update) || (
+      {(!true && !true) || (
         <Menu
           open={isOpen}
           anchorEl={ref.current}
@@ -34,7 +36,7 @@ export default function ProjectMoreMenu(props) {
           anchorOrigin={{ vertical: 'top', horizontal: 'right' }}
           transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         >
-          {permission?.delete && (
+          {true && (
             <MenuItem
               sx={{ color: 'text.secondary' }}
               onClick={() => {
@@ -48,7 +50,8 @@ export default function ProjectMoreMenu(props) {
               <ListItemText primary="Delete" primaryTypographyProps={{ variant: 'body2' }} />
             </MenuItem>
           )}
-          {permission?.update && (
+
+          {true && (
             <MenuItem
               component={RouterLink}
               to="#"
@@ -86,3 +89,4 @@ export default function ProjectMoreMenu(props) {
     </>
   );
 }
+

@@ -9,13 +9,13 @@ import Iconify from '../../../components/iconify';
 // ----------------------------------------------------------------------
 
 
-EmployeeMoreMenu.prototypes = {
+AccountMoreMenu.prototypes = {
   onEditClick: PropTypes.func,
   onDelete: PropTypes.func
 };
 
 
-export default function EmployeeMoreMenu(props) {
+export default function AccountMoreMenu(props) {
   const { onEditClick, onDelete, isRight, onRight } = props;
   const ref = useRef(null);
   const [isOpen, setIsOpen] = useState(false);

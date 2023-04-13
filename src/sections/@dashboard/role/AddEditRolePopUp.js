@@ -60,57 +60,51 @@ export default function AddEditOutgoingPopUp(props) {
     duration: data.duration
   });
 
+  const setDropDownValue = (value) => {
+    setStatusId(value);
+  };
+
   // Validations
   const AddSchema = Yup.object().shape({
-
-    employeeName: Yup.string().required('employee name is required'),
-    position: Yup.string().required('position is required'),
-    bio: Yup.string().required('bio  is required'),
-    email:Yup.string().required('Duration is required'),
-    streamUrl:Yup.string().required('streamUrl is required'),
-
-
+    accessLevel: Yup.string().required('accessLevel is required'),
+    // email: Yup.string().required('email is required'),
+    description: Yup.string().required('description is required'),
+   
   });
 
   const formik = useFormik({
     initialValues: {
-      employeeName: data.employeeName,
-      position: data.position,
-      bio: data.bio,
-      email: data.email,
-      streamUrl: data.streamUrl,
+      accessLevel: data.accessLevel,
+      // email: data.email,
+      description: data.description,
+ 
     },
     validationSchema: AddSchema,
     onSubmit: () => {
       console.log("submitted")
-      addNewEmployee();
+      addNewRole();
     }
   });
 
   const rawData = {
-    employeeName: formik.values.employeeName,
-    position: formik.values.position,
-    bio: formik.values.bio,
-    email: formik.values.email,
-    streamUrl: formik.values.streamUrl,
-   
+    accessLevel: formik.values.accessLevel,
+    // email: formik.values.email,
+    description: formik.values.description,
+
   };
 
   const handleShowPassword = () => {
     setShowPassword((show) => !show);
-  };
-  const setDropDownValue = (value) => {
-    setStatusId(value);
   };
 
   const notifySuccess = (msg) => toast.success(msg, messageStyle);
   const notifyError = (msg) => toast.error(msg, messageStyle);
   const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
 
-  const addNewEmployee = async () => {
+  const addNewRole = async () => {
     try {
       
-      const response = await apiClient.post('employee/add', rawData, {
+      const response = await apiClient.post('role/add', rawData, {
         headers: headers()
       });
 
@@ -134,9 +128,9 @@ export default function AddEditOutgoingPopUp(props) {
   };
 
   // Update customer Api
-  const updateEmployee = async (id) => {
+  const updateRole = async (id) => {
     try {
-      const response = await apiClient.post(`employee/update/${id}`, rawData, {
+      const response = await apiClient.post(`role/update/${id}`, rawData, {
         headers: headers()
       });
 
@@ -169,109 +163,85 @@ export default function AddEditOutgoingPopUp(props) {
         onClose={onClose}
         aria-labelledby="responsive-dialog-title"
       >
-
-
-        <DialogTitle id="responsive-dialog-title" variant="h3" mt={2}>
-          {data.employeeName !== '' ? 'Edit Project' : 'Add Project'}
+       <DialogTitle id="responsive-dialog-title" variant="h3" mt={2}>
+          {data.accessLevel !== '' ? 'Edit Role' : 'Add Role'}
           <Header
-            subtitle="Create a New Portfolio"
+            subtitle="Create a New Access Level"
           />
         </DialogTitle>
-        
+
+      
         <FormikProvider value={formik}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
             <DialogContent>
               <div>
-                <Box >
-                  <TextField
-                    fullWidth
-                    id="outlined-basic"
-                    label="Employee Name"
-                    {...getFieldProps('employeeName')}
-                    error={Boolean(touched.employeeName && errors.employeeName)}
-                    helperText={touched.employeeName && errors.employeeName}
-                  />
-                </Box>
-              
-                <Box sx={({ pb: 3 }, { pt: 3 })}>
+              <Box sx={({ pb: 3 }, { pt: 0 })}>
                 <FormControl fullWidth>
                     <InputLabel
                       id="demo-simple-select-label"
-                      error={Boolean(touched.position && errors.position)}
+                      error={Boolean(touched.accessLevel && errors.accessLevel)}
                     >
-                     Position
+                      Access Level
                     </InputLabel>
                     <Select
                       labelId="demo-simple-select-label"
                       id="demo-simple-select"
-                      name="position"
-                      label="position"
+                      name="accessLevel"
+                      label="Access Level"
                       defaultValue=""
-                      {...getFieldProps('position')}
-                      error={Boolean(touched.position && errors.position)}
+                      {...getFieldProps('accessLevel')}
+                      error={Boolean(touched.accessLevel && errors.accessLevel)}
                     >
                       <MenuItem
                         key={0}
-                        value={'Civil Engineer' ?? ''}
-                        onClick={() => setDropDownValue('Civil Engineer')}
+                        value={'Admin' ?? ''}
+                        onClick={() => setDropDownValue('Admin')}
                       >
-                        Civil Engineer
+                        Admin
                       </MenuItem>
                       <MenuItem
                         key={0}
-                        value={'Architecture' ?? ''}
-                        onClick={() => setDropDownValue('Architecture')}
+                        value={'Super Admin' ?? ''}
+                        onClick={() => setDropDownValue('Super Admin')}
                       >
-                        Architecture
+                        Super Admin
                       </MenuItem>
-
                       <MenuItem
                         key={0}
-                        value={'Design Engineer' ?? ''}
-                        onClick={() => setDropDownValue('Design Engineer')}
+                        value={'Admin Manager' ?? ''}
+                        onClick={() => setDropDownValue('Admin Manager')}
                       >
-                        Design Engineer
+                        Admin Manager
                       </MenuItem>
-
                      
                     </Select>
-                    <FormHelperText error={Boolean(touched.position && errors.position)}>
-                      {touched.position && errors.position}
+                    <FormHelperText error={Boolean(touched.accessLevel && errors.accessLevel)}>
+                      {touched.accessLevel && errors.accessLevel}
                     </FormHelperText>
                   </FormControl>
                   
                 </Box>
-
-                <Box sx={({ pb: 3 }, { pt: 3 })}>
+                {/* <Box sx={({ pb: 3 }, { pt: 3 })}>
                   <TextField
                     fullWidth
                     id="outlined-basic"
-                    label="Bio"
-                    {...getFieldProps('bio')}
-                    error={Boolean(touched.bio && errors.bio)}
-                    helperText={touched.bio && errors.bio}
-                  />
-                </Box>
-                <Box sx={({ pb: 3 }, { pt: 3 })}>
-                  <TextField
-                    fullWidth
-                    id="outlined-basic"
-                    label="E-mail"
+                    label="Email Address"
                     {...getFieldProps('email')}
                     error={Boolean(touched.email && errors.email)}
                     helperText={touched.email && errors.email}
                   />
-                </Box>
+                </Box> */}
                 <Box sx={({ pb: 3 }, { pt: 3 })}>
                   <TextField
                     fullWidth
                     id="outlined-basic"
-                    label="FacebooK link"
-                    {...getFieldProps('streamUrl')}
-                    error={Boolean(touched.streamUrl && errors.streamUrl)}
-                    helperText={touched.streamUrl && errors.streamUrl}
+                    label="Description"
+                    {...getFieldProps('description')}
+                    error={Boolean(touched.description && errors.description)}
+                    helperText={touched.description && errors.description}
                   />
                 </Box>
+              
                 
               </div>
             </DialogContent>
@@ -279,9 +249,9 @@ export default function AddEditOutgoingPopUp(props) {
               <Button variant="outlined" autoFocus onClick={onClose}>
                 Close
               </Button>
-              {data.employeeName !== '' ? (
+              {data.accessLevel !== '' ? (
                 <LoadingButton
-                  onClick={() => updateEmployee(data?.id)}
+                  onClick={() => updateRole(data?.id)}
                   size="medium"
                   variant="contained"
                   loading={isSubmitting}
