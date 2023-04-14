@@ -216,7 +216,7 @@ export default function AlternateLanguage(props) {
                 {orderList
                     ?.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage)
                     .map((row, index) => {
-                      const { products, quantity, total } = row;
+                      const { products, quantity, total,productName } = row;
                       const isItemSelected = selected.indexOf(orderList) !== -1;
 
                     return (

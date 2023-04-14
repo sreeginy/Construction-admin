@@ -79,7 +79,7 @@ export default function AddEditOutgoingPopUp(props) {
       firstName: data.firstName,
       lastName: data.lastName,
       email: data.email,
-      joinDate: data.joinDate,
+      joinDate: '',
       packages: data.packages,
       status: data.status,
 
@@ -218,21 +218,21 @@ export default function AddEditOutgoingPopUp(props) {
                 </Box>
 
                 <Box sx={({ pb: 3 }, { pt: 3 })}>
-                  <FormControl fullWidth>
-                    <LocalizationProvider fullWidth dateAdapter={AdapterDateFns}>
-                      <DatePicker
-                        label="Appointment Date"
-                        inputFormat="yyyy-MM-dd"
-                        {...getFieldProps('joinDate')}
-                        error={Boolean(touched.joinDate && errors.joinDate)}
-                        helperText={touched.joinDate && errors.joinDate}
-                        onChange={(value) => {
-                          setFieldValue('joinDate', value);
-                        }}
-                        renderInput={(params) => <TextField fullWidth {...params} />}
-                      />
-                    </LocalizationProvider>
-                  </FormControl>
+                <FormControl fullWidth>
+                <LocalizationProvider fullWidth dateAdapter={AdapterDateFns}>
+                  <DatePicker
+                    label="Join Date"
+                    inputFormat="yyyy-MM-dd"
+                    {...getFieldProps('joinDate')}
+                    error={Boolean(touched.joinDate && errors.joinDate)}
+                    helperText={touched.joinDate && errors.joinDate}
+                    onChange={(value) => {
+                      setFieldValue('joinDate', value);
+                    }}
+                    renderInput={(params) => <TextField fullWidth {...params} />}
+                  />
+                </LocalizationProvider>
+                </FormControl>
                 </Box>
 
                 <Box sx={({ pb: 3 }, { pt: 3 })}>

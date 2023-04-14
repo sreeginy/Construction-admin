@@ -44,7 +44,7 @@ export default function AddOrder(props) {
   const [userList, setUserList] = useState({ firstName: '', lastName: '' });
   const [productList, setProductList] = useState({ productName: '' });
   const [orderList, setOrderList] = useState([]);
-  const [quantity, setQuantity] = React.useState(1);
+  const [quantity, setQuantity] = React.useState(5);
 
   useEffect(() => {
     getCustomerList();
@@ -80,15 +80,15 @@ export default function AddOrder(props) {
     resetForm
   } = formik;
   const handleDecrement = () => {
-    if (quantity === 1) {
+    if (quantity === 5) {
       setQuantity(quantity);
     } else {
-      setQuantity(quantity - 1);
+      setQuantity(quantity - 5);
     }
   };
 
   const handleIncrement = () => {
-    setQuantity((prevCount) => prevCount + 1);
+    setQuantity((prevCount) => prevCount + 5);
   };
 
   const createOrder = async () => {
