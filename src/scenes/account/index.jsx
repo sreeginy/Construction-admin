@@ -334,7 +334,9 @@ export default function Customer() {
           <AccountListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
 
 
+
           <TableContainer sx={{ minWidth: 800 }}>
+            
             <Table>
               <AccountListHead
                 order={order}

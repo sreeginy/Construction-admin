@@ -61,8 +61,6 @@ export default function AddEditOutgoingPopUp(props) {
   });
 
 
-
-  // Validations
   const AddSchema = Yup.object().shape({
     productNo: Yup.string().required("Product number is required"),
     productName: Yup.string().required("Product name is required"),

@@ -218,7 +218,6 @@ export default function AlternateLanguage(props) {
                     .map((row, index) => {
                       const { products, quantity, total,productName } = row;
                       const isItemSelected = selected.indexOf(orderList) !== -1;
-
                     return (
                         <TableRow
                         hover
@@ -227,6 +226,7 @@ export default function AlternateLanguage(props) {
                         role="checkbox"
                         selected={isItemSelected}
                         aria-checked={isItemSelected}
+                        
                       >
                         <TableCell component="th" scope="row" padding="normal">
                           {products.productName}
