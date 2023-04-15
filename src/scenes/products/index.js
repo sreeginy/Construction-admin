@@ -216,6 +216,7 @@ export default function Product() {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
   };
+  
 
   const handleFilterByName = (event) => {
     setPage(0);
