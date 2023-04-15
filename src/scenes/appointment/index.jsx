@@ -199,8 +199,6 @@ export default function Customer() {
     setFilterName(event.target.value);
   };
 
-
-
   useEffect(() => {
     //  setPermission(getPermission(Constant.CUSTOMERPAGE));
     // setIsLoading(true);
@@ -294,6 +292,7 @@ export default function Customer() {
                 })
               }
             >
+
               Add New Appointment
             </Button>
           )}
