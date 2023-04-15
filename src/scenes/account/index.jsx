@@ -232,6 +232,7 @@ export default function Customer() {
   };
 
 
+  
   const handleSuccess = () => {
     getAccountList();
   };
@@ -384,9 +385,6 @@ export default function Customer() {
 
                       {/* <TableCell align="left">{total}</TableCell> */}
 
-                      {/* <TableCell align="left">
-                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
-                        </TableCell> */}
 
                       <TableCell align="right">
                         <AccountMoreMenu
@@ -432,6 +430,7 @@ export default function Customer() {
               )}
             </Table>
           </TableContainer>
+
 
 
           <TablePagination
