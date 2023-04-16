@@ -121,6 +121,7 @@ export default function Customer() {
   const [permission, setPermission] = useState({});
   const [customer, setCustomer] = useState();
   const [selectedData, setselectedData] = useState();
+  const [appointment, setAppointment] = useState();
 
 
   const notifySuccess = (msg) => toast.success(msg, messageStyle);
@@ -137,7 +138,7 @@ export default function Customer() {
   };
   const openDeletePopUp = (data) => {
     setDeleteOpen((deleteOpen) => (deleteOpen = !deleteOpen));
-    setselectedData(data);
+    setAppointment(data);
   };
   const handleDeleteClose = () => {
     setDeleteOpen(false);
@@ -232,9 +233,9 @@ export default function Customer() {
     getAppointmentList();
   };
 
-  const deleteCustomer = async (id) => {
+  const deleteAppointment = async (id) => {
     try {
-      const response = await apiClient.delete(`appointment/delete/${id}`, {
+      const response = await apiClient.delete(`/appointment/delete/${id}`, {
         headers: headers()
       });
       if (response.status === 200) {
@@ -249,7 +250,7 @@ export default function Customer() {
       console.log('post', response);
     } catch (error) {
       setDeleteOpen(false);
-      notifyError('Customer has in order');
+      notifyError('Appointment has in order');
       console.log(error);
     }
   };
@@ -300,7 +301,7 @@ export default function Customer() {
         </Stack>
 
         {open ? (
-          <AddEditAppointmentPopUp onClose={handleClose} data={selectedData}
+          <AddEditAppointmentPopUp onClose={handleClose} data={appointment}
             onSuccess={getAppointmentList} />
         ) : (
           ''
@@ -308,7 +309,7 @@ export default function Customer() {
         {deleteOpen ? (
           <DeleteDialogPopUp
             onClose={handleDeleteClose}
-            onDelete={() => deleteCustomer(selectedData.id)}
+            onDelete={() => deleteAppointment(appointment.id)}
           />
         ) : (
           ''
@@ -354,7 +355,15 @@ export default function Customer() {
   <TableCell align="left">{status}</TableCell>
                       <TableCell align="right">
                         <AppointmentMoreMenu
-                          onEditClick={() => openAddEditPopUp(row) }
+                          onEditClick={() => openAddEditPopUp(
+                            id,
+                            firstName,
+                            lastName,
+                            email,
+                            joinDate,
+                            packages,
+                            status,
+                          ) }
                           onDelete={() => openDeletePopUp(row)}
                         />
                       </TableCell>
