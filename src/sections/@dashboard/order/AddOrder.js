@@ -16,7 +16,8 @@ import {
   FormHelperText,
   useTheme,
   Autocomplete,
-  Dialog
+  Dialog,
+  ListItemIcon
 } from '@mui/material';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -334,11 +335,13 @@ export default function AddOrder(props) {
                   </Grid>
                 </Grid>
               </Box>
-              <Grid item xs={6}>
-              <Box sx={({ pb: 3 }, { pt: 5 })}>
+            
+              <Box sx={({ pb: 3 }, { pt: 3 })}>
                 <AlternateLanguage  data={orderList} onDelete={(index) => deleteProduct(index)} />
+               
+             
               </Box>
-              </Grid>
+          
             </DialogContent>
             <DialogActions>
               <Button autoFocus onClick={onClose}>
