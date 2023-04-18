@@ -26,6 +26,7 @@ import Iconify from '../../components/iconify';
 import { Constant } from '../../utils/Constant';
 import moment from 'moment';
 import messageStyle from '../../components/toast/toastStyle';
+import { ToastContainer } from 'react-toastify';
 import DeleteDialogPopUp from '../../components/DialogPopUp';
 
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
@@ -258,6 +259,8 @@ export default function User() {
   const filteredUsers = applySortFilter(userList, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
+
+  
   const notifySuccess = (msg) => toast.success(msg, messageStyle);
   const notifyFail = (msg) => toast.error(msg, messageStyle);
 
@@ -397,6 +400,7 @@ export default function User() {
           />
         </Card>
       </Container>
+      <ToastContainer/>
 
       {/* <Popover
         open={Boolean(open)}

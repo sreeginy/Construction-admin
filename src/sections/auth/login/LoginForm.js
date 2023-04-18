@@ -17,6 +17,7 @@ import {
 import { toast } from 'react-toastify';
 import { LoadingButton } from '@mui/lab';
 import messageStyle from '../../../components/toast/toastStyle';
+import { ToastContainer } from 'react-toastify';
 // Api Call
 import apiClient from '../../../api/apiClient';
 // component
@@ -166,6 +167,8 @@ export default function LoginForm() {
         Login
       </LoadingButton>
     </Form>
+    <ToastContainer />
   </FormikProvider>
+
   );
 }

@@ -23,7 +23,9 @@ import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import { LoadingButton } from '@mui/lab';
 // component
-import { toast, ToastContainer } from 'react-toastify';
+// import { toast, ToastContainer } from 'react-toastify';
+import { ToastContainer, toast } from 'react-toastify';
+import 'react-toastify/dist/ReactToastify.css';
 import Iconify from '../../../../components/iconify';
 // Api Call
 import apiClient from '../../../../api/apiClient';
@@ -225,13 +227,14 @@ export default function AddUser(props) {
               <Button variant="outlined" autoFocus onClick={onClose}>
                 Close
               </Button>
-              <LoadingButton size="medium" type="submit" variant="contained" loading={isSubmitting}>
+              <LoadingButton size="medium" type="submit" variant="contained" loading={isSubmitting} >
                 Create
               </LoadingButton>
             </DialogActions>
           </Form>
         </FormikProvider>
       </Dialog>
+      <ToastContainer/>
     </div>
   );
 }

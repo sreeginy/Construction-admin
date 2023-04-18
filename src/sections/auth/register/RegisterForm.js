@@ -6,6 +6,7 @@ import { Stack, TextField, IconButton, InputAdornment } from '@mui/material';
 import { LoadingButton } from '@mui/lab';
 // component
 import Iconify from '../../../components/iconify';
+import { ToastContainer } from 'react-toastify';
 
 // ----------------------------------------------------------------------
 
@@ -32,7 +33,7 @@ export default function RegisterForm() {
     },
     validationSchema: RegisterSchema,
     onSubmit: () => {
-      navigate('/dashboard', { replace: true });
+      navigate('/dashboard/', { replace: true });
     }
   });
 
@@ -91,15 +92,17 @@ export default function RegisterForm() {
 
           <LoadingButton
             fullWidth
+            color="info"
             size="large"
             type="submit"
-            variant="contained"
+           variant="contained"
             loading={isSubmitting}
           >
             Register
           </LoadingButton>
         </Stack>
       </Form>
+      <ToastContainer />
     </FormikProvider>
   );
 }

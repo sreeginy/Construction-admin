@@ -7,6 +7,10 @@ import useResponsive from '../hooks/useResponsive';
 import AuthLayout from '../../src/layouts/AuthLayout';
 import Page from '../components/Page';
 import Iconify from '../components/iconify';
+
+// import {
+//   LoginForm
+// } from '../sections/auth/login/LoginForm';
 // sections
 import { RegisterForm } from '../sections/auth/register';
 import  AuthSocial from '../sections/auth/AuthSocial';
@@ -18,7 +22,7 @@ const ContentStyle = styled('div')(({ theme }) => ({
   maxWidth: 480,
   margin: 'auto',
   display: 'flex',
-  minHeight: '70vh',
+  minHeight: '105vh',
   flexDirection: 'column',
   justifyContent: 'center',
   padding: theme.spacing(12, 0)
@@ -36,9 +40,9 @@ export default function Register() {
 
     <Container>
         <ContentStyle>
-          <Box sx={{ mb: 5 }}>
-            <Typography variant="h4" gutterBottom>
-              RK ARCHITECTURE DESIGNERS AND ENGINEERS
+          <Box sx={{ mb: 5, ml:5 }}>
+            <Typography variant="h4" color="info" gutterBottom>
+                             RK ARCHITECTURE DESIGNERS AND ENGINEERS
               {/* Get started absolutely free. */}
             </Typography>
             {/* <Typography sx={{ color: 'text.secondary' }}>
@@ -77,6 +81,17 @@ export default function Register() {
               Login
             </Link>
           </Typography>
+
+
+          {/* <Link
+  component="button"
+  variant="body2"
+  onClick={{LoginForm}}
+
+>
+Login
+</Link> */}
+
         </ContentStyle>
       </Container>
 

@@ -5,6 +5,8 @@ import { Link, Container, Typography, Divider, Stack, Button, Card, Box } from '
 import useResponsive from '../hooks/useResponsive';
 import Iconify from '../components/iconify';
 import { LoginForm } from '../sections/auth/login';
+import { NavLink } from 'react-router-dom';
+import { Link as RouterLink } from 'react-router-dom';
 
 // ----------------------------------------------------------------------
 
@@ -70,9 +72,28 @@ export default function LoginPage() {
             </Typography>
 
             <Typography variant="body2" sx={{ mb: 5 }}>
-              Have You an account? {''}
-              <Link variant="subtitle2">Get started</Link>
+           Have you create an new account?&nbsp;
+           
+              <Link variant="subtitle2" to="/register">Register</Link>
             </Typography>
+
+            <Typography
+            variant="subtitle2"
+            sx={{
+              mt: 3,
+              textAlign: 'center',
+              display: { sm: 'none' }
+            }}
+          >
+            Create an new account?&nbsp;
+           <NavLink to="/register">Register</NavLink>
+
+            <Link underline="hover" to="/register" component={RouterLink}>
+              Register
+            </Link>
+          </Typography>
+
+
 
             <Stack direction="row" spacing={2}>
               <Button fullWidth size="large" color="inherit" variant="outlined">
@@ -93,6 +114,8 @@ export default function LoginPage() {
                 OR
               </Typography>
             </Divider>
+
+
 
             <LoginForm />
           </ContentStyle>
