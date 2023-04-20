@@ -31,6 +31,7 @@ export default function Router() {
       return true;
     }
     return false;
+  
   };
   return useRoutes([
     {
@@ -40,6 +41,7 @@ export default function Router() {
             <DashboardLayout />
           </PrivateRoute>
         ),
+        
         children: [
           { element: <Navigate to="/dashboard/app" />, index: true },
           { path: 'app', element: <Dashboard /> },

@@ -181,6 +181,7 @@ export default function User() {
   }, []);
 
 
+
   const handleSuccess = () => {
     getUsersList();
   };
@@ -206,6 +207,7 @@ export default function User() {
     setPage(newPage);
   };
 
+  
   const getUsersList = async () => {
     try {
       const response = await apiClient.get('/user/all', {
