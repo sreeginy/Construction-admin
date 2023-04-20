@@ -157,7 +157,6 @@ export default function Product() {
     setDeleteOpen(false);
   };
 
-
   const openViewPopUp = (data) => {
     setViewOpen((viewOpen) => (viewOpen = !viewOpen));
     setProduct(data);
@@ -253,6 +252,7 @@ export default function Product() {
     }
   };
 
+  
 
     /* API Delete Products */
     const deleteProduct = async (id) => {

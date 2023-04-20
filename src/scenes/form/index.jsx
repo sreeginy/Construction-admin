@@ -51,6 +51,7 @@ const Form = () => {
                             "& > div": { gridColumn: isNonMobile ? undefined : "span 4" },
                         }}
                     >
+                        
                         <TextField
                             fullWidth
                             variant="filled"
@@ -64,6 +65,7 @@ const Form = () => {
                             helperText={touched.firstName && errors.firstName}
                             sx={{ gridColumn: "span 2" }}
                         />
+
                         <TextField
                             fullWidth
                             variant="filled"
@@ -77,6 +79,7 @@ const Form = () => {
                             helperText={touched.lastName && errors.lastName}
                             sx={{ gridColumn: "span 2" }}
                         />
+
                         <TextField
                             fullWidth
                             variant="filled"
@@ -90,6 +93,7 @@ const Form = () => {
                             helperText={touched.email && errors.email}
                             sx={{ gridColumn: "span 2" }}
                         />
+
                         <TextField
                             fullWidth
                             variant="filled"
@@ -103,6 +107,7 @@ const Form = () => {
                             helperText={touched.contact && errors.contact}
                             sx={{ gridColumn: "span 2" }}
                         />
+
                         <TextField
                             fullWidth
                             variant="filled"
@@ -116,6 +121,7 @@ const Form = () => {
                             helperText={touched.address && errors.address}
                             sx={{ gridColumn: "span 2" }}
                         />
+
                     </Box>
                     <Box display="flex" justifyContent="end" mt="50px">
 
@@ -124,6 +130,7 @@ const Form = () => {
                         </Button>
 
                     </Box>
+
 
                 </form>
             )}
