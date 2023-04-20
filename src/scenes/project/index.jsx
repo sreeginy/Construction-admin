@@ -15,7 +15,7 @@ import { useState, useEffect } from 'react';
 import { sentenceCase } from 'change-case';
 import { toast } from 'react-toastify';
 
-// @mui
+
 import {
   Card,
   Table,
