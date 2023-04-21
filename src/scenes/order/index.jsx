@@ -138,6 +138,7 @@ export default function Order() {
   const [permission, setPermission] = useState({});
   const [openExport, setOpenExport] = useState(false);
   const [viewOpen, setViewOpen] = useState(false);
+  const [selectedData, setselectedData] = useState();
 
   const [libraryList, setLibraryList] = useState([]);
 
@@ -163,8 +164,11 @@ export default function Order() {
 
   
   const handleOpenEdit = (data) => {
-    setOrders(data);
-    setOpenEdit(true);
+    // setOrders(data);
+    // setOpenEdit(true);
+
+    setOpen((open) => (open = !open));
+    setselectedData(data);
   };
 
   const handleCloseEdit = () => {
@@ -284,7 +288,7 @@ export default function Order() {
 
   useEffect(() => {
     // setPermission(getPermission(Constant.LIBRARY));
-    setIsLoading(true);
+    // setIsLoading(true);
     getOrderList();
   }, []);
 
@@ -365,7 +369,7 @@ export default function Order() {
           ''
         )}
          {openEdit ? (
-          <ChangeStatus onClose={handleCloseEdit} data={orders}  />
+          <ChangeStatus onClose={handleCloseEdit} data={selectedData} onSuccess={getOrderList}  />
         ) : (
           ''
         )}
@@ -373,7 +377,7 @@ export default function Order() {
         {deleteOpen ? (
           <DeleteDialogPopUp
             onClose={handleDeleteClose}
-            onDelete={() => deleteLibrary(orders.id)}
+            onDelete={() => deleteLibrary(selectedData.id)}
           />
         ) : (
           ''
