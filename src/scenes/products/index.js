@@ -1,6 +1,22 @@
+import { Box, TextField } from "@mui/material";
+import { Formik } from "formik";
+import * as yup from "yup";
+import useMediaQuery from "@mui/material/useMediaQuery";
+import Header from "../../components/Header";
+import DeleteDialogPopUp from '../../components/DialogPopUp';
+import messageStyle from '../../components/toast/toastStyle';
+
+import { Constant } from '../../utils/Constant';
+import { getPermission } from '../../utils/PermissionUtil';
+import moment from 'moment';
+import { Helmet } from 'react-helmet-async';
 import { filter } from 'lodash';
+import { useState, useEffect } from 'react';
 import { sentenceCase } from 'change-case';
 import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
+
+// @mui
 import {
   Card,
   Table,
@@ -22,32 +38,25 @@ import {
 } from '@mui/material';
 import Label from '../../components/label';
 import Iconify from '../../components/iconify';
-import { Constant } from '../../utils/Constant';
-import moment from 'moment';
-import messageStyle from '../../components/toast/toastStyle';
-import DeleteDialogPopUp from '../../components/DialogPopUp';
 
+// section
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
-
-import { useState, useEffect } from 'react';
-import { getPermission } from '../../utils/PermissionUtil';
 // import USERLIST from '../../_mock/customer';
-
-import {
-  AddEditProductPopUp,
-  ProductListHead,
-  ProductMoreMenu,
-  ProductListToolbar,
-  FullViewProducts,
-  ImageUpload,
-} from '../../sections/@dashboard/product';
 
 // Api Call
 import apiClient from '../../api/apiClient';
 import headers from '../../api/apiHeader';
 import apiHandleError from '../../api/apiHandleError';
 
-const placeholder = '/static/placeholder.jpg';
+import {
+  AddEditProductPopUp,
+  ProductListHead,
+  ProductMoreMenu,
+  ProductListToolbar,
+} from '../../sections/@dashboard/product';
+
+import { MoreMenu } from '../../sections/@dashboard/user/user'
+
 // ----------------------------------------------------------------------
 
 const TABLE_HEAD = [
@@ -55,14 +64,13 @@ const TABLE_HEAD = [
   { id: 'avatarUrl', label: 'Product ', alignRight: false },
   { id: 'productName', label: ' Name', alignRight: false },
   { id: 'productType', label: 'Type', alignRight: false },
-  { id: 'price', label: 'Price', alignRight: false },
-  { id: 'quantity', label: ' Quantity', alignRight: false },
+  { id: 'price', label: 'Price/[per stone]', alignRight: false },
+  { id: 'quantity', label: ' Stock', alignRight: false },
   { id: 'productStatus', label: ' Status', alignRight: false },
   { id: '' },
   { id: 'createdAt', label: 'Create At', alignRight: false },
 ];
 
-// ----------------------------------------------------------------------
 
 function descendingComparator(a, b, orderBy) {
   if (b[orderBy] < a[orderBy]) {
@@ -73,6 +81,7 @@ function descendingComparator(a, b, orderBy) {
   }
   return 0;
 }
+
 function getComparator(order, orderBy) {
   return order === 'desc'
     ? (a, b) => descendingComparator(a, b, orderBy)
@@ -87,14 +96,13 @@ function applySortFilter(array, comparator, query) {
     return a[1] - b[1];
   });
   if (query) {
-
     return filter(array, (_user) => _user.productName.toLowerCase().indexOf(query.toLowerCase()) !== -1);
   }
   return stabilizedThis.map((el) => el[0]);
 }
 
 
-export default function Product() {
+export default function Customer() {
 
   const [page, setPage] = useState(0);
   const [order, setOrder] = useState('asc');
@@ -105,27 +113,27 @@ export default function Product() {
 
   const [open, setOpen] = useState(null);
   const [editOpen, setEditOpen] = useState(false);
-  const [selectedProductData, setSelectedProductData] = useState();
-  const [SelectedProductId, setSelectedProductId] = useState('');
+  const [selectedCustomerData, setSelectedCustomerData] = useState();
+  const [SelectedCustomerId, setSelectedCustomerId] = useState('');
   const [deleteOpen, setDeleteOpen] = useState(false);
-  const [openAdd, setOpenAdd] = useState(false);
-  const [openImage, setOpenImage] = useState(false);
-  const [viewOpen, setViewOpen] = useState(false);
-  const [selectedData, setselectedData] = useState();
 
 
   const [productList, setProductList] = useState([]);
   const [isLoading, setIsLoading] = useState(false);
   const [permission, setPermission] = useState({});
-  const [product, setProduct] = useState();
+  const [customer, setCustomer] = useState();
+  const [selectedData, setselectedData] = useState();
 
 
-  
-  const handleImageClose = () => {
-    setOpenImage(false);
-  };
+  const notifySuccess = (msg) => toast.success(msg, messageStyle);
+  const notifyError = (msg) => toast.error(msg, messageStyle);
 
   const openAddEditPopUp = (data) => {
+    setOpen((open) => (open = !open));
+    setselectedData(data);
+  };
+
+  const openEditPopUp = (data) => {
     setOpen((open) => (open = !open));
     setselectedData(data);
   };
@@ -133,36 +141,12 @@ export default function Product() {
     setDeleteOpen((deleteOpen) => (deleteOpen = !deleteOpen));
     setselectedData(data);
   };
-  const openEditPopUp = (data) => {
-    setEditOpen((editOpen) => (editOpen = !editOpen));
-    setselectedData(data);
-  };
-  const handleOpenAdd = () => {
-    setOpenAdd(true);
-  };
-
-
-
-  const handleOpenEdit = (data) => {
-    setProduct(data);
-    setOpenAdd(true);
-  };
-
-  const handleAddClose = () => {
-    setOpenAdd(false);
-    setProduct();
-  };
-
   const handleDeleteClose = () => {
     setDeleteOpen(false);
   };
-
-  const openViewPopUp = (data) => {
-    setViewOpen((viewOpen) => (viewOpen = !viewOpen));
-    setProduct(data);
-  };
-  const handleViewClose = () => {
-    setViewOpen(false);
+  const handleClose = () => {
+    console.log('close');
+    setOpen(false);
   };
 
   const handleOpenMenu = (event) => {
@@ -171,11 +155,6 @@ export default function Product() {
 
   const handleCloseMenu = () => {
     setOpen(null);
-  };
-
-  const handleOpenImage = (data) => {
-    setProduct(data);
-    setOpenImage(true);
   };
 
   const handleRequestSort = (event, property) => {
@@ -216,32 +195,32 @@ export default function Product() {
     setPage(0);
     setRowsPerPage(parseInt(event.target.value, 10));
   };
-  
 
   const handleFilterByName = (event) => {
     setPage(0);
     setFilterName(event.target.value);
   };
 
-  const handleClose = () => {
-    setOpen(false);
-   getProductList();
 
-  };
 
   useEffect(() => {
-    //  setPermission(getPermission(Constant.PRODUCT));
+    //  setPermission(getPermission(Constant.CUSTOMERPAGE));
     // setIsLoading(true);
     getProductList();
   }, []);
 
+
   const getProductList = async () => {
     try {
-      const response = await apiClient.get('/product/all', {
+      const response = await apiClient.get('product/all', {
         headers: headers()
       });
+
       if (response.status === 200) {
-        setProductList(response.data.data);
+        if (response.data.status === 1000) {
+          setProductList(response.data.data);
+        }
+        // setUserList(response.data);
         // setIsLoading(false);
       } else {
         apiHandleError(response);
@@ -252,92 +231,88 @@ export default function Product() {
     }
   };
 
-  
 
-    /* API Delete Products */
-    const deleteProduct = async (id) => {
-      try {
-        const response = await apiClient.delete(`product/${id}`, {
-          headers: headers()
-        });
-        if (response.status === 200) {
-          notifySuccess(response.statusText);
+  const handleSuccess = () => {
+    getProductList();
+  };
+
+  const deleteCustomer = async (id) => {
+    try {
+      const response = await apiClient.delete(`product/delete/${id}`, {
+        headers: headers()
+      });
+      if (response.status === 200) {
+        if (response.data.status === 1000) {
+          notifySuccess(response.data.message);
           handleDeleteClose();
           getProductList();
-        } else {
-          apiHandleError(response);
         }
-        console.log('delete', response);
-      } catch (error) {
-        console.log(error);
+      } else {
+        apiHandleError(response);
       }
-    };
+      console.log('post', response);
+    } catch (error) {
+      setDeleteOpen(false);
+      notifyError('product has in order');
+      console.log(error);
+    }
+  };
+
 
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - productList.length) : 0;
 
   const filteredUsers = applySortFilter(productList, getComparator(order, orderBy), filterName);
 
   const isNotFound = !filteredUsers.length && !!filterName;
-  const notifySuccess = (msg) => toast.success(msg, messageStyle);
+  // const notifySuccess = (msg) => toast.success(msg, messageStyle);
   const notifyFail = (msg) => toast.error(msg, messageStyle);
 
 
   return (
     <>
 
+
       <Container maxWidth="xl">
-      {deleteOpen ? (
-          <DeleteDialogPopUp
-            onClose={handleDeleteClose}
-            onDelete={() => deleteProduct(product._id)}
-            
-          />
-        ) : (
-          ''
-        )}
-        {openImage ? (
-          <ImageUpload onClose={handleImageClose} data={product} onSuccess={getProductList} />
-        ) : (
-          ''
-        )}
-        {viewOpen ? <FullViewProducts onClose={handleViewClose} data={product} /> : ''}
-    
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom >
-            CONSTRUCTION &nbsp; YARD &nbsp; PRODUCTS
+          CONSTRUCTION &nbsp; YARD &nbsp; PRODUCTS
           </Typography>
           {/* <Typography  alignItems="center">Create a New User Profile</Typography>  */}
           {/* {permission?.read && ( */}
           {true && (
-          <Button
-            // color="info" 
-            variant="contained"
-            startIcon={<Iconify icon="eva:plus-fill" />}
-            onClick={() =>
-              openAddEditPopUp({
-                productNo: '',
-                productName: '',
-                productType: '',
-                price: '',
-                quantity: '',
-                productStatus: '',
-              })
-            }
-          >
-            Add Product
-          </Button>
-              )}
-
-            {/*  )}    */}
+            <Button
+              // color="info" 
+              variant="contained"
+              startIcon={<Iconify icon="eva:plus-fill" />}
+              onClick={() =>
+                openAddEditPopUp({
+                  productNo: '',
+                  productName: '',
+                  productType: '',
+                  price: '',
+                  quantity: '',
+                  productStatus: '',
+        
+                })
+              }
+            >
+              Add New Product
+            </Button>
+          )}
+          {/* )}    */}
         </Stack>
 
         {open ? (
-          <AddEditProductPopUp onClose={handleClose} data={selectedData} />
+          <AddEditProductPopUp onClose={handleClose} data={selectedData}
+            onSuccess={getProductList} />
         ) : (
           ''
         )}
         {deleteOpen ? (
-          <DeleteDialogPopUp onDelete={handleClose} onClose={selectedData.id} />
+          <DeleteDialogPopUp
+            onClose={handleDeleteClose}
+            onDelete={() => deleteCustomer(selectedData.id)}
+          />
         ) : (
           ''
         )}
@@ -358,7 +333,7 @@ export default function Product() {
               />
               <TableBody>
                 {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                  const { id,productNo, productName, productType, price, quantity, productStatus, avatarUrl, isVerified, createdAt } = row;
+                  const { id,productNo, productName, productType, price, quantity, productStatus, avatarUrl, isVerified, createdAt  } = row;
                   const selectedUser = selected.indexOf(productName) !== -1;
 
                   return (
@@ -367,60 +342,43 @@ export default function Product() {
                         <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, productName)} />
                       </TableCell>
 
-                      <TableCell align="left">{productNo}</TableCell>
-
-                      <TableCell align="left">
-                        <img
-                          width="80"
-                          height="55"
-                          srcSet={avatarUrl}
-                          src={placeholder}
-                          alt={avatarUrl}
-                          loading="lazy"
-                        />
-                        {/* <Avatar
-                                style={{ aspectRatio: 16 / 9 }}
-                                alt="image"
-                                variant="square"
-                                src="/static/placeholder.jpg"
-                              /> */}
-                      </TableCell>
-
-
-                      <TableCell align="left">{productName}</TableCell>
+                      {/* <TableCell align="left">{id}</TableCell> */}
 
                       {/* <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={pro_name} src={avatarUrl} />
+                            <Avatar alt={firstName} src={avatarUrl} />
                             <Typography variant="subtitle2" noWrap>
-                              {pro_name}
+                              {firstName}
                             </Typography>
                           </Stack>
                         </TableCell> */}
 
+                      <TableCell align="left">{productNo}</TableCell>
+                      
+                      <TableCell align="left"></TableCell>
+
+                      <TableCell align="left">{productName}</TableCell>
+
                       <TableCell align="left">{productType}</TableCell>
-                      <TableCell align="left">Rs {price} </TableCell>
 
+                      <TableCell align="left">{price}</TableCell>
 
-                      <TableCell align="left">{quantity} items</TableCell>
+                      <TableCell align="left">{quantity}</TableCell>
 
-                      {/* <TableCell align="left">{isVerified ? 'Yes' : 'No'}</TableCell> */}
-
+                      
                       <TableCell align="left">
                         <Label color={(productStatus === 'banned' && 'error') || 'success'}>{sentenceCase(productStatus)}</Label>
                       </TableCell>
-
+                    
                       <TableCell align="right">
-                      <ProductMoreMenu
-                                permission={permission}
-                                onEditClick={() => openAddEditPopUp(row)}
-                                onDelete={() => openDeletePopUp(row)}
-                                onViewClick={() => openViewPopUp(row)}
-                                onImageClick={() => handleOpenImage(row)}
-                              />
+                        <ProductMoreMenu
+                          onEditClick={() => openAddEditPopUp(row) }
+                          onDelete={() => openDeletePopUp(row)}
+                        />
                       </TableCell>
 
                       <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
+
                     </TableRow>
                   );
                 })}
@@ -469,50 +427,10 @@ export default function Product() {
           />
         </Card>
       </Container>
+      <ToastContainer/>
 
-      {/* <Popover
-        open={Boolean(open)}
-        anchorEl={open}
-        onClose={handleCloseMenu}
-        anchorOrigin={{ vertical: 'top', horizontal: 'left' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'right' }}
-        PaperProps={{
-          sx: {
-            p: 1,
-            width: 140,
-            '& .MuiMenuItem-root': {
-              px: 1,
-              typography: 'body2',
-              borderRadius: 0.75,
-            },
-          },
-        }}
-      >
-        <MenuItem>
-          <Iconify icon={'eva:edit-fill'} sx={{ mr: 2 }} 
-           variant="contained" 
-           startIcon={<Iconify icon="eva:plus-fill" />}
-           onClick={() => 
-           openAddEditPopUp ({
-               id: '',
-               name: '',
-               type: '',
-               description: '',
-               isVerified: '',
-               status: '',
-               createdAt: new Date()
-              })
-            }/>
-          Edit
-        </MenuItem>
-
-        <MenuItem sx={{ color: 'error.main' }}>
-          <Iconify icon={'eva:trash-2-outline'} sx={{ mr: 2 }} />
-          Delete
-        </MenuItem>
-      </Popover> */}
+    
     </>
   );
 }
-
 

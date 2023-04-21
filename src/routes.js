@@ -62,11 +62,7 @@ export default function Router() {
       {
 
         path: '/',
-        element: (
-          <SessionRoute auth={{ isAuthenticated: getUser() }}>
-            <LogoOnlyLayout />
-          </SessionRoute>
-        ),
+     
 
         children: [
 
@@ -92,3 +88,9 @@ export default function Router() {
 
     // return routes;
   }
+
+  // element: (
+  //   <SessionRoute auth={{ isAuthenticated: getUser() }}>
+  //     <LogoOnlyLayout />
+  //   </SessionRoute>
+  // ),

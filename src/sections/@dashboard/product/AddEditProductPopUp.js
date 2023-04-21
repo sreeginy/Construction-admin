@@ -45,22 +45,25 @@ import Iconify from '../../../components/iconify';
 // validation
 AddEditOutgoingPopUp.propTypes = {
   onClose: PropTypes.func,
-  data: PropTypes.object,  
+  data: PropTypes.object,
   onSuccess: PropTypes.func,
   title: PropTypes.string
 };
 
 export default function AddEditOutgoingPopUp(props) {
   const { data, onClose, onSuccess } = props;
-  const [showPassword, setShowPassword] = React.useState(false);
   const [statusId, setStatusId] = React.useState();
+  const [showPassword, setShowPassword] = React.useState(false);
   const [partnersData, setPartnersData] = React.useState({
     name: data.name,
     cost: data.cost,
     duration: data.duration
   });
 
-
+  const setDropDownValue = (value) => {
+    setStatusId(value);
+  };
+  // Validations
   const AddSchema = Yup.object().shape({
     productNo: Yup.string().required("Product number is required"),
     productName: Yup.string().required("Product name is required"),
@@ -82,13 +85,10 @@ export default function AddEditOutgoingPopUp(props) {
     validationSchema: AddSchema,
     onSubmit: () => {
       console.log("submitted")
-      addNewCustomer();
+      addNewProduct();
     }
   });
 
-  const setDropDownValue = (value) => {
-    setStatusId(value);
-  };
   const rawData = {
     productNo: formik.values.productNo,
     productName: formik.values.productName,
@@ -106,10 +106,10 @@ export default function AddEditOutgoingPopUp(props) {
   const notifyError = (msg) => toast.error(msg, messageStyle);
   const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps } = formik;
 
-  const addNewCustomer = async () => {
+  const addNewProduct = async () => {
     try {
       
-      const response = await apiClient.post('/product/add', rawData, {
+      const response = await apiClient.post('product/add', rawData, {
         headers: headers()
       });
 
@@ -171,14 +171,14 @@ export default function AddEditOutgoingPopUp(props) {
         <DialogTitle id="responsive-dialog-title"  pt={3} >
           {data.productName !== '' ? 'Edit Product' : 'Add Product'}
           <Header
-            subtitle="Create a New Products"
+            subtitle="Create a New Product"
           />
         </DialogTitle>
         <FormikProvider value={formik}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
             <DialogContent>
               <div>
-                <Box sx={({ pb: 3 }, { pt: 0 })}>
+              <Box sx={({ pb: 3 }, { pt: 0 })}>
                   <TextField
                     fullWidth
                     id="outlined-basic"
@@ -188,6 +188,7 @@ export default function AddEditOutgoingPopUp(props) {
                     helperText={touched.productNo && errors.productNo}
                   />
                 </Box>
+
                 <Box sx={({ pb: 3 }, { pt: 3 })}>
                   <TextField
                     fullWidth
@@ -198,6 +199,7 @@ export default function AddEditOutgoingPopUp(props) {
                     helperText={touched.productName && errors.productName}
                   />
                 </Box>
+               
                 <Box sx={({ pb: 3 }, { pt: 3 })}>
                 <FormControl fullWidth>
                     <InputLabel
@@ -237,6 +239,7 @@ export default function AddEditOutgoingPopUp(props) {
                   </FormControl>
                   
                 </Box>
+               
                 <Box sx={({ pb: 3 }, { pt: 3 })}>
                   <TextField
                     fullWidth
@@ -288,7 +291,6 @@ export default function AddEditOutgoingPopUp(props) {
                     </FormControl>
                  
                 </Box>
-               
                 
               </div>
             </DialogContent>

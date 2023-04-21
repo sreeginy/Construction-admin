@@ -14,6 +14,7 @@ import { filter } from 'lodash';
 import { useState, useEffect } from 'react';
 import { sentenceCase } from 'change-case';
 import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 // @mui
 import {
@@ -399,6 +400,9 @@ export default function Customer() {
           />
         </Card>
       </Container>
+
+      
+      <ToastContainer/>
     </>
   );
 }

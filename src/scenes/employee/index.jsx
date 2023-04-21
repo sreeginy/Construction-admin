@@ -14,6 +14,7 @@ import { filter } from 'lodash';
 import { useState, useEffect } from 'react';
 import { sentenceCase } from 'change-case';
 import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 // @mui
 import {
@@ -64,7 +65,7 @@ const TABLE_HEAD = [
   { id: 'position', label: 'Position', alignRight: false },
   { id: 'bio', label: 'Bio', alignRight: false },
   { id: 'email', label: 'Email', alignRight: false },
-  { id: 'streamUrl', label: 'Faebook ID', alignRight: false },
+  { id: 'streamUrl', label: 'Faebook ', alignRight: false },
   // { id: 'twitter', label: 'Twitter Id', alignRight: false },
   // { id: 'linkedin', label: 'LinkedIn Id', alignRight: false },
   // { id: 'status', label: 'Status', alignRight: false },
@@ -255,7 +256,7 @@ export default function Customer() {
       console.log('post', response);
     } catch (error) {
       setDeleteOpen(false);
-      notifyError('Customer has in order');
+      notifyError('Employee has in project');
       console.log(error);
     }
   };
@@ -412,7 +413,7 @@ export default function Customer() {
           />
         </Card>
       </Container>
-
+      <ToastContainer/>
 
    
     </>
