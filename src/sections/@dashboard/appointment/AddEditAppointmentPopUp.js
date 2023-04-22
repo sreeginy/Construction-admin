@@ -29,6 +29,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { DatePicker } from '@mui/x-date-pickers/DatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFns';
 
+
 import { Form, FormikProvider, useFormik } from 'formik';
 import PropTypes from 'prop-types';
 import * as React from 'react';
@@ -63,7 +64,9 @@ export default function AddEditOutgoingPopUp(props) {
     cost: data.cost,
     duration: data.duration
   });
-
+  const setDropDownValue = (value) => {
+    setStatusId(value);
+  };
   // Validations
   const AddSchema = Yup.object().shape({
     firstName: Yup.string().required('First name is required'),
@@ -82,12 +85,11 @@ export default function AddEditOutgoingPopUp(props) {
       joinDate: '',
       packages: data.packages,
       status: data.status,
-
     },
     validationSchema: AddSchema,
     onSubmit: () => {
       console.log("submitted")
-      addNewAppointment();
+      addNewAppointment ();
     }
   });
 
@@ -106,16 +108,11 @@ export default function AddEditOutgoingPopUp(props) {
 
   const notifySuccess = (msg) => toast.success(msg, messageStyle);
   const notifyError = (msg) => toast.error(msg, messageStyle);
-  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps, setFieldValue } = formik;
+  const { errors, touched, values, isSubmitting, handleSubmit, getFieldProps,setFieldValue  } = formik;
 
-
-  const setDropDownValue = (value) => {
-    setStatusId(value);
-  };
-
-  const addNewAppointment = async () => {
+  const addNewAppointment  = async () => {
     try {
-
+      
       const response = await apiClient.post('appointment/add', rawData, {
         headers: headers()
       });
@@ -140,21 +137,21 @@ export default function AddEditOutgoingPopUp(props) {
   };
 
   // Update customer Api
-  const updateAppointment = async (id) => {
+  const updateAppointment  = async (id) => {
     try {
-      const response = await apiClient.post(`/appointment/update/${id}`, rawData, {
+      const response = await apiClient.post(`appointment/update/${id}`, rawData, {
         headers: headers()
       });
 
       if (response.status === 200) {
         if (response.data.status === 1000) {
           notifySuccess(response.data.message);
-          onSuccess();
-          onClose();
+        onSuccess();
+        onClose();
         } else {
           notifyError(response.data.message);
         }
-
+      
       } else {
         apiHandleError(response);
       }
@@ -164,7 +161,7 @@ export default function AddEditOutgoingPopUp(props) {
     }
   };
 
-
+  
 
   return (
     <div>
@@ -175,7 +172,7 @@ export default function AddEditOutgoingPopUp(props) {
         onClose={onClose}
         aria-labelledby="responsive-dialog-title"
       >
-        <DialogTitle id="responsive-dialog-title" pt={3} >
+        <DialogTitle id="responsive-dialog-title"  pt={3} >
           {data.firstName !== '' ? 'Edit Appointment' : 'Add Appointment'}
           <Header
             subtitle="Create a New Appointment"
@@ -205,7 +202,6 @@ export default function AddEditOutgoingPopUp(props) {
                     helperText={touched.lastName && errors.lastName}
                   />
                 </Box>
-
                 <Box sx={({ pb: 3 }, { pt: 3 })}>
                   <TextField
                     fullWidth
@@ -216,7 +212,6 @@ export default function AddEditOutgoingPopUp(props) {
                     helperText={touched.email && errors.email}
                   />
                 </Box>
-
                 <Box sx={({ pb: 3 }, { pt: 3 })}>
                 <FormControl fullWidth>
                 <LocalizationProvider fullWidth dateAdapter={AdapterDateFns}>
@@ -234,7 +229,6 @@ export default function AddEditOutgoingPopUp(props) {
                 </LocalizationProvider>
                 </FormControl>
                 </Box>
-
                 <Box sx={({ pb: 3 }, { pt: 3 })}>
                   <FormControl fullWidth>
                     <InputLabel
@@ -290,7 +284,7 @@ export default function AddEditOutgoingPopUp(props) {
                   </FormControl>
                 </Box>
 
-                <Box sx={({ pb: 3 }, { pt: 3 })}>
+               <Box sx={({ pb: 3 }, { pt: 3 })}>
                   <FormControl fullWidth>
                     <InputLabel
                       id="demo-simple-select-label"
@@ -318,7 +312,8 @@ export default function AddEditOutgoingPopUp(props) {
                     </FormHelperText>
                   </FormControl>
                 </Box>
-
+               
+                
               </div>
             </DialogContent>
             <DialogActions>
@@ -327,7 +322,7 @@ export default function AddEditOutgoingPopUp(props) {
               </Button>
               {data.firstName !== '' ? (
                 <LoadingButton
-                  onClick={() => updateAppointment(data?.id)}
+                  onClick={() => updateAppointment (data?.id)}
                   size="medium"
                   variant="contained"
                   loading={isSubmitting}

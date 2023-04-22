@@ -131,7 +131,7 @@ export default function Customer() {
 
   const openAddEditPopUp = (data) => {
     setOpen((open) => (open = !open));
-    setselectedData(data);
+    setCustomer(data);
   };
 
   const openEditPopUp = (data) => {
@@ -140,7 +140,7 @@ export default function Customer() {
   };
   const openDeletePopUp = (data) => {
     setDeleteOpen((deleteOpen) => (deleteOpen = !deleteOpen));
-    setselectedData(data);
+    setCustomer(data);
   };
   const handleDeleteClose = () => {
     setDeleteOpen(false);
@@ -239,7 +239,7 @@ export default function Customer() {
 
   const deleteCustomer = async (id) => {
     try {
-      const response = await apiClient.delete(`customers/delete/${id}`, {
+      const response = await apiClient.get(`customers/delete/${id}`, {
         headers: headers()
       });
       if (response.status === 200) {
@@ -254,7 +254,7 @@ export default function Customer() {
       console.log('post', response);
     } catch (error) {
       setDeleteOpen(false);
-      notifyError('Customer has in order');
+      notifyError('Customers has in Error');
       console.log(error);
     }
   };
@@ -306,7 +306,7 @@ export default function Customer() {
         </Stack>
 
         {open ? (
-          <AddEditCustomerPopUp onClose={handleClose} data={selectedData}
+          <AddEditCustomerPopUp onClose={handleClose} data={customer}
             onSuccess={getCustomerList} />
         ) : (
           ''
@@ -314,7 +314,7 @@ export default function Customer() {
         {deleteOpen ? (
           <DeleteDialogPopUp
             onClose={handleDeleteClose}
-            onDelete={() => deleteCustomer(selectedData.id)}
+            onDelete={() => deleteCustomer(customer.id)}
           />
         ) : (
           ''
@@ -381,7 +381,6 @@ export default function Customer() {
                       </TableCell>
 
                       <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
-
                     </TableRow>
                   );
                 })}

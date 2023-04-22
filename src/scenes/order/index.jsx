@@ -17,7 +17,7 @@ import { sentenceCase } from 'change-case';
 import { toast } from 'react-toastify';
 import SearchNotFound from '../../components/SearchNotFound';
 import AddOrder from '../../sections/@dashboard/order/AddOrder';
-
+import { ToastContainer } from 'react-toastify';
 
 import {
   Card,
@@ -485,7 +485,7 @@ export default function Order() {
           />
         </Card>
       </Container>
-
+      <ToastContainer/>
 
       {/* <Popover
         open={Boolean(open)}

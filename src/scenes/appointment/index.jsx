@@ -14,6 +14,7 @@ import { filter } from 'lodash';
 import { useState, useEffect } from 'react';
 import { sentenceCase } from 'change-case';
 import { toast } from 'react-toastify';
+import { ToastContainer } from 'react-toastify';
 
 // @mui
 import {
@@ -46,6 +47,7 @@ import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 import apiClient from '../../api/apiClient';
 import headers from '../../api/apiHeader';
 import apiHandleError from '../../api/apiHandleError';
+
 
 import {
   AddEditAppointmentPopUp,
@@ -121,7 +123,6 @@ export default function Customer() {
   const [permission, setPermission] = useState({});
   const [customer, setCustomer] = useState();
   const [selectedData, setselectedData] = useState();
-  const [appointment, setAppointment] = useState();
 
 
   const notifySuccess = (msg) => toast.success(msg, messageStyle);
@@ -129,7 +130,7 @@ export default function Customer() {
 
   const openAddEditPopUp = (data) => {
     setOpen((open) => (open = !open));
-    setselectedData(data);
+    setCustomer(data);
   };
 
   const openEditPopUp = (data) => {
@@ -138,7 +139,7 @@ export default function Customer() {
   };
   const openDeletePopUp = (data) => {
     setDeleteOpen((deleteOpen) => (deleteOpen = !deleteOpen));
-    setAppointment(data);
+    setCustomer(data);
   };
   const handleDeleteClose = () => {
     setDeleteOpen(false);
@@ -166,7 +167,7 @@ export default function Customer() {
     if (event.target.checked) {
       const newSelecteds = appointmentList.map((n) => n.firstName);
       setSelected(newSelecteds);
-      return; 
+      return;
     }
     setSelected([]);
   };
@@ -199,6 +200,8 @@ export default function Customer() {
     setPage(0);
     setFilterName(event.target.value);
   };
+
+
 
   useEffect(() => {
     //  setPermission(getPermission(Constant.CUSTOMERPAGE));
@@ -233,9 +236,9 @@ export default function Customer() {
     getAppointmentList();
   };
 
-  const deleteAppointment = async (id) => {
+  const deleteCustomer = async (id) => {
     try {
-      const response = await apiClient.delete(`/appointment/delete/${id}`, {
+      const response = await apiClient.get(`appointment/delete/${id}`, {
         headers: headers()
       });
       if (response.status === 200) {
@@ -250,7 +253,7 @@ export default function Customer() {
       console.log('post', response);
     } catch (error) {
       setDeleteOpen(false);
-      notifyError('Appointment has in order');
+      notifyError('Customers has in Error');
       console.log(error);
     }
   };
@@ -272,9 +275,9 @@ export default function Customer() {
       <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom >
-          BOOK &nbsp; APPOINTMENT
+            APPOINTMENT &nbsp; LIST
           </Typography>
-          {/* <Typography  alignItems="center">Get clear ideas of what raw materials to be used to your home!</Typography>  */}
+          {/* <Typography  alignItems="center">Create a New User Profile</Typography>  */}
           {/* {permission?.read && ( */}
           {true && (
             <Button
@@ -284,6 +287,7 @@ export default function Customer() {
               onClick={() =>
                 openAddEditPopUp({
 
+                
                   firstName: '',
                   lastName: '',
                   email: '',
@@ -293,7 +297,6 @@ export default function Customer() {
                 })
               }
             >
-
               Add New Appointment
             </Button>
           )}
@@ -301,7 +304,7 @@ export default function Customer() {
         </Stack>
 
         {open ? (
-          <AddEditAppointmentPopUp onClose={handleClose} data={appointment}
+          <AddEditAppointmentPopUp onClose={handleClose} data={customer}
             onSuccess={getAppointmentList} />
         ) : (
           ''
@@ -309,7 +312,7 @@ export default function Customer() {
         {deleteOpen ? (
           <DeleteDialogPopUp
             onClose={handleDeleteClose}
-            onDelete={() => deleteAppointment(appointment.id)}
+            onDelete={() => deleteCustomer(customer.id)}
           />
         ) : (
           ''
@@ -331,45 +334,49 @@ export default function Customer() {
               />
               <TableBody>
                 {filteredUsers.slice(page * rowsPerPage, page * rowsPerPage + rowsPerPage).map((row) => {
-                  const { id, firstName, lastName, email,joinDate, status,packages, createdAt } = row;
+                  const { id, firstName, lastName, joinDate, email, status,packages, createdAt } = row;
                   const selectedUser = selected.indexOf(firstName) !== -1;
 
                   return (
                     <TableRow hover key={id} tabIndex={-1} role="checkbox" selected={selectedUser}>
                       <TableCell padding="checkbox">
                         <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, firstName)} />
-
-                      
                       </TableCell>
 
+                      {/* <TableCell align="left">{id}</TableCell> */}
+
+                      {/* <TableCell component="th" scope="row" padding="none">
+                          <Stack direction="row" alignItems="center" spacing={2}>
+                            <Avatar alt={firstName} src={avatarUrl} />
+                            <Typography variant="subtitle2" noWrap>
+                              {firstName}
+                            </Typography>
+                          </Stack>
+                        </TableCell> */}
                       <TableCell align="left">{firstName}</TableCell>
 
                       <TableCell align="left">{lastName}</TableCell>
 
                       <TableCell align="left">{email}</TableCell>
+
                       <TableCell align="left">{joinDate ? moment(joinDate).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
+                     
                       <TableCell align="left">{packages}</TableCell>
+
+                      <TableCell align="left">{status}</TableCell>
+
                       {/* <TableCell align="left">
-                        <Label color={(status === 'Pending' && 'error') || 'Proceed'}>{sentenceCase(status)}</Label>
-                      </TableCell> */}
-  <TableCell align="left">{status}</TableCell>
+                          <Label color={(status === 'banned' && 'error') || 'success'}>{sentenceCase(status)}</Label>
+                        </TableCell> */}
+
                       <TableCell align="right">
                         <AppointmentMoreMenu
-                          onEditClick={() => openAddEditPopUp(
-                            id,
-                            firstName,
-                            lastName,
-                            email,
-                            joinDate,
-                            packages,
-                            status,
-                          ) }
+                          onEditClick={() => openAddEditPopUp(row) }
                           onDelete={() => openDeletePopUp(row)}
                         />
                       </TableCell>
 
                       <TableCell align="left">{createdAt ? moment(createdAt).format(Constant.LISTDATEFORMAT) : ''}</TableCell>
-
                     </TableRow>
                   );
                 })}
@@ -418,6 +425,8 @@ export default function Customer() {
           />
         </Card>
       </Container>
+      <ToastContainer/>
+
     </>
   );
 }

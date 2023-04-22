@@ -106,9 +106,9 @@ const Sidebar = () => {
                 <Box display="flex" justifyContent="center" alignItems="center">
                   <img
                     alt="profile-user"
-                    width="100px"
-                    height="100px"
-                    src={`../../assets/user.png`}
+                    width="115px"
+                    height="105px"
+                    src={`../../assets/user.jpg`}
                     style={{ cursor: "pointer", borderRadius: "50%" }}
                   />
                 </Box>
@@ -123,7 +123,7 @@ const Sidebar = () => {
                     {`${user.firstName} ${user.lastName}`}
                   </Typography>
                   <Typography variant="h6" color={colors.greenAccent[500]}>
-                    Super Admin
+                  {user.email} - Admin
                   </Typography>
                 </Box>
               </Box>
