@@ -231,7 +231,6 @@ export default function Customer() {
     }
   };
 
-
   const handleSuccess = () => {
     getAppointmentList();
   };
@@ -270,8 +269,6 @@ export default function Customer() {
 
   return (
     <>
-
-
       <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom >
@@ -286,8 +283,6 @@ export default function Customer() {
               startIcon={<Iconify icon="eva:plus-fill" />}
               onClick={() =>
                 openAddEditPopUp({
-
-                
                   firstName: '',
                   lastName: '',
                   email: '',
