@@ -61,7 +61,7 @@ import { MoreMenu } from '../../sections/@dashboard/user/user'
 
 const TABLE_HEAD = [
   { id: 'productNo', label: 'Product No', alignRight: false },
-  { id: 'avatarUrl', label: 'Product ', alignRight: false },
+ 
   { id: 'productName', label: ' Name', alignRight: false },
   { id: 'productType', label: 'Type', alignRight: false },
   { id: 'price', label: 'Price/[per stone]', alignRight: false },
@@ -355,7 +355,7 @@ export default function Customer() {
 
                       <TableCell align="left">{productNo}</TableCell>
                       
-                      <TableCell align="left"></TableCell>
+                   
 
                       <TableCell align="left">{productName}</TableCell>
 
