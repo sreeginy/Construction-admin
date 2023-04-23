@@ -59,9 +59,11 @@ import { MoreMenu } from '../../sections/@dashboard/user/user'
 
 // ----------------------------------------------------------------------
 
+const placeholder = '/static/placeholder.jpg';
+
 const TABLE_HEAD = [
   { id: 'productNo', label: 'Product No', alignRight: false },
- 
+  // { id: 'avatarUrl', label: ' Image', alignRight: false },
   { id: 'productName', label: ' Name', alignRight: false },
   { id: 'productType', label: 'Type', alignRight: false },
   { id: 'price', label: 'Price/[per stone]', alignRight: false },
@@ -346,16 +348,28 @@ export default function Customer() {
 
                       {/* <TableCell component="th" scope="row" padding="none">
                           <Stack direction="row" alignItems="center" spacing={2}>
-                            <Avatar alt={firstName} src={avatarUrl} />
+                            <Avatar alt={productName} src={avatarUrl} />
                             <Typography variant="subtitle2" noWrap>
-                              {firstName}
+                              {productName}
                             </Typography>
                           </Stack>
-                        </TableCell> */}
+                        </TableCell>
+
+                */}
 
                       <TableCell align="left">{productNo}</TableCell>
                       
-                   
+                      {/* <TableCell align="left">
+                        <img
+                          width="80"
+                          height="55"
+                          srcSet={avatarUrl}
+                          src={placeholder}
+                          alt={avatarUrl}
+                          loading="lazy"
+                        />
+
+                        </TableCell> */}
 
                       <TableCell align="left">{productName}</TableCell>
 

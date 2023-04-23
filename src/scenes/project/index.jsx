@@ -60,7 +60,7 @@ const TABLE_HEAD = [
   { id: 'projectName', label: 'Project Name', alignRight: false },
   { id: 'packages', label: 'Material Type', alignRight: false },
   { id: 'description', label: 'Description', alignRight: false },
-  { id: 'duration', label: 'Duration', alignRight: false },
+  { id: 'duration', label: 'Time/months', alignRight: false },
   { id: 'location', label: 'Location ', alignRight: false },
   { id: 'clientName', label: 'client Name', alignRight: false },
   { id: 'projectSqft', label: 'Square Fit', alignRight: false },
@@ -351,7 +351,7 @@ export default function Customer() {
                       <TableCell align="left">{duration}</TableCell>
                       <TableCell align="left">{location}</TableCell>
                       <TableCell align="left">{clientName}</TableCell>
-                      <TableCell align="left">{projectSqft}</TableCell>
+                      <TableCell align="left">{projectSqft} /* SqFt</TableCell>
                       <TableCell align="left">{projectRoom}</TableCell>
 
                       <TableCell align="left">
