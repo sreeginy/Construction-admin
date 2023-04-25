@@ -221,6 +221,7 @@ export default function Customer() {
           setAppointmentList(response.data.data);
         }
         // setUserList(response.data);
+
         // setIsLoading(false);
       } else {
         apiHandleError(response);
@@ -392,7 +393,7 @@ export default function Customer() {
                         }}
                       >
                         <Typography variant="h6" paragraph>
-                          Not found
+                          Not founded
                         </Typography>
 
                         <Typography variant="body2">
