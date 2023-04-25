@@ -292,7 +292,7 @@ export default function Order() {
     getOrderList();
   }, []);
 
-  /* API GET ALL Library */
+  /* API GET ALL Orders */
   const getOrderList = async () => {
     try {
       const response = await apiClient.get('orders/all', {
@@ -310,7 +310,7 @@ export default function Order() {
     }
   };
 
-  /* API Delete Country */
+  /* API Delete order */
   const deleteLibrary = async (id) => {
     try {
       const response = await apiClient.delete(`library/${id}`, {
