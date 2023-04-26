@@ -374,12 +374,8 @@ export default function Customer() {
                   </TableRow>
                 )}
               </TableBody>
-
-
             </Table>
           </TableContainer>
-
-
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
