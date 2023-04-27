@@ -341,8 +341,6 @@ export default function Order() {
 
   return (
     <>
-
-
       <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom >
@@ -355,7 +353,6 @@ export default function Order() {
             component={RouterLink}
             startIcon={<Iconify icon="eva:plus-fill" />}
             onClick={handleOpenAdd}
-
           >
             Create Order
           </Button>
@@ -391,8 +388,6 @@ export default function Order() {
         )} */}
         <Card>
           <OrderListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-
-
           <TableContainer sx={{ minWidth: 800 }}>
             <Table>
               <OrderListHead

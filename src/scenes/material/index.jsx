@@ -268,8 +268,6 @@ export default function Customer() {
 
   return (
     <>
-
-
       <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom >
@@ -313,8 +311,6 @@ export default function Customer() {
         )}
         <Card>
           <MaterialListToolbar numSelected={selected.length} filterName={filterName} onFilterName={handleFilterByName} />
-
-
           <TableContainer sx={{ minWidth: 800 }}>
             <Table>
               <MaterialListHead
@@ -361,7 +357,6 @@ export default function Customer() {
                   </TableRow>
                 )}
               </TableBody>
-
               {isNotFound && (
                 <TableBody>
                   <TableRow>
@@ -387,8 +382,6 @@ export default function Customer() {
               )}
             </Table>
           </TableContainer>
-
-
           <TablePagination
             rowsPerPageOptions={[5, 10, 25]}
             component="div"
@@ -400,8 +393,6 @@ export default function Customer() {
           />
         </Card>
       </Container>
-
-      
       <ToastContainer/>
     </>
   );
