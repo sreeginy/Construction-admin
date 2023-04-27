@@ -260,8 +260,6 @@ export default function Customer() {
       console.log(error);
     }
   };
-
-
   const emptyRows = page > 0 ? Math.max(0, (1 + page) * rowsPerPage - employeeList.length) : 0;
 
   const filteredUsers = applySortFilter(employeeList, getComparator(order, orderBy), filterName);
@@ -273,8 +271,6 @@ export default function Customer() {
 
   return (
     <>
-
-
       <Container maxWidth="xl">
         <Stack direction="row" alignItems="center" justifyContent="space-between" mb={5}>
           <Typography variant="h4" gutterBottom >
@@ -343,9 +339,6 @@ export default function Customer() {
                       <TableCell padding="checkbox">
                         <Checkbox checked={selectedUser} onChange={(event) => handleClick(event, employeeName)} />
                       </TableCell>
-
-                      
-
                       <TableCell align="left">{employeeName}</TableCell>
 
 <TableCell align="left">{position}</TableCell>
@@ -388,7 +381,6 @@ export default function Customer() {
         </Card>
       </Container>
       <ToastContainer/>
-
    
     </>
   );
