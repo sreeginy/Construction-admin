@@ -11,7 +11,6 @@ import { useState, useEffect } from 'react';
 import apiClient from '../../api/apiClient';
 import headers from '../../api/apiHeader';
 import apiHandleError from '../../api/apiHandleError';
-
 import {
 
   AppWidgetSummary,
@@ -51,9 +50,6 @@ export default function DashboardAppPage() {
             console.log(error);
           }
         };
-
-
-
         /* API GET ALL order */
         const getOrderCount = async () => {
           try {
@@ -70,7 +66,6 @@ export default function DashboardAppPage() {
             console.log(error);
           }
         };
-    
 
     /* API GET ALL product */
     const getProductCount = async () => {
@@ -88,7 +83,6 @@ export default function DashboardAppPage() {
         console.log(error);
       }
     };
-  
   
   /* API GET ALL project */
   const getProjectCount = async () => {
@@ -110,8 +104,6 @@ export default function DashboardAppPage() {
 
   return (
     <>
-    
-
       <Container maxWidth="xl">
         <Typography variant="h2" sx={{ mb: 5 }} textAlign={'center'}>
           RK&nbsp; ARCHITECTURE&nbsp; DESIGNERS&nbsp; AND&nbsp; ENGINEERS
@@ -136,9 +128,7 @@ export default function DashboardAppPage() {
           <Grid item xs={12} sm={6} md={3}>
             <AppWidgetSummary title="Projects - RK Construction" total={projectCount} color="error" icon={'icon-park-solid:building-two'} />
            
-          </Grid> 
-
-         
+          </Grid>   
         </Grid>
       </Container>
     </>
