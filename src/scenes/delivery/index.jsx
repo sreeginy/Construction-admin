@@ -5,7 +5,6 @@ import useMediaQuery from "@mui/material/useMediaQuery";
 import Header from "../../components/Header";
 import DeleteDialogPopUp from '../../components/DialogPopUp';
 import messageStyle from '../../components/toast/toastStyle';
-
 import { Constant } from '../../utils/Constant';
 import { getPermission } from '../../utils/PermissionUtil';
 import moment from 'moment';
@@ -14,7 +13,6 @@ import { useState, useEffect } from 'react';
 import { sentenceCase } from 'change-case';
 import { toast } from 'react-toastify';
 import { ToastContainer } from 'react-toastify';
-
 import {
   Card,
   Table,
@@ -36,12 +34,9 @@ import {
 } from '@mui/material';
 import Label from '../../components/label';
 import Iconify from '../../components/iconify';
-
-// sections
 import { UserListHead, UserListToolbar } from '../../sections/@dashboard/user';
 // import USERLIST from '../../_mock/customer';
 
-// Api Call
 import apiClient from '../../api/apiClient';
 import headers from '../../api/apiHeader';
 import apiHandleError from '../../api/apiHandleError';
