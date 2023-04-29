@@ -2,7 +2,6 @@ import * as Yup from 'yup';
 import { useState } from 'react';
 import { Link as RouterLink, useNavigate } from 'react-router-dom';
 import { useFormik, Form, FormikProvider } from 'formik';
-// material
 import {
   Link,
   Stack,
@@ -12,15 +11,11 @@ import {
   InputAdornment,
   FormControlLabel
 } from '@mui/material';
-
-// Toast
 import { toast } from 'react-toastify';
 import { LoadingButton } from '@mui/lab';
 import messageStyle from '../../../components/toast/toastStyle';
 import { ToastContainer } from 'react-toastify';
-// Api Call
 import apiClient from '../../../api/apiClient';
-// component
 import Iconify from '../../../components/iconify';
 import LoginPassswordChange from './LoginPasswordChange';
 
