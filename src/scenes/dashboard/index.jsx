@@ -1,9 +1,7 @@
 
 import { faker } from '@faker-js/faker';
-// @mui
 import { useTheme } from '@mui/material/styles';
 import { Grid, Container, Typography } from '@mui/material';
-// components
 import Iconify from '../../components/iconify';
 import { grey } from '@mui/material/colors';
 import { useState, useEffect } from 'react';
@@ -12,9 +10,7 @@ import apiClient from '../../api/apiClient';
 import headers from '../../api/apiHeader';
 import apiHandleError from '../../api/apiHandleError';
 import {
-
-  AppWidgetSummary,
-
+AppWidgetSummary,
 } from '../../sections/@dashboard/app';
 
 // ----------------------------------------------------------------------
