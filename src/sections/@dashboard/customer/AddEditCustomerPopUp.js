@@ -258,8 +258,6 @@ export default function AddEditOutgoingPopUp(props) {
                     helperText={touched.contactNo && errors.contactNo}
                   />
                 </Box>
-               
-                
               </div>
             </DialogContent>
             <DialogActions>

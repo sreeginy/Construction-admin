@@ -239,7 +239,6 @@ export default function AddEditOutgoingPopUp(props) {
                       {touched.position && errors.position}
                     </FormHelperText>
                   </FormControl>
-                  
                 </Box>
 
                 <Box sx={({ pb: 3 }, { pt: 3 })}>
