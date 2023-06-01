@@ -151,9 +151,6 @@ export default function AddEditOutgoingPopUp(props) {
       console.log(error);
     }
   };
-
-  
-
   return (
     <div>
       <Dialog
@@ -169,7 +166,6 @@ export default function AddEditOutgoingPopUp(props) {
             subtitle="Create a New Access Level"
           />
         </DialogTitle>
-
       
         <FormikProvider value={formik}>
           <Form autoComplete="off" noValidate onSubmit={handleSubmit}>
