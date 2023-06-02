@@ -259,6 +259,7 @@ export default function AddEditOutgoingPopUp(props) {
                   />
                 </Box>
               </div>
+              
             </DialogContent>
             <DialogActions>
               <Button variant="outlined" autoFocus onClick={onClose}>
