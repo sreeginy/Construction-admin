@@ -62,6 +62,7 @@ export default function DashboardAppPage() {
             console.log(error);
           }
         };
+        
 
     /* API GET ALL product */
     const getProductCount = async () => {
